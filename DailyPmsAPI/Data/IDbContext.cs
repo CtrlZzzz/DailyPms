@@ -7,5 +7,6 @@ namespace DailyPmsAPI.Data
     public interface IDbContext
     {
         IMongoCollection<School> Schools { get; }
+        IMongoCollection<Classe> Classes { get; }
     }
 }

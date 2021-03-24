@@ -1,5 +1,4 @@
-﻿using System;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using DailyPmsAPI.Models;
 
 namespace DailyPmsAPI.Data
@@ -16,5 +15,6 @@ namespace DailyPmsAPI.Data
 
 
         public IMongoCollection<School> Schools { get { return schoolDb.GetCollection<School>("Schools"); } }
+        public IMongoCollection<Classe> Classes { get { return schoolDb.GetCollection<Classe>("Classes"); } }
     }
 }
