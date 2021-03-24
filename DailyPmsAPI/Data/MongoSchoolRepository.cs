@@ -10,7 +10,6 @@ namespace DailyPmsAPI.Data
         public MongoSchoolRepository(IDbContext databaseContext)
         {
             dbContext = databaseContext;
-            
         }
 
         

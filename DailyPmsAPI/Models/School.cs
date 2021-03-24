@@ -7,10 +7,11 @@ namespace DailyPmsAPI.Models
 {
     public class School
     {
-        [BsonId]
-        public ObjectId SchoolId { get; set; }
+        public string SchoolId { get; set; }
 
         public string Name { get; set; }
+
+        public string Moniker { get; set; }
 
         public string Street { get; set; }
 
@@ -24,10 +25,10 @@ namespace DailyPmsAPI.Models
 
         public string DirectorName { get; set; }
 
-        public MongoDBRef PmsCenter { get; set; }
+        public string PmsCenterID { get; set; }
 
-        public List<MongoDBRef> Classes { get; set; }
+        public List<string> ClasseIDs { get; set; }
 
-        public List<MongoDBRef> Students { get; set; }
+        public List<string> StudentIDs { get; set; }
     }
 }

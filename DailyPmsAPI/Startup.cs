@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using DailyPmsAPI.Data;
+using MongoDB.Bson.Serialization;
+using DailyPmsAPI.Models;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson;
 
 namespace DailyPmsAPI
 {
@@ -20,6 +18,15 @@ namespace DailyPmsAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            BsonClassMap.RegisterClassMap<School>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(s => s.SchoolId).SetIdGenerator(StringObjectIdGenerator.Instance);
+                cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(s => s.ClasseIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(s => s.StudentIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
         }
 
         public IConfiguration Configuration { get; }
