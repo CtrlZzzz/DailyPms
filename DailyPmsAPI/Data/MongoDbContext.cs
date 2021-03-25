@@ -16,5 +16,6 @@ namespace DailyPmsAPI.Data
 
         public IMongoCollection<School> Schools { get { return schoolDb.GetCollection<School>("Schools"); } }
         public IMongoCollection<Classe> Classes { get { return schoolDb.GetCollection<Classe>("Classes"); } }
+        public IMongoCollection<Student> Students { get { return schoolDb.GetCollection<Student>("Students"); } }
     }
 }

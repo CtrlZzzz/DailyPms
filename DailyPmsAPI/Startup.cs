@@ -75,6 +75,17 @@ namespace DailyPmsAPI
                 cm.MapMember(s => s.PmsIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
                 cm.MapMember(s => s.StudentIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
+            BsonClassMap.RegisterClassMap<Student>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(s => s.StudentId).SetIdGenerator(StringObjectIdGenerator.Instance);
+                cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(s => s.BirthDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+                cm.MapMember(s => s.RegistrationDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+                cm.MapMember(s => s.SchoolId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(s => s.ClasseId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(s => s.PmsFileId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
         }
     }
 }

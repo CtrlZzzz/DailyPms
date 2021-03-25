@@ -8,5 +8,6 @@ namespace DailyPmsAPI.Data
     {
         IMongoCollection<School> Schools { get; }
         IMongoCollection<Classe> Classes { get; }
+        IMongoCollection<Student> Students { get; }
     }
 }
