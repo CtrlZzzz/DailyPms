@@ -10,6 +10,7 @@ using DailyPmsAPI.Models;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson;
+using System.Collections.Generic;
 
 namespace DailyPmsAPI
 {
@@ -61,19 +62,23 @@ namespace DailyPmsAPI
             BsonClassMap.RegisterClassMap<School>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(s => s.SchoolId).SetIdGenerator(StringObjectIdGenerator.Instance);
-                cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(s => s.ClasseIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(s => s.StudentIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                //cm.MapIdMember(s => s.SchoolId);
+                cm.MapIdMember(s => s.SchoolId).SetIdGenerator(StringObjectIdGenerator.Instance)
+                                               .SetSerializer(new StringSerializer(BsonType.ObjectId));
+                //cm.MapIdMember(s => s.SchoolId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                //cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(s => s.PmsCenterID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(s => s.ClasseIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+                cm.MapMember(s => s.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
             });
             BsonClassMap.RegisterClassMap<Classe>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(s => s.ClasseId).SetIdGenerator(StringObjectIdGenerator.Instance);
+                cm.MapIdMember(c => c.ClasseId).SetIdGenerator(StringObjectIdGenerator.Instance);
                 cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(s => s.SchoolId).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(s => s.PmsIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(s => s.StudentIDs).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(c => c.SchoolId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapMember(c => c.PmsIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+                cm.MapMember(c => c.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
             });
             BsonClassMap.RegisterClassMap<Student>(cm =>
             {
