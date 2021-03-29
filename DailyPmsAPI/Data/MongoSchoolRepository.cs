@@ -20,7 +20,7 @@ namespace DailyPmsAPI.Data
 
         public School GetSchoolById(string id)
         {
-            return dbContext.Schools.Find(school => school.SchoolId == id).FirstOrDefault();
+            return dbContext.Schools.Find(school => school.SchoolID == id).FirstOrDefault();
         }
 
         public void UpdateSchool(School schoolToUpdate, School updatedSchool)
@@ -30,7 +30,7 @@ namespace DailyPmsAPI.Data
 
         public void UpdateSchoolById(string id, School updatedSchool)
         {
-            dbContext.Schools.ReplaceOne(school => school.SchoolId == id, updatedSchool);
+            dbContext.Schools.ReplaceOne(school => school.SchoolID == id, updatedSchool);
         }
     }
 }

@@ -4,11 +4,11 @@ namespace DailyPmsAPI.Models
 {
     public class Classe
     {
-        public string ClasseId { get; set; }
+        public string ClasseID { get; set; }
 
         public string Name { get; set; }
 
-        public string SchoolId { get; set; }
+        public string SchoolID { get; set; }
 
         public string ProfessorName { get; set; }
 

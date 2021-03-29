@@ -4,7 +4,7 @@ namespace DailyPmsAPI.Models
 {
     public class Student
     {
-        public string StudentId { get; set; }
+        public string StudentID { get; set; }
 
         public string FirtsName { get; set; }
 
@@ -22,16 +22,16 @@ namespace DailyPmsAPI.Models
 
         public string Email { get; set; }
 
-        public string Mother { get; set; }
+        public string Parent1 { get; set; }
 
-        public string Father { get; set; }
-
-        public string SchoolId { get; set; }
-
-        public string ClasseId { get; set; }
+        public string Parent2 { get; set; }
 
         public DateTime RegistrationDate { get; set; }
 
-        public string PmsFileId { get; set; }
+        public string SchoolID { get; set; }
+
+        public string ClasseID { get; set; }
+
+        public string PmsFileID { get; set; }
     }
 }
