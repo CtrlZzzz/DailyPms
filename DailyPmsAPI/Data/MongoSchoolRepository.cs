@@ -23,10 +23,10 @@ namespace DailyPmsAPI.Data
             return dbContext.Schools.Find(school => school.SchoolID == id).FirstOrDefault();
         }
 
-        public void UpdateSchool(School schoolToUpdate, School updatedSchool)
-        {
-            //TODO
-        }
+        //public void UpdateSchool(School schoolToUpdate, School updatedSchool)
+        //{
+        //    //TODO
+        //}
 
         public void UpdateSchoolById(string id, School updatedSchool)
         {

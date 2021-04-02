@@ -9,7 +9,7 @@ namespace DailyPmsAPI.Data
 
         School GetSchoolById(string id);
 
-        void UpdateSchool(School schoolToUpdate, School updatedSchool);
+        //void UpdateSchool(School schoolToUpdate, School updatedSchool);
         void UpdateSchoolById(string id, School updatedSchool);
     }
 }
