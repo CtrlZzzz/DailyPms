@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using DailyPmsAPI.Data;
 using MongoDB.Bson.Serialization;
@@ -11,6 +12,8 @@ using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson;
 using System.Collections.Generic;
+using System;
+using System.IO;
 
 namespace DailyPmsAPI
 {
@@ -36,6 +39,26 @@ namespace DailyPmsAPI
             services.AddSingleton<ISchoolRepository, MongoSchoolRepository>();
 
             services.AddControllers();
+
+            services.AddSwaggerGen(c =>    // Register the swagger generator, defining one or more swagger documents
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Daily PMS API Documentation",
+                    Version = "v1",
+                    Description = "Daily PMS is the API that allows to connect with the dailyPMS Database (mongoDb)",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Mobile Inception (Mi8)",
+                        Email = "info@mi8.be",
+                        Url = new Uri("https://www.mi8.be")
+                    }
+                });
+
+                //Use XML document to add infos in swagger doc
+                var xmlFilePath = Path.Combine(AppContext.BaseDirectory, "DailyPmsAPI.xml");
+                c.IncludeXmlComments(xmlFilePath);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -44,6 +67,14 @@ namespace DailyPmsAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();   // Enable middleware to serve generated swagger as JSON endpoint
+
+            app.UseSwaggerUI(c =>   // Enable middleware to serve swagger-ui (HTML, JS, CSS, ...). Specifying the swagger JSON endpoint
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Daily PMS API Documentation v1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 
