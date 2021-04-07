@@ -46,7 +46,7 @@ namespace DailyPmsAPI
                 {
                     Title = "Daily PMS API Documentation",
                     Version = "v1",
-                    Description = "Daily PMS is the API that allows to connect with the dailyPMS Database (mongoDb)",
+                    Description = "Daily PMS allows your app to connect with the dailyPMS Database (mongoDb)",
                     Contact = new OpenApiContact
                     {
                         Name = "Mobile Inception (Mi8)",
