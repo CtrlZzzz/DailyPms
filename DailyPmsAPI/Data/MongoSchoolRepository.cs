@@ -13,6 +13,7 @@ namespace DailyPmsAPI.Data
             dbContext = databaseContext;
         }
 
+
         public IEnumerable<School> GetAllSchools()
         {
             return dbContext.Schools.Find(school => true).ToList();
@@ -22,11 +23,6 @@ namespace DailyPmsAPI.Data
         {
             return dbContext.Schools.Find(school => school.SchoolID == id).FirstOrDefault();
         }
-
-        //public void UpdateSchool(School schoolToUpdate, School updatedSchool)
-        //{
-        //    //TODO
-        //}
 
         public void UpdateSchoolById(string id, School updatedSchool)
         {

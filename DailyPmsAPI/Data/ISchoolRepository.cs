@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DailyPmsAPI.Models;
 
 namespace DailyPmsAPI.Data
@@ -9,7 +10,6 @@ namespace DailyPmsAPI.Data
 
         School GetSchoolById(string id);
 
-        //void UpdateSchool(School schoolToUpdate, School updatedSchool);
         void UpdateSchoolById(string id, School updatedSchool);
     }
 }

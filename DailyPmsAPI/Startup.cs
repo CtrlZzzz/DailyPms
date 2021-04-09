@@ -37,6 +37,7 @@ namespace DailyPmsAPI
             });
             services.AddSingleton<IDbContext, MongoDbContext>();
             services.AddSingleton<ISchoolRepository, MongoSchoolRepository>();
+            services.AddSingleton<IClasseRepository, MongoClasseRepository>();
 
             services.AddControllers();
 
@@ -46,7 +47,10 @@ namespace DailyPmsAPI
                 {
                     Title = "Daily PMS API Documentation",
                     Version = "v1",
-                    Description = "Daily PMS allows your app to connect with the dailyPMS Database (mongoDb)",
+                    Description = "Daily PMS allows your app to use the dailyPMS Database (mongoDb). " +
+                                  "Note : All students, classes, schools,..., and all other informations from the database are fictitious " +
+                                  "and generated with 'Online Custom Mock Data Generator' online toolkit " +
+                                  "(https://www.onlinewebtoolkit.com/generatedata/).",
                     Contact = new OpenApiContact
                     {
                         Name = "Mobile Inception (Mi8)",
