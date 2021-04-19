@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DailyPmsAPI.Models;
 using MongoDB.Driver;
 
@@ -14,19 +15,24 @@ namespace DailyPmsAPI.Data
         }
 
 
-        public IEnumerable<School> GetAllSchools()
+        public async Task<IEnumerable<School>> GetAllSchoolsAsync()
         {
-            return dbContext.Schools.Find(school => true).ToList();
+            return await dbContext.Schools.Find(school => true).ToListAsync();
         }
 
-        public School GetSchoolById(string id)
+        public async Task<School> GetSchoolByIdAsync(string id)
         {
-            return dbContext.Schools.Find(school => school.SchoolID == id).FirstOrDefault();
+            return await dbContext.Schools.Find(school => school.SchoolID == id).FirstOrDefaultAsync();
         }
 
-        public void UpdateSchoolById(string id, School updatedSchool)
+        public async Task<School> GetSchoolByNameAsync(string name)
         {
-            dbContext.Schools.ReplaceOne(school => school.SchoolID == id, updatedSchool);
+            return await dbContext.Schools.Find(school => school.Name == name || school.Moniker == name).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateSchoolByIdAsync(string id, School updatedSchool)
+        {
+            await dbContext.Schools.ReplaceOneAsync(school => school.SchoolID == id, updatedSchool);
         }
     }
 }

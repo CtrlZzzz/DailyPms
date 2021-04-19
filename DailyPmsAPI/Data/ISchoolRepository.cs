@@ -6,10 +6,12 @@ namespace DailyPmsAPI.Data
 {
     public interface ISchoolRepository
     {
-        IEnumerable<School> GetAllSchools();
+        Task<IEnumerable<School>> GetAllSchoolsAsync();
 
-        School GetSchoolById(string id);
+        Task<School> GetSchoolByIdAsync(string id);
 
-        void UpdateSchoolById(string id, School updatedSchool);
+        Task<School> GetSchoolByNameAsync(string name);
+
+        Task UpdateSchoolByIdAsync(string id, School updatedSchool);
     }
 }

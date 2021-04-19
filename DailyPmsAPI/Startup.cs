@@ -38,6 +38,7 @@ namespace DailyPmsAPI
             services.AddSingleton<IDbContext, MongoDbContext>();
             services.AddSingleton<ISchoolRepository, MongoSchoolRepository>();
             services.AddSingleton<IClasseRepository, MongoClasseRepository>();
+            services.AddSingleton<IStudentRepository, MongoStudentRepository>();
 
             services.AddControllers();
 

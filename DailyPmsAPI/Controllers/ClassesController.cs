@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DailyPmsAPI.Data;
 using DailyPmsAPI.Models;
 using Microsoft.AspNetCore.Http;
@@ -31,17 +32,17 @@ namespace DailyPmsAPI.Controllers
         /// <response code="404">The school from which you want to get the classes does not exist in the Database</response>
         /// <response code="500">There is a database internal error - Retry later or contact an administrator</response>
         [HttpGet("BySchool/{schoolId:length(24)}")]
-        public ActionResult<IEnumerable<Classe>> GetAllClassesBySchool(string schoolId)
+        public async Task<ActionResult<IEnumerable<Classe>>> GetAllClassesBySchoolAsync(string schoolId)
         {
             try
             {
-                var school = schoolRepository.GetSchoolById(schoolId);
+                var school = await schoolRepository.GetSchoolByIdAsync(schoolId);
                 if (school == null)
                 {
                     return NotFound($"Could not find School with id = {schoolId}");
                 }
 
-                var classes = classeRepository.GetAllClassesBySchool(schoolId);
+                var classes = await classeRepository.GetAllClassesBySchoolAsync(schoolId);
 
                 return Ok(classes);
             }
@@ -60,11 +61,11 @@ namespace DailyPmsAPI.Controllers
         /// <response code="404">The classe with the specified ID does not exist in the Database</response>
         /// <response code="500">There is a database internal error - Retry later or contact an administrator</response>
         [HttpGet("{id:length(24)}", Name = "GetClasseById")]
-        public ActionResult<Classe> GetClasseById(string id)
+        public async Task<ActionResult<Classe>> GetClasseByIdAsync(string id)
         {
             try
             {
-                var classe = classeRepository.GetClasseById(id);
+                var classe = await classeRepository.GetClasseByIdAsync(id);
                 if (classe == null)
                 {
                     return NotFound($"Could not find classe with id = {id}");
@@ -82,19 +83,20 @@ namespace DailyPmsAPI.Controllers
         /// Get a classe by its Name
         /// </summary>
         /// <param name="name">The Name of the classe to get</param>
+        /// <param name="schoolId">The school ID from the classe to get</param>
         /// <returns></returns>
         /// <response code="200">The classe with the specified Name is returned</response>
         /// <response code="404">The classe with the specified Name does not exist in the Database</response>
         /// <response code="500">There is a database internal error - Retry later or contact an administrator</response>
-        [HttpGet("ByName/{name}", Name = "GetClasseByName")]
-        public ActionResult<Classe> GetClasseByName(string name)
+        [HttpGet("ByName/{name}/{schoolId:length(24)}", Name = "GetClasseByNameAsync")]
+        public async Task<ActionResult<Classe>> GetClasseByNameAsync([FromQuery]string name, [FromQuery]string schoolId)
         {
             try
             {
-                var classe = classeRepository.GetClasseByName(name);
+                var classe = await classeRepository.GetClasseByNameAsync(name, schoolId);
                 if (classe == null)
                 {
-                    return NotFound($"Could not find classe with name = {name}");
+                    return NotFound($"Could not find classe with name = {name} in {schoolId}");
                 }
 
                 return Ok(classe);
@@ -117,19 +119,19 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public ActionResult CreateClasse(Classe newClasse)
+        public async Task<ActionResult> CreateClasse(Classe newClasse)
         {
             try
             {
-                var alreadyExistingClasse = classeRepository.GetClasseByName(newClasse.Name);
+                var alreadyExistingClasse = await classeRepository.GetClasseByNameAsync(newClasse.Name, newClasse.SchoolID);
                 if (alreadyExistingClasse != null)
                 {
-                    return BadRequest($"A Classe with the name '{newClasse.Name}' already exists in the Database");
+                    return BadRequest($"A Classe with the name '{newClasse.Name}' already exists for this school in the Database");
                 }
 
-                classeRepository.CreateClasse(newClasse);
+                await classeRepository.CreateClasseAsync(newClasse);
 
-                return CreatedAtRoute(nameof(GetClasseByName), new { Name = newClasse.Name }, newClasse);
+                return CreatedAtRoute(nameof(GetClasseByNameAsync), new { name = newClasse.Name, schoolId = newClasse.SchoolID }, newClasse);
             }
             catch (Exception)
             {
@@ -150,17 +152,17 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public ActionResult UpdateClasseById(string id, Classe updatedClasse)
+        public async Task<ActionResult> UpdateClasseByIdAsync(string id, Classe updatedClasse)
         {
             try
             {
-                var original = classeRepository.GetClasseById(id);
+                var original = await classeRepository.GetClasseByIdAsync(id);
                 if (original == null)
                 {
                     return NotFound($"Could not find classe with id = {id}");
                 }
 
-                classeRepository.UpdateClasseById(id, updatedClasse);
+                await classeRepository.UpdateClasseByIdAsync(id, updatedClasse);
 
                 return NoContent();
             }
@@ -182,17 +184,17 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public ActionResult DeleteClasseById(string id)
+        public async Task<ActionResult> DeleteClasseByIdAsync(string id)
         {
             try
             {
-                var classe = classeRepository.GetClasseById(id);
+                var classe = await classeRepository.GetClasseByIdAsync(id);
                 if (classe == null)
                 {
                     return NotFound($"Could not find classe with id = {id}");
                 }
 
-                classeRepository.DeleteClasseById(id);
+                await classeRepository.DeleteClasseByIdAsync(id);
 
                 return NoContent();
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DailyPmsAPI.Models;
 using MongoDB.Driver;
 
@@ -15,44 +16,44 @@ namespace DailyPmsAPI.Data
         }
 
 
-        public IEnumerable<Classe> GetAllClassesBySchool(string schoolId)
+        public async Task<IEnumerable<Classe>> GetAllClassesBySchoolAsync(string schoolId)
         {
-            return dbContext.Classes.Find(Classe => Classe.SchoolID == schoolId).ToList();
+            return await dbContext.Classes.Find(Classe => Classe.SchoolID == schoolId).ToListAsync();
         }
 
-        public Classe GetClasseById(string id)
+        public async Task<Classe> GetClasseByIdAsync(string id)
         {
-            return dbContext.Classes.Find(classe => classe.ClasseID == id).FirstOrDefault();
+            return await dbContext.Classes.Find(classe => classe.ClasseID == id).FirstOrDefaultAsync();
         }
 
-        public Classe GetClasseByName(string name)
+        public async Task<Classe> GetClasseByNameAsync(string name, string schoolId)
         {
-            return dbContext.Classes.Find(classe => classe.Name == name).FirstOrDefault();
+            return await dbContext.Classes.Find(classe => classe.Name == name && classe.SchoolID == schoolId).FirstOrDefaultAsync();
         }
 
-        public void CreateClasse(Classe newClasse)
+        public async Task CreateClasseAsync(Classe newClasse)
         {
             if (newClasse == null)
             {
                 throw new ArgumentNullException(nameof(newClasse));
             }
 
-            dbContext.Classes.InsertOne(newClasse);
+            await dbContext.Classes.InsertOneAsync(newClasse);
         }
 
-        public void UpdateClasseById(string id, Classe updatedClasse)
+        public async Task UpdateClasseByIdAsync(string id, Classe updatedClasse)
         {
             if (updatedClasse == null)
             {
                 throw new ArgumentNullException(nameof(updatedClasse));
             }
 
-            dbContext.Classes.ReplaceOne(classe => classe.ClasseID == id, updatedClasse);
+            await dbContext.Classes.ReplaceOneAsync(classe => classe.ClasseID == id, updatedClasse);
         }
 
-        public void DeleteClasseById(string id)
+        public async Task DeleteClasseByIdAsync(string id)
         {
-            dbContext.Classes.DeleteOne(classe => classe.ClasseID == id);
+            await dbContext.Classes.DeleteOneAsync(classe => classe.ClasseID == id);
         }
     }
 }

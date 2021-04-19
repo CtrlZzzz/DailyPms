@@ -1,20 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DailyPmsAPI.Models;
 
 namespace DailyPmsAPI.Data
 {
     public interface IClasseRepository
     {
-        IEnumerable<Classe> GetAllClassesBySchool(string schoolId);
+        Task<IEnumerable<Classe>> GetAllClassesBySchoolAsync(string schoolId);
 
-        Classe GetClasseById(string id);
+        Task<Classe> GetClasseByIdAsync(string id);
 
-        Classe GetClasseByName(string id);
+        Task<Classe> GetClasseByNameAsync(string name, string schoolId);
 
-        void CreateClasse(Classe newClasse);
+        Task CreateClasseAsync(Classe newClasse);
 
-        void UpdateClasseById(string id, Classe updatedClasse);
+        Task UpdateClasseByIdAsync(string id, Classe updatedClasse);
 
-        void DeleteClasseById(string id);
+        Task DeleteClasseByIdAsync(string id);
     }
 }
