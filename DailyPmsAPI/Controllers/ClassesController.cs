@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DailyPmsAPI.Data;
 using DailyPmsAPI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPmsAPI.Controllers
@@ -30,26 +28,18 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="200">A list of classes is returned</response>
         /// <response code="404">The school from which you want to get the classes does not exist in the Database</response>
-        /// <response code="500">There is a database internal error - Retry later or contact an administrator</response>
         [HttpGet("BySchool/{schoolId:length(24)}")]
         public async Task<ActionResult<IEnumerable<Classe>>> GetAllClassesBySchoolAsync(string schoolId)
         {
-            try
+            var school = await schoolRepository.GetSchoolByIdAsync(schoolId);
+            if (school == null)
             {
-                var school = await schoolRepository.GetSchoolByIdAsync(schoolId);
-                if (school == null)
-                {
-                    return NotFound($"Could not find School with id = {schoolId}");
-                }
-
-                var classes = await classeRepository.GetAllClassesBySchoolAsync(schoolId);
-
-                return Ok(classes);
+                return NotFound($"Could not find School with id = {schoolId}");
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database server error!");
-            }
+
+            var classes = await classeRepository.GetAllClassesBySchoolAsync(schoolId);
+
+            return Ok(classes);
         }
 
         /// <summary>
@@ -59,24 +49,16 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="200">The classe with the specified ID is returned</response>
         /// <response code="404">The classe with the specified ID does not exist in the Database</response>
-        /// <response code="500">There is a database internal error - Retry later or contact an administrator</response>
         [HttpGet("{id:length(24)}", Name = "GetClasseById")]
         public async Task<ActionResult<Classe>> GetClasseByIdAsync(string id)
         {
-            try
+            var classe = await classeRepository.GetClasseByIdAsync(id);
+            if (classe == null)
             {
-                var classe = await classeRepository.GetClasseByIdAsync(id);
-                if (classe == null)
-                {
-                    return NotFound($"Could not find classe with id = {id}");
-                }
+                return NotFound($"Could not find classe with id = {id}");
+            }
 
-                return Ok(classe);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database server error!");
-            }
+            return Ok(classe);
         }
 
         /// <summary>
@@ -87,24 +69,16 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="200">The classe with the specified Name is returned</response>
         /// <response code="404">The classe with the specified Name does not exist in the Database</response>
-        /// <response code="500">There is a database internal error - Retry later or contact an administrator</response>
         [HttpGet("ByName/{name}/{schoolId:length(24)}", Name = "GetClasseByNameAsync")]
         public async Task<ActionResult<Classe>> GetClasseByNameAsync([FromQuery]string name, [FromQuery]string schoolId)
         {
-            try
+            var classe = await classeRepository.GetClasseByNameAsync(name, schoolId);
+            if (classe == null)
             {
-                var classe = await classeRepository.GetClasseByNameAsync(name, schoolId);
-                if (classe == null)
-                {
-                    return NotFound($"Could not find classe with name = {name} in {schoolId}");
-                }
+                return NotFound($"Could not find classe with name = {name} in school with id = {schoolId}");
+            }
 
-                return Ok(classe);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database server error!");
-            }
+            return Ok(classe);
         }
 
         /// <summary>
@@ -114,29 +88,20 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="201">The new classe is created</response>
         /// <response code="400">A classe with the same name as the new classe's name already exists in the Database</response>
-        /// <response code="500">Your Json can not be serialized or there is a database internal error</response>
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<ActionResult> CreateClasse(Classe newClasse)
+        public async Task<ActionResult> CreateClasseAsync(Classe newClasse)
         {
-            try
+            var alreadyExistingClasse = await classeRepository.GetClasseByNameAsync(newClasse.Name, newClasse.SchoolID);
+            if (alreadyExistingClasse != null)
             {
-                var alreadyExistingClasse = await classeRepository.GetClasseByNameAsync(newClasse.Name, newClasse.SchoolID);
-                if (alreadyExistingClasse != null)
-                {
-                    return BadRequest($"A Classe with the name '{newClasse.Name}' already exists for this school in the Database");
-                }
-
-                await classeRepository.CreateClasseAsync(newClasse);
-
-                return CreatedAtRoute(nameof(GetClasseByNameAsync), new { name = newClasse.Name, schoolId = newClasse.SchoolID }, newClasse);
+                return BadRequest($"A Classe with the name '{newClasse.Name}' already exists for this school in the Database");
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database server error!");
-            }
+
+            await classeRepository.CreateClasseAsync(newClasse);
+
+            return CreatedAtRoute(nameof(GetClasseByNameAsync), new { name = newClasse.Name, schoolId = newClasse.SchoolID }, newClasse);
         }
 
         /// <summary>
@@ -147,29 +112,20 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="204">The classe with the specified ID is updated - No content is returned</response>
         /// <response code="404">The classe with the specified ID does not exist in the Database</response>
-        /// <response code="500">Your Json can not be serialized or there is a database internal error</response>
         [HttpPut("{id:length(24)}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
         public async Task<ActionResult> UpdateClasseByIdAsync(string id, Classe updatedClasse)
         {
-            try
+            var original = await classeRepository.GetClasseByIdAsync(id);
+            if (original == null)
             {
-                var original = await classeRepository.GetClasseByIdAsync(id);
-                if (original == null)
-                {
-                    return NotFound($"Could not find classe with id = {id}");
-                }
-
-                await classeRepository.UpdateClasseByIdAsync(id, updatedClasse);
-
-                return NoContent();
+                return NotFound($"Could not find classe with id = {id}");
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database server error!");
-            }
+
+            await classeRepository.UpdateClasseByIdAsync(id, updatedClasse);
+
+            return NoContent();
         }
 
         /// <summary>
@@ -179,29 +135,20 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="204">The classe with the specified ID is removed from the Database - No content is returned</response>
         /// <response code="404">The classe with the specified ID does not exist in the Database</response>
-        /// <response code="500">There is a database internal error - Retry later or contact an administrator</response>
         [HttpDelete("{id:length(24)}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
         public async Task<ActionResult> DeleteClasseByIdAsync(string id)
         {
-            try
+            var classe = await classeRepository.GetClasseByIdAsync(id);
+            if (classe == null)
             {
-                var classe = await classeRepository.GetClasseByIdAsync(id);
-                if (classe == null)
-                {
-                    return NotFound($"Could not find classe with id = {id}");
-                }
-
-                await classeRepository.DeleteClasseByIdAsync(id);
-
-                return NoContent();
+                return NotFound($"Could not find classe with id = {id}");
             }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Database server error!");
-            }
+
+            await classeRepository.DeleteClasseByIdAsync(id);
+
+            return NoContent();
         }
     }
 }

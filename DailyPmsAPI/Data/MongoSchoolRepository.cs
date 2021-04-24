@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DailyPmsAPI.Models;
 using MongoDB.Driver;
@@ -33,6 +34,21 @@ namespace DailyPmsAPI.Data
         public async Task UpdateSchoolByIdAsync(string id, School updatedSchool)
         {
             await dbContext.Schools.ReplaceOneAsync(school => school.SchoolID == id, updatedSchool);
+        }
+
+        public async Task CreateSchoolAsync(School newSchool)
+        {
+            if (newSchool == null)
+            {
+                throw new ArgumentNullException(nameof(newSchool));
+            }
+
+            await dbContext.Schools.InsertOneAsync(newSchool);
+        }
+
+        public async Task DeleteSchoolByIdAsync(string id)
+        {
+            await dbContext.Schools.DeleteOneAsync(school => school.SchoolID == id);
         }
     }
 }

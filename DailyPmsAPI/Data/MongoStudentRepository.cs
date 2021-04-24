@@ -16,39 +16,54 @@ namespace DailyPmsAPI.Data
         }
 
 
-        public Task CreateStudentAsync(Student newStudent)
+        public async Task<IEnumerable<Student>> GetAllStudentsAsync()
         {
-            throw new NotImplementedException();
+            return await dbContext.Students.Find(student => true).ToListAsync();
         }
 
-        public Task DeleteStudentByIdAsync(string id)
+        public async Task<IEnumerable<Student>> GetAllStudentsBySchoolAsync(string schoolId)
         {
-            throw new NotImplementedException();
+            return await dbContext.Students.Find(student => student.SchoolID == schoolId).ToListAsync();
         }
 
-        public Task<IEnumerable<Student>> GetAllStudentsAsync()
+        public async Task<IEnumerable<Student>> GetAllStudentsByClasseAsync(string classeId, string schoolId)
         {
-            throw new NotImplementedException();
+            return await dbContext.Students.Find(student => student.ClasseID == classeId && student.SchoolID == schoolId).ToListAsync();
         }
 
-        public Task<IEnumerable<Student>> GetAllStudentsBySchoolAsync(string schoolId)
+        public async Task<Student> GetStudentByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await dbContext.Students.Find(student => student.StudentID == id).FirstOrDefaultAsync();
         }
 
-        public Task<Student> GetStudentByIdAsync(string id)
+        public async Task<IEnumerable<Student>> GetStudentsByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await dbContext.Students.Find(student => student.LastName == name).ToListAsync();
         }
 
-        public Task<IEnumerable<Student>> GetStudentByNameAsync(string name)
+        public async Task CreateStudentAsync(Student newStudent)
         {
-            throw new NotImplementedException();
+            if (newStudent == null)
+            {
+                throw new ArgumentNullException(nameof(newStudent));
+            }
+
+            await dbContext.Students.InsertOneAsync(newStudent);
         }
 
-        public Task UpdateStudentByIdAsync(string id, Student updatedStudent)
+        public async Task UpdateStudentByIdAsync(string id, Student updatedStudent)
         {
-            throw new NotImplementedException();
+            if (updatedStudent == null)
+            {
+                throw new ArgumentNullException(nameof(updatedStudent));
+            }
+
+            await dbContext.Students.ReplaceOneAsync(student => student.StudentID == id, updatedStudent);
+        }
+
+        public async Task DeleteStudentByIdAsync(string id)
+        {
+            await dbContext.Students.DeleteOneAsync(student => student.StudentID == id);
         }
     }
 }

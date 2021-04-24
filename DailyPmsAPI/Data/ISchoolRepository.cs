@@ -13,5 +13,9 @@ namespace DailyPmsAPI.Data
         Task<School> GetSchoolByNameAsync(string name);
 
         Task UpdateSchoolByIdAsync(string id, School updatedSchool);
+
+        Task CreateSchoolAsync(School newSchool);
+
+        Task DeleteSchoolByIdAsync(string id);
     }
 }

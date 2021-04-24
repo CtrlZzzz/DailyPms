@@ -10,9 +10,11 @@ namespace DailyPmsAPI.Data
 
         Task<IEnumerable<Student>> GetAllStudentsBySchoolAsync(string schoolId);
 
+        Task<IEnumerable<Student>> GetAllStudentsByClasseAsync(string classeId, string schoolId);
+
         Task<Student> GetStudentByIdAsync(string id);
 
-        Task<IEnumerable<Student>> GetStudentByNameAsync(string name);
+        Task<IEnumerable<Student>> GetStudentsByNameAsync(string name);
 
         Task CreateStudentAsync(Student newStudent);
 
