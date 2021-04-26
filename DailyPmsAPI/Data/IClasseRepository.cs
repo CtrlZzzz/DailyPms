@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DailyPmsAPI.Models;
+using DailyPmsShared;
 
 namespace DailyPmsAPI.Data
 {

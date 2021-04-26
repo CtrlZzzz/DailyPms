@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using DailyPmsAPI.Data;
 using MongoDB.Bson.Serialization;
-using DailyPmsAPI.Models;
+using DailyPmsShared;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson;
@@ -118,8 +118,8 @@ namespace DailyPmsAPI
                 cm.AutoMap();
                 cm.MapIdMember(s => s.StudentID).SetIdGenerator(StringObjectIdGenerator.Instance)
                                                 .SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(s => s.BirthDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
-                cm.MapMember(s => s.RegistrationDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+                //cm.MapMember(s => s.BirthDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+                //cm.MapMember(s => s.RegistrationDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
                 cm.MapMember(s => s.SchoolID).SetSerializer(new StringSerializer(BsonType.ObjectId));
                 cm.MapMember(s => s.ClasseID).SetSerializer(new StringSerializer(BsonType.ObjectId));
                 cm.MapMember(s => s.PmsFileID).SetSerializer(new StringSerializer(BsonType.ObjectId));

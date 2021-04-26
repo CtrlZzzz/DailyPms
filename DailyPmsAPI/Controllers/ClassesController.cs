@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DailyPmsAPI.Data;
-using DailyPmsAPI.Models;
+using DailyPmsShared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPmsAPI.Controllers

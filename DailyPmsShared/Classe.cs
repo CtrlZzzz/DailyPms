@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DailyPmsAPI.Models
+namespace DailyPmsShared
 {
     public class Classe
     {

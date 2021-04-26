@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DailyPmsAPI.Data;
-using DailyPmsAPI.Models;
+using DailyPmsShared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPmsAPI.Controllers
@@ -136,9 +136,9 @@ namespace DailyPmsAPI.Controllers
             var alreadyExistingStudents = await studentRepository.GetStudentsByNameAsync(newStudent.LastName);
             foreach (var student in alreadyExistingStudents)
             {
-                if (DateTime.Equals(student.BirthDate, newStudent.BirthDate) && student.FirtsName == newStudent.FirtsName)
+                if (DateTime.Equals(student.BirthDate, newStudent.BirthDate) && student.FirstName == newStudent.FirstName)
                 {
-                    return BadRequest($"A Student named {newStudent.FirtsName} {newStudent.LastName} born {newStudent.BirthDate} already exists in the Database");
+                    return BadRequest($"A Student named {newStudent.FirstName} {newStudent.LastName} born {newStudent.BirthDate} already exists in the Database");
                 }
             }
 

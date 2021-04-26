@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DailyPmsAPI.Models
+namespace DailyPmsShared
 {
     public class Student
     {
         public string StudentID { get; set; }
 
-        public string FirtsName { get; set; }
+        public string FirstName { get; set; }
 
         public string LastName { get; set; }
 

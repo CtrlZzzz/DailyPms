@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DailyPmsAPI.Models;
+using DailyPmsShared;
 using MongoDB.Driver;
 
 namespace DailyPmsAPI.Data
