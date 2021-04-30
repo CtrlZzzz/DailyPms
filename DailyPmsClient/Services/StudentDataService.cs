@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using DailyPmsShared;
 
@@ -7,19 +9,24 @@ namespace DailyPmsClient.Services
 {
     public class StudentDataService : IStudentDataService
     {
-        public StudentDataService()
+        readonly HttpClient httpClient;
+
+        public StudentDataService(HttpClient client)
         {
+            httpClient = client;
         }
 
 
-        public Task<IEnumerable<Student>> GetAllStudentsAsync()
+        public async Task<IEnumerable<Student>> GetAllStudentsAsync()
         {
-            throw new NotImplementedException();
+            var response = await httpClient.GetStreamAsync("api/Students");
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Student>>(response, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true});
         }
 
-        public Task<Student> GetStudentByIdAsync(string id)
+        public async Task<Student> GetStudentByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            var response = await httpClient.GetStreamAsync($"api/Students/{id}");
+            return await JsonSerializer.DeserializeAsync<Student>(response, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public Task CreateStudentAsync(Student newStudent)

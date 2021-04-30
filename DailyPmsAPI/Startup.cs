@@ -42,6 +42,15 @@ namespace DailyPmsAPI
 
             services.AddControllers();
 
+            //DEBUG api + client both on localhost (to avoid "Cross-origin" browser error)
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                builder.WithOrigins("https://localhost:51701")
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+            });
+
             services.AddSwaggerGen(c =>    // Register the swagger generator, defining one or more swagger documents
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -84,6 +93,8 @@ namespace DailyPmsAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DailyPmsClient.Services;
 using DailyPmsShared;
 using Microsoft.AspNetCore.Components;
 
@@ -9,21 +10,25 @@ namespace DailyPmsClient.Pages
 {
     public partial class StudentDetail
     {
+        [Inject]
+        public IStudentDataService StudentDataService { get; set; }
+
         [Parameter]
         public string StudentId { get; set; }
 
         public Student CurrentStudent { get; set; } = new Student();
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
 
             //InitializeCountries();
             //InitializeJobCategories();
-            InitializeStudents();
+            //InitializeStudents();
 
-            CurrentStudent = Students.FirstOrDefault(s => s.StudentID == StudentId);
+            //CurrentStudent = Students.FirstOrDefault(s => s.StudentID == StudentId);
+            CurrentStudent = await StudentDataService.GetStudentByIdAsync(StudentId);
 
-            return base.OnInitializedAsync();
+            //return base.OnInitializedAsync();
         }
 
         public IEnumerable<Student> Students { get; set; }
@@ -64,47 +69,47 @@ namespace DailyPmsClient.Pages
         //    };
         //}
 
-        private void InitializeStudents()
-        {
-            var s1 = new Student
-            {
-                StudentID = "300000000000000000000001",
-                FirstName = "Jean",
-                LastName = "Duval",
-                BirthDate = new DateTime(1995, 7, 3),
-                Street = "Rue ValJean 7",
-                PostalCode = 2400,
-                City = "MegaCity",
-                Phone = "012345678",
-                Email = "JeanD@gmail.com",
-                Parent1 = "Alice Lemercier",
-                Parent2 = "Robert Duval",
-                RegistrationDate = new DateTime(2019, 9, 2),
-                SchoolID = "100000000000000000000001",
-                ClasseID = "200000000000000000000001",
-                PmsFileID = "300000000000000000000001"
-            };
+        //private void InitializeStudents()
+        //{
+        //    var s1 = new Student
+        //    {
+        //        StudentID = "300000000000000000000001",
+        //        FirstName = "Jean",
+        //        LastName = "Duval",
+        //        BirthDate = new DateTime(1995, 7, 3),
+        //        Street = "Rue ValJean 7",
+        //        PostalCode = 2400,
+        //        City = "MegaCity",
+        //        Phone = "012345678",
+        //        Email = "JeanD@gmail.com",
+        //        Parent1 = "Alice Lemercier",
+        //        Parent2 = "Robert Duval",
+        //        RegistrationDate = new DateTime(2019, 9, 2),
+        //        SchoolID = "100000000000000000000001",
+        //        ClasseID = "200000000000000000000001",
+        //        PmsFileID = "300000000000000000000001"
+        //    };
 
-            var s2 = new Student
-            {
-                StudentID = "300000000000000000000002",
-                FirstName = "Clara",
-                LastName = "Smith",
-                BirthDate = new DateTime(1995, 6, 22),
-                Street = "Avenue du Champs Martien 666",
-                PostalCode = 6666,
-                City = "NewEve",
-                Phone = "98765432",
-                Email = "ClaraSmith@Hotmail.com",
-                Parent1 = "Guy Smith",
-                Parent2 = "Alain Deloin",
-                RegistrationDate = new DateTime(2018, 9, 5),
-                SchoolID = "100000000000000000000002",
-                ClasseID = "200000000000000000000002",
-                PmsFileID = "300000000000000000000002"
-            };
+        //    var s2 = new Student
+        //    {
+        //        StudentID = "300000000000000000000002",
+        //        FirstName = "Clara",
+        //        LastName = "Smith",
+        //        BirthDate = new DateTime(1995, 6, 22),
+        //        Street = "Avenue du Champs Martien 666",
+        //        PostalCode = 6666,
+        //        City = "NewEve",
+        //        Phone = "98765432",
+        //        Email = "ClaraSmith@Hotmail.com",
+        //        Parent1 = "Guy Smith",
+        //        Parent2 = "Alain Deloin",
+        //        RegistrationDate = new DateTime(2018, 9, 5),
+        //        SchoolID = "100000000000000000000002",
+        //        ClasseID = "200000000000000000000002",
+        //        PmsFileID = "300000000000000000000002"
+        //    };
 
-            Students = new List<Student> { s1, s2 };
-        }
+        //    Students = new List<Student> { s1, s2 };
+        //}
     }
 }

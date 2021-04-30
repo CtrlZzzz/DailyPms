@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using DailyPmsClient.Services;
+using MudBlazor.Services;
 
 namespace DailyPmsClient
 {
@@ -17,7 +19,18 @@ namespace DailyPmsClient
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            ////Standard Httpclient 
+            //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+            ////HttpclientFactory
+            builder.Services.AddHttpClient<IStudentDataService, StudentDataService>(client =>
+            {
+                var apiUrl = builder.Configuration.GetValue<string>("ApiUrl");
+                //var apiUrl = "https://localhost:5001/";
+                client.BaseAddress = new Uri(apiUrl);
+            });
+
+            builder.Services.AddMudServices();
 
             await builder.Build().RunAsync();
         }
