@@ -9,38 +9,10 @@
 }
 else
 {
-    @*<table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Student ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var student in Students)
-                {
-                    <tr>
-                        <td></td>
-                        <td>@student.StudentID</td>
-                        <td>@student.FirstName</td>
-                        <td>@student.LastName</td>
-                        <td>
-                            <a href="@($"studentdetail/{student.StudentID}")" class="btn btn-primary table-btn">
-                                <i class="fas fa-info-circle"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>*@
-
-    <MudTable Items="@Students" FixedHeader="@FixedHeader" Height="@(FixedHeader?"500px":"")" Dense = "false" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm" >@*Filter="new Func<Student, bool>(FilterStudents)">
-        @*<ToolBarContent>
+    <MudTable Items="@Students" FixedHeader="@FixedHeader" Height="@(FixedHeader?"500px":"")" Dense = "false" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm" Filter="new Func<Student, bool>(FilterStudents)">
+        <ToolBarContent>
             <MudTextField @bind-Value="SearchString" Placeholder="Search for student" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>*@
+        </ToolBarContent>
         <HeaderContent>
             <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x => x.StudentID)">Student ID</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x => x.FirstName)">First Name</MudTableSortLabel></MudTh>
