@@ -1,5 +1,28 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components
+@using Microsoft.JSInterop
 
 <h1 class="page-title">Welcome to Daily PMS app, the ultimate pms management software!</h1>
 <br/>
 <h3>Using this application, you can manage all your schools, students, daily's and much more</h3>
+<div>
+    <MudButton Variant="Variant.Filled" Color="Color.Default" OnClick="AuthenticateWithChrome">Authenticate</MudButton>
+</div>
+
+@code
+{
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; }
+
+    IJSObjectReference jsModule;
+
+    protected override async Task OnInitializedAsync()
+    {
+        jsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./scripts/SendMessageToChrome.js");
+    }
+
+    public async Task AuthenticateWithChrome()
+    {
+        await jsModule.InvokeVoidAsync("SendToChrome", "Js function called from .NET Web app");
+    }
+}

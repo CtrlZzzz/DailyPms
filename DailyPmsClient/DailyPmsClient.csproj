@@ -14,7 +14,6 @@
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="MudBlazor" Version="5.0.8" />
-    <PackageReference Include="NativeMessaging" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,5 +24,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
     <Folder Include="Services\" />
+    <Folder Include="wwwroot\scripts\" />
   </ItemGroup>
 </Project>

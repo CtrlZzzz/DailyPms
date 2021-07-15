@@ -9,16 +9,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using DailyPmsClient.Services;
 using MudBlazor.Services;
-using NativeMessaging;
+//using NativeMessaging;
 
 namespace DailyPmsClient
 {
     public class Program
     {
-        static Host host;
+        //static Host host;
 
-        readonly static string[] allowedOrigins = new string[] { "chrome-extension://kofiemopjlgoajfmkflhaijdfdocmhee/" };
-        readonly static string description = "DailyPmsClient PMS client native messaging host";
+        //readonly static string[] allowedOrigins = new string[] { "chrome-extension://kofiemopjlgoajfmkflhaijdfdocmhee/" };
+        //readonly static string description = "DailyPmsClient PMS client native messaging host";
 
         public static async Task Main(string[] args)
         {
@@ -38,20 +38,20 @@ namespace DailyPmsClient
 
             builder.Services.AddMudServices();
 
-            StartNativeMessaging();
 
             await builder.Build().RunAsync();
+            //StartNativeMessaging();
         }
 
-        public static void StartNativeMessaging()
-        {
-            host = new ChromeMessagingHost();
-            host.SupportedBrowsers.Add(ChromiumBrowser.GoogleChrome);
-            host.SupportedBrowsers.Add(ChromiumBrowser.MicrosoftEdge);
+        //public static void StartNativeMessaging()
+        //{
+        //    host = new ChromeMessagingHost();
+        //    host.SupportedBrowsers.Add(ChromiumBrowser.GoogleChrome);
+        //    host.SupportedBrowsers.Add(ChromiumBrowser.MicrosoftEdge);
 
-            host.GenerateManifest(description, allowedOrigins);
-            host.Register();
-            host.Listen();
-        }
+        //    host.GenerateManifest(description, allowedOrigins, true);
+        //    host.Register();
+        //    host.Listen();
+        //}
     }
 }
