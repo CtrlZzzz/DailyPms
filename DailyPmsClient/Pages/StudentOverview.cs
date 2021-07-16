@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DailyPmsClient.Services;
 using DailyPmsShared;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace DailyPmsClient.Pages
 {
@@ -42,6 +43,12 @@ namespace DailyPmsClient.Pages
                 return true;
             }
             return false;
+        }
+
+        public void GoToDetail(TableRowClickEventArgs<Student> student)
+        {
+            //TODO : inject navigationManager
+            //NavigationManager.NavigateTo($"/studentdetail/{student.Item.StudentID}");
         }
     }
 }

@@ -9,7 +9,8 @@
 }
 else
 {
-    <MudTable Items="@Students" FixedHeader="@FixedHeader" Height="@(FixedHeader?"500px":"")" Dense = "false" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm" Filter="new Func<Student, bool>(FilterStudents)">
+    <MudTable Items="@Students" FixedHeader="@FixedHeader" Height="@(FixedHeader?"500px":"")" Dense = "false" Hover="true" Striped="true" Breakpoint="Breakpoint.Sm" Filter="new Func<Student, bool>(FilterStudents)" 
+              T="Student" OnRowClick="@GoToDetail">
         <ToolBarContent>
             <MudTextField @bind-Value="SearchString" Placeholder="Search for student" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
