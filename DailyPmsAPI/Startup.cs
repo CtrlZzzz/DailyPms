@@ -1,19 +1,26 @@
+using DailyPmsAPI.Data;
+using DailyPmsShared;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
-using DailyPmsAPI.Data;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using DailyPmsShared;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
-using MongoDB.Bson;
-using System.Collections.Generic;
+using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+
 
 namespace DailyPmsAPI
 {
@@ -30,6 +37,7 @@ namespace DailyPmsAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //  MongoDB
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
                 var connectionString = s.GetRequiredService<IConfiguration>()["ConnectionString"];
@@ -42,15 +50,16 @@ namespace DailyPmsAPI
 
             services.AddControllers();
 
-            //DEBUG api + client both on localhost (to avoid "Cross-origin" browser error)
+            //  DEBUG api + client both on localhost (to avoid "Cross-origin" browser error)
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
-                builder.WithOrigins("https://localhost:51701")
+                builder.WithOrigins("https://localhost:5001")
                 .AllowAnyHeader()
                 .AllowAnyMethod());
             });
 
+            //   Swagger documentation
             services.AddSwaggerGen(c =>    // Register the swagger generator, defining one or more swagger documents
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -73,6 +82,13 @@ namespace DailyPmsAPI
                 var xmlFilePath = Path.Combine(AppContext.BaseDirectory, "DailyPmsAPI.xml");
                 c.IncludeXmlComments(xmlFilePath);
             });
+
+            //  Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
+
+            
+            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -91,16 +107,20 @@ namespace DailyPmsAPI
             });
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("index.html");
             });
         }
 

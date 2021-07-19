@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using DailyPmsAPI.Data;
 using DailyPmsShared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPmsAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ClassesController : ControllerBase
