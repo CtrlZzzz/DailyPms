@@ -30,8 +30,10 @@ namespace DailyPmsSecuredClient
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind("AzureAdB2C", options.ProviderOptions.Authentication);
-                //options.ProviderOptions.DefaultAccessTokenScopes.Add(defaultScopeID);
-                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://DailyPms.onmicrosoft.com/a0ea78d4-e079-496f-a76c-5cf6e10a5054/DailyPms.ReadWrite");
+                options.ProviderOptions.DefaultAccessTokenScopes.Add(defaultScopeID);
+
+                //  AdB2C Login in the same page instead of a pop up window
+                options.ProviderOptions.LoginMode = "redirect";
             });
 
             await builder.Build().RunAsync();
