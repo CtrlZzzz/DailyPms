@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
 
 namespace DailyPmsSecuredClient
 {
@@ -24,6 +25,9 @@ namespace DailyPmsSecuredClient
 
             //  HttpClient that automatically includes access token when making requests to the server
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("DailyPmsAPI"));
+
+            // MudBlazor
+            builder.Services.AddMudServices();
 
             //  Msal
             var defaultScopeID = builder.Configuration.GetValue<string>("ApiDefaultScope");
