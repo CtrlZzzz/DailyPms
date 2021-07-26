@@ -1,14 +1,41 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using DailyPmsSecuredClient.Themes
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
 <MudLayout>
-    <MudAppBar Elevation="1">
+    <MudAppBar Elevation="0" Class="d-flex justify-space-between" Dense="true" Fixed="false">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <MudIcon Icon="@Icons.Material.Filled.Gesture" Size="Size.Small" />
+        <MudText Style="font-size: 14px;" Class="ml-2">Daily PMS</MudText>
+        <MudSpacer />
+        <LoginDisplay />
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.End" />
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
-        <NavMenu />
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="0">
+        <MudContainer Class="d-flex flex-column justify-center">
+            <AuthorizeView>
+                <Authorized>
+                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-12 mb-2" Image="Images/portrait01_256px.png" />
+                    <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-6" Color="Color.Secondary" Align="Align.Center">Psychologue,</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°2</MudText>
+                    <MudFab Style="background-color: white; margin: auto;" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" DisableElevation="true" Size="Size.Medium" IconSize="Size.Medium" Class="mt-8" />
+                </Authorized>
+                <NotAuthorized>
+                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Color="Color.Primary" Class="mt-12" Variant="Variant.Outlined">?</MudAvatar>
+                </NotAuthorized>
+            </AuthorizeView>
+            <MudPaper Elevation="0" Class="rounded-xl mt-12 pt-8" Outlined="true" Style="height: 315px; width: 175px; background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px; margin: auto;">
+                <NavMenu />
+            </MudPaper>
+            <MudFab Style="background-color: white; margin: auto;" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Settings" DisableElevation="true" Size="Size.Medium" IconSize="Size.Medium" Class="mt-12" />
+        </MudContainer>
     </MudDrawer>
     <MudMainContent>
         @Body
@@ -17,6 +44,7 @@
 
 @code {
     bool _drawerOpen = true;
+    //Color whiteColor = 
 
     void DrawerToggle()
     {

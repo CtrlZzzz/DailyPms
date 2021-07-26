@@ -21,6 +21,29 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
-<MudThemeProvider />
+
+<MudThemeProvider Theme="DailyPmsCustomTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
+
+@code{
+
+    MudTheme DailyPmsCustomTheme = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            AppbarBackground = CustomColors.TERTIARY,
+            DrawerBackground = CustomColors.TERTIARY,
+            Background = CustomColors.TERTIARY,
+
+            AppbarText = CustomColors.PRIMARY,
+            DrawerText = CustomColors.SECONDARY,
+            DrawerIcon = CustomColors.SECONDARY,
+
+            Primary = CustomColors.PRIMARY,
+            Secondary = CustomColors.SECONDARY,
+            Tertiary = CustomColors.TERTIARY
+        }
+    };
+
+}

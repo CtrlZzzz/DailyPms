@@ -1,7 +1,16 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
+
+<style>
+    body {
+        background-color: @CustomColors.TERTIARY;
+    }
+</style>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+your current page :
+<p>@NavigationManager.Uri</p>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
