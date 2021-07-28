@@ -20,10 +20,10 @@ namespace DailyPmsSecuredClient
             builder.RootComponents.Add<App>("#app");
 
             var apiUrl = builder.Configuration.GetValue<string>("ApiUrl");
+            //  HttpClient that automatically includes access token when making requests to the server
             builder.Services.AddHttpClient("DailyPmsAPI", client => client.BaseAddress = new Uri(apiUrl))
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-            //  HttpClient that automatically includes access token when making requests to the server
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("DailyPmsAPI"));
 
             // MudBlazor
@@ -38,6 +38,8 @@ namespace DailyPmsSecuredClient
 
                 //  AdB2C Login in the same page instead of a pop up window
                 options.ProviderOptions.LoginMode = "redirect";
+                //  Roles
+                options.UserOptions.RoleClaim = "appRole";
             });
 
             await builder.Build().RunAsync();
