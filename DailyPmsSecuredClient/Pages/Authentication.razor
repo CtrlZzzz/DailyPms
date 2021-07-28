@@ -1,7 +1,17 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
+@inject NavigationManager Navigation
 
-@code{
-    [Parameter] public string Action { get; set; }
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@((e) => RedirectToHome())"/>
+
+@code
+{
+    [Parameter]
+    public string Action { get; set; }
+
+    void RedirectToHome()
+    {
+        Navigation.NavigateTo("FetchData", true);
+        Console.WriteLine("Redirecting to Home !");
+    }
 }

@@ -2,21 +2,47 @@
 
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using DailyPmsSecuredClient.Themes
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
+@inject IJSRuntime Js
 
 <MudLayout>
     <MudAppBar Elevation="0" Class="d-flex justify-space-between" Dense="true" Fixed="false">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => DrawerToggle())" />
+        <AuthorizeView>
+            <Authorized>
+                @if (!_drawerOpen)
+                {
+                    <MudTooltip Text="Accueil" Placement="Placement.Bottom">
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Home" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                    </MudTooltip>
+                    <MudTooltip Text="Journalier" Placement="Placement.Bottom">
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Event" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                    </MudTooltip>
+                    <MudTooltip Text="Planning" Placement="Placement.Bottom">
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.LocationOn" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                    </MudTooltip>
+                    <MudTooltip Text="Écoles" Placement="Placement.Bottom">
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.AccountBalance" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                    </MudTooltip>
+                    <MudTooltip Text="Étudiants" Placement="Placement.Bottom">
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.School" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                    </MudTooltip>
+                }
+            </Authorized>
+        </AuthorizeView>
         <MudSpacer />
         <MudIcon Icon="@Icons.Material.Filled.Gesture" Size="Size.Small" />
         <MudText Style="font-size: 14px;" Class="ml-2">Daily PMS</MudText>
         <MudSpacer />
-        <LoginDisplay />
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.End" />
+        @if (!_drawerOpen)
+        {
+            <LoginDisplay />
+        }
+        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => CloseTab())" />
     </MudAppBar>
+
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="0">
         <MudContainer Class="d-flex flex-column justify-center">
             <AuthorizeView>
@@ -25,29 +51,62 @@
                     <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
                     <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-6" Color="Color.Secondary" Align="Align.Center">Psychologue,</MudText>
                     <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°2</MudText>
-                    <MudFab Style="background-color: white; margin: auto;" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" DisableElevation="true" Size="Size.Medium" IconSize="Size.Medium" Class="mt-8" />
+                    <MudFab Style="background-color: white; margin: auto;"
+                            IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" IconSize="Size.Medium"
+                            DisableElevation="true" Size="Size.Medium" Class="mt-8"
+                            OnClick="@(() => SignOutAsync())" />
+                    <MudPaper Elevation="0" Class="rounded-xl mt-12 pt-8" Outlined="true" Style="height: 315px; width: 175px; background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px; margin: auto;">
+                        <NavMenu />
+                    </MudPaper>
+                    <MudFab Style="background-color: white; margin: auto;"
+                            IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Settings" IconSize="Size.Medium"
+                            DisableElevation="true" Size="Size.Medium" Class="mt-12" />
                 </Authorized>
                 <NotAuthorized>
-                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Color="Color.Primary" Class="mt-12" Variant="Variant.Outlined">?</MudAvatar>
+                    <MudAvatar Style="height:150px; width:150px; font-style: normal; font-size:6rem; margin: auto; padding: 0px; 
+                                      background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px;" 
+                               Color="Color.Secondary" Class="mt-12" Variant="Variant.Outlined">
+                        <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.Block" Style="height:130px; width:130px;"/>
+                    </MudAvatar>
+                    <MudFab Style="background-color: white; margin: auto;"
+                            IconColor="Color.Primary" Icon="@Icons.Material.Filled.Login" IconSize="Size.Medium"
+                            DisableElevation="true" Size="Size.Medium" Class="mt-8"
+                            OnClick="@(() => SignIn())" />
                 </NotAuthorized>
             </AuthorizeView>
-            <MudPaper Elevation="0" Class="rounded-xl mt-12 pt-8" Outlined="true" Style="height: 315px; width: 175px; background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px; margin: auto;">
-                <NavMenu />
-            </MudPaper>
-            <MudFab Style="background-color: white; margin: auto;" IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Settings" DisableElevation="true" Size="Size.Medium" IconSize="Size.Medium" Class="mt-12" />
         </MudContainer>
     </MudDrawer>
+
     <MudMainContent>
         @Body
     </MudMainContent>
+
 </MudLayout>
 
-@code {
+@code 
+{
     bool _drawerOpen = true;
-    //Color whiteColor = 
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    async Task SignOutAsync()
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
+    }
+
+    void SignIn()
+    {
+        Navigation.NavigateTo("authentication/login");
+    }
+
+    async Task CloseTab()
+    {
+        await Js.InvokeVoidAsync("close");
+        await Js.InvokeVoidAsync("alert", "You are trying to close this window! But something prevents you to do it...");
+        Console.WriteLine("USER MESSAGE -- Trying to close current TAB");
     }
 }
