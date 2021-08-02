@@ -87,7 +87,12 @@ namespace DailyPmsAPI
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
 
-            
+            //  Authorization
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireClaim("extension_Roles", "Admin"));
+            });
+
             services.AddRazorPages();
         }
 
