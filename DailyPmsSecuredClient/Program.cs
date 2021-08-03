@@ -42,9 +42,13 @@ namespace DailyPmsSecuredClient
                 options.UserOptions.RoleClaim = "appRole";
             });
 
+            //builder.Services.AddAuthorizationCore(options =>
+            //{
+            //    options.AddPolicy("Admin", policy => policy.RequireClaim("extension_Roles", "Admin"));
+            //});
             builder.Services.AddAuthorizationCore(options =>
             {
-                options.AddPolicy("Admin", policy => policy.RequireClaim("extension_Roles", "Admin"));
+                options.AddPolicy("Directeur", policy => policy.RequireClaim("jobTitle", "directeur"));
             });
 
             await builder.Build().RunAsync();

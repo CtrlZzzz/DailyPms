@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPmsAPI.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase

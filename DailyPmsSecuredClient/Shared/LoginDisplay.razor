@@ -1,19 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Security.Claims
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 
 <AuthorizeView>
     <Authorized>
-        Bonjour, @context.User.Identity.Name
-        @*<button class="nav-link btn btn-link" style="color:orangered;" @onclick="BeginSignOut">Log out</button>*@
+        Bonjour, @context.User.Identity.Name 
         <MudTooltip Text="Se déconnecter" Placement="Placement.Bottom">
             <MudIconButton Class="ml-2" Icon="@Icons.Material.Filled.Cancel" Color="Color.Inherit" OnClick="@((e) => BeginSignOut(e))" />
         </MudTooltip>
     </Authorized>
     <NotAuthorized>
-        @*<a href="authentication/login" style="color:lightseagreen;">Log in</a>*@
         <MudTooltip Text="S'identifier" Placement="Placement.Bottom">
             <MudIconButton Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" OnClick="@((e) => BeginSignIn())" />
         </MudTooltip>
