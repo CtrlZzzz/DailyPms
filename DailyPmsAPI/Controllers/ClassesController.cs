@@ -71,7 +71,7 @@ namespace DailyPmsAPI.Controllers
         /// <response code="200">The classe with the specified Name is returned</response>
         /// <response code="404">The classe with the specified Name does not exist in the Database</response>
         [HttpGet("ByName/{name}/{schoolId:length(24)}", Name = "GetClasseByNameAsync")]
-        public async Task<ActionResult<Classe>> GetClasseByNameAsync([FromQuery]string name, [FromQuery]string schoolId)
+        public async Task<ActionResult<Classe>> GetClasseByNameAsync(string name, string schoolId)
         {
             var classe = await classeRepository.GetClasseByNameAsync(name, schoolId);
             if (classe == null)
