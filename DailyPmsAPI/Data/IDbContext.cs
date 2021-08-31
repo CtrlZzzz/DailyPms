@@ -1,5 +1,4 @@
-﻿using System;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using DailyPmsShared;
 
 namespace DailyPmsAPI.Data
@@ -10,5 +9,7 @@ namespace DailyPmsAPI.Data
         IMongoCollection<Classe> Classes { get; }
         IMongoCollection<Student> Students { get; }
         IMongoCollection<PmsFile> PmsFiles { get; }
+        IMongoCollection<PmsCenter> PmsCenters { get; }
+        IMongoCollection<Agent> Agents { get; }
     }
 }
