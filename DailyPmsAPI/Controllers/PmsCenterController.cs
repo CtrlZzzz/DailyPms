@@ -56,7 +56,7 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="200">The center with the specified Name is returned</response>
         /// <response code="404">The center with the specified Name does not exist in the Database</response>
-        [HttpGet("ByName/{name}")]
+        [HttpGet("ByName/{name}", Name = "GetCenterByNameAsync")]
         public async Task<ActionResult<PmsCenter>> GetCenterByNameAsync(string name)
         {
             var center = await centerRepository.GetCenterByNameAsync(name);
@@ -66,6 +66,76 @@ namespace DailyPmsAPI.Controllers
             }
 
             return Ok(center);
+        }
+
+        /// <summary>
+        /// Create a new PMS Center
+        /// </summary>
+        /// <param name="newCenter">The new center to create (passed in the request body)</param>
+        /// <returns></returns>
+        /// <response code="201">The new center is created</response>
+        /// <response code="400">A center with the same name as the new center's name already exists in the Database</response>
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult> CreateCenterAsync(PmsCenter newCenter)
+        {
+            var alreadyExistingCenter = await centerRepository.GetCenterByNameAsync(newCenter.Name);
+            if (alreadyExistingCenter != null)
+            {
+                return BadRequest($"A center with the name '{newCenter.Name}' already exists in the Database.");
+            }
+
+            await centerRepository.CreateCenterAsync(newCenter);
+
+            return CreatedAtRoute(nameof(GetCenterByNameAsync), new { name = newCenter.Name }, newCenter);
+        }
+
+        /// <summary>
+        /// Update a center
+        /// </summary>
+        /// <param name="id">The ID from the center to update</param>
+        /// <param name="updatedCenter">The updated center object (passed in the request body)</param>
+        /// <returns></returns>
+        /// <response code="204">The center with the specified ID is updated - No content is returned</response>
+        /// <response code="404">The center with the specified ID does not exist in the Database</response>
+        [HttpPut("{id:length(24)}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult> UpdateCenterByIdAsync(string id, PmsCenter updatedCenter)
+        {
+            var original = await centerRepository.GetCenterByIdAsync(id);
+            if (original == null)
+            {
+                return NotFound($"Could not find center with id = {id}");
+            }
+
+            await centerRepository.UpdateCenterByIdAsync(id, updatedCenter);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Remove a center
+        /// </summary>
+        /// <param name="id">The ID from the center to remove from the Database</param>
+        /// <returns></returns>
+        /// <response code="204">The center with the specified ID is removed from the Database - No content is returned</response>
+        /// <response code="404">The center with the specified ID does not exist in the Database</response>
+        [HttpDelete("{id:length(24)}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult> DeleteCenterByIdAsync(string id)
+        {
+            var center = await centerRepository.GetCenterByIdAsync(id);
+            if (center == null)
+            {
+                return NotFound($"Could not find center with id = {id}");
+            }
+
+            await centerRepository.DeleteCenterByIdAsync(id);
+
+            return NoContent();
         }
     }
 }
