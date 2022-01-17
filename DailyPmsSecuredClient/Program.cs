@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
+using ClientServices.Interfaces;
+using ClientServices;
 
 namespace DailyPmsSecuredClient
 {
@@ -50,6 +52,9 @@ namespace DailyPmsSecuredClient
             {
                 options.AddPolicy("Directeur", policy => policy.RequireClaim("jobTitle", "directeur"));
             });
+
+            //DI extensions from ClientServices external library
+            builder.Services.AddHttpClientServices();
 
             await builder.Build().RunAsync();
         }

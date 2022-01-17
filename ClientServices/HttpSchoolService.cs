@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http.Json;
 using ClientServices.Interfaces;
-using DailyPmsShared.DTOs;
+using DailyPmsShared;
 
 namespace ClientServices
 {
@@ -14,11 +14,11 @@ namespace ClientServices
             client = http;
 		}
 
-        public async Task<IEnumerable<SchoolSummary>> GetSchoolSummariesAsync()
+        public async Task<IEnumerable<School>> GetSchoolSummariesAsync()
         {
             var response = await client.GetAsync("/api/Schools");
 
-            var result = await response.Content.ReadFromJsonAsync<IEnumerable<SchoolSummary>>();
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<School>>();
             return result;
         }
     }

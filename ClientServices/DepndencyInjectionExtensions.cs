@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServices
 {
-	public static class DepndencyInjectionExtensions
-	{
-		public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
+    public static class DepndencyInjectionExtensions
+    {
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
         {
-			return services.AddScoped<ISchoolService, HttpSchoolService>();
+            return services.AddScoped<ISchoolService, HttpSchoolService>();
         }
-	}
+    }
 }
 

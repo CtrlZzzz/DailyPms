@@ -1,11 +1,11 @@
 ﻿using System;
-using DailyPmsShared.DTOs;
+using DailyPmsShared;
 
 namespace ClientServices.Interfaces
 {
 	public interface ISchoolService
 	{
-		Task<IEnumerable<SchoolSummary>> GetSchoolSummariesAsync();
+		Task<IEnumerable<School>> GetSchoolSummariesAsync();
 	}
 }
 

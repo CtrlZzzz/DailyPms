@@ -2,13 +2,13 @@
 
 namespace DailyPmsShared.DTOs
 {
-	public class SchoolSummary
-	{
+    public class SchoolSummary
+    {
         public string SchoolID { get; set; }
 
         public string Name { get; set; }
 
-        public string Moniker { get; set; }
+        //public string Moniker { get; set; }
 
         public string Street { get; set; }
 
@@ -20,7 +20,7 @@ namespace DailyPmsShared.DTOs
 
         public string Email { get; set; }
 
-        public string DirectorName { get; set; }
+        //public string DirectorName { get; set; }
     }
 }
 

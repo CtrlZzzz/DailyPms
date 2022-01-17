@@ -1,0 +1,40 @@
+﻿@namespace DailyPmsSecuredClient.Components
+@using ClientServices.Interfaces
+@using DailyPmsShared
+@inject ISchoolService SchoolService
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Street</th>
+            <th>PostalCode</th>
+            <th>City</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var school in schoolSummaries)
+        {
+            <tr>
+                <td>@school.Name.</td>
+                <td>@school.Street.</td>
+                <td>@school.PostalCode.</td>
+                <td>@school.City</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+
+    private IEnumerable<School> schoolSummaries;
+
+    protected override async Task OnInitializedAsync()
+    {
+        schoolSummaries = await SchoolService.GetSchoolSummariesAsync();
+        Console.WriteLine("! http get requesting list of schools!");
+    }
+
+}
+

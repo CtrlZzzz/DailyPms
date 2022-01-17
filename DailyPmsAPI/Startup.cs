@@ -3,6 +3,7 @@ using DailyPmsShared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -55,10 +56,14 @@ namespace DailyPmsAPI
             //  DEBUG api + client both on localhost (to avoid "Cross-origin" browser error)
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
-                builder.WithOrigins("https://localhost:5001")
-                .AllowAnyHeader()
-                .AllowAnyMethod());
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44367")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                    });
             });
 
             //   Swagger documentation
@@ -146,7 +151,7 @@ namespace DailyPmsAPI
             {
                 cm.AutoMap();
                 cm.MapIdMember(c => c.ClasseID).SetIdGenerator(StringObjectIdGenerator.Instance)
-                                               .SetSerializer(new StringSerializer(BsonType.ObjectId)); 
+                                               .SetSerializer(new StringSerializer(BsonType.ObjectId));
                 cm.MapMember(c => c.SchoolID).SetSerializer(new StringSerializer(BsonType.ObjectId));
                 cm.MapMember(c => c.PmsIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
                 cm.MapMember(c => c.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
