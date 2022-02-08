@@ -15,19 +15,19 @@
                 @if (!_drawerOpen)
                 {
                     <MudTooltip Text="Accueil" Placement="Placement.Bottom">
-                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Home" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Home" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Home"); })" />
                     </MudTooltip>
                     <MudTooltip Text="Journalier" Placement="Placement.Bottom">
-                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Event" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Event" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Counter"); })" />
                     </MudTooltip>
                     <MudTooltip Text="Planning" Placement="Placement.Bottom">
                         <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.LocationOn" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
                     </MudTooltip>
                     <MudTooltip Text="Écoles" Placement="Placement.Bottom">
-                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.AccountBalance" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.AccountBalance" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Schools"); })" />
                     </MudTooltip>
                     <MudTooltip Text="Étudiants" Placement="Placement.Bottom">
-                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.School" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.School" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Counter"); })" />
                     </MudTooltip>
                 }
             </Authorized>
@@ -63,10 +63,10 @@
                             DisableElevation="true" Size="Size.Medium" Class="mt-12" />
                 </Authorized>
                 <NotAuthorized>
-                    <MudAvatar Style="height:150px; width:150px; font-style: normal; font-size:6rem; margin: auto; padding: 0px; 
-                                      background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px;" 
+                    <MudAvatar Style="height:150px; width:150px; font-style: normal; font-size:6rem; margin: auto; padding: 0px;
+                                      background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px;"
                                Color="Color.Secondary" Class="mt-12" Variant="Variant.Outlined">
-                        <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.Block" Style="height:130px; width:130px;"/>
+                        <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.Block" Style="height:130px; width:130px;" />
                     </MudAvatar>
                     <MudFab Style="background-color: white; margin: auto;"
                             IconColor="Color.Primary" Icon="@Icons.Material.Filled.Login" IconSize="Size.Medium"
@@ -83,7 +83,7 @@
 
 </MudLayout>
 
-@code 
+@code
 {
     bool _drawerOpen = true;
 

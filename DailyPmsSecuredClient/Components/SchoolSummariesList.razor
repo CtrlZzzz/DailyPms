@@ -2,38 +2,66 @@
 @using ClientServices.Interfaces
 @using DailyPmsShared
 @inject ISchoolService SchoolService
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Street</th>
-            <th>PostalCode</th>
-            <th>City</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var school in schoolSummaries)
-        {
+@*<table class="table">
+        <thead>
             <tr>
-                <td>@school.Name.</td>
-                <td>@school.Street.</td>
-                <td>@school.PostalCode.</td>
-                <td>@school.City</td>
+                <th>Name</th>
+                <th>Street</th>
+                <th>PostalCode</th>
+                <th>City</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var school in schoolSummaries)
+            {
+                <tr>
+                    <td>@school.Name.</td>
+                    <td>@school.Street.</td>
+                    <td>@school.PostalCode.</td>
+                    <td>@school.City</td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
 
+@if (schoolSummaries == null)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="@schoolSummaries" Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<School, object>(x=>x.Name)">Nom</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Street)">Adresse</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.PostalCode)">Code postal</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.City)">Ville</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Phone)">Téléphone</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Street">@context.Street</MudTd>
+            <MudTd DataLabel="PostalCode">@context.PostalCode</MudTd>
+            <MudTd DataLabel="City">@context.City</MudTd>
+            <MudTd DataLabel="Phone">@context.Phone</MudTd>
+            <MudTd DataLabel="Email">@context.Email</MudTd>
+        </RowTemplate>
+        @*<PagerContent>
+                <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+            </PagerContent>*@
+    </MudTable>
+
+}
 
 @code {
 
-    private IEnumerable<School> schoolSummaries;
+    private IEnumerable<School> schoolSummaries = new List<School>();
 
     protected override async Task OnInitializedAsync()
     {
         schoolSummaries = await SchoolService.GetSchoolSummariesAsync();
-        Console.WriteLine("! http get requesting list of schools!");
+        Console.WriteLine("<HTTP request -- GET -- requesting list of Schools from MongoDb Atlas>");
     }
 
 }
