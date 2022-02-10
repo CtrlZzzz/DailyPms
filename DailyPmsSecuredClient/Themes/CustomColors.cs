@@ -9,6 +9,7 @@
 
         // Transparent
         public const string TRANSPARENT_WHITE = "rgba(255, 255, 255, 0.5)";
+        public const string PURE_WHITE = "rgb(255, 255, 255)";
 
         //  Gradient colors
         public const string HOME_COLOR_1 = "#FBD27A";

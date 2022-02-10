@@ -11,9 +11,6 @@
     <None Remove="Microsoft.Extensions.DependencyInjection.Abstractions" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DailyPmsShared\DailyPmsShared.csproj" />
   </ItemGroup>
   <ItemGroup>

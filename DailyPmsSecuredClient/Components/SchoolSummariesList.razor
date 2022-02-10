@@ -2,27 +2,6 @@
 @using ClientServices.Interfaces
 @using DailyPmsShared
 @inject ISchoolService SchoolService
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Street</th>
-                <th>PostalCode</th>
-                <th>City</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var school in schoolSummaries)
-            {
-                <tr>
-                    <td>@school.Name.</td>
-                    <td>@school.Street.</td>
-                    <td>@school.PostalCode.</td>
-                    <td>@school.City</td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
 
 @if (schoolSummaries == null)
 {
@@ -30,7 +9,7 @@
 }
 else
 {
-    <MudTable Items="@schoolSummaries" Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true">
+    <MudTable Items="@schoolSummaries" Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-2">
         <HeaderContent>
             <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<School, object>(x=>x.Name)">Nom</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Street)">Adresse</MudTableSortLabel></MudTh>
@@ -47,15 +26,15 @@ else
             <MudTd DataLabel="Phone">@context.Phone</MudTd>
             <MudTd DataLabel="Email">@context.Email</MudTd>
         </RowTemplate>
-        @*<PagerContent>
-                <MudTablePager PageSizeOptions="new int[]{50, 100}" />
-            </PagerContent>*@
+        <PagerContent>
+                <MudTablePager PageSizeOptions="new int[]{5, 10}" />
+            </PagerContent>
     </MudTable>
 
 }
 
 @code {
-
+    
     private IEnumerable<School> schoolSummaries = new List<School>();
 
     protected override async Task OnInitializedAsync()

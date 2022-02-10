@@ -1,9 +1,8 @@
-﻿using System;
-using DailyPmsShared;
+﻿using DailyPmsShared;
 
 namespace ClientServices.Interfaces
 {
-	public interface ISchoolService
+    public interface ISchoolService
 	{
 		Task<IEnumerable<School>> GetSchoolSummariesAsync();
 	}

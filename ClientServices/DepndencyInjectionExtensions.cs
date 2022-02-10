@@ -8,7 +8,8 @@ namespace ClientServices
     {
         public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
         {
-            return services.AddScoped<ISchoolService, HttpSchoolService>();
+            return services.AddScoped<ISchoolService, HttpSchoolService>()
+                           .AddScoped<IStudentService, HttpStudentService>();
         }
     }
 }

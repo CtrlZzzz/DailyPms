@@ -1,11 +1,10 @@
-﻿using System;
-using System.Net.Http.Json;
-using ClientServices.Interfaces;
+﻿using ClientServices.Interfaces;
 using DailyPmsShared;
+using System.Net.Http.Json;
 
 namespace ClientServices
 {
-	public class HttpSchoolService : ISchoolService
+    public class HttpSchoolService : ISchoolService
 	{
         private readonly HttpClient client;
 

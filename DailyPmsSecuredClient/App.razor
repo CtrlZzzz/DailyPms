@@ -16,7 +16,7 @@
                     }
                     else
                     {
-                        <p>You are not authorized to access this resource.</p>
+                        <p>Sorry, you are not authorized to access this resource.</p>
                     }
                 </NotAuthorized>
             </AuthorizeRouteView>
@@ -35,7 +35,7 @@
 
 @code{
 
-    MudTheme DailyPmsCustomTheme = new MudTheme()
+    public MudTheme DailyPmsCustomTheme = new MudTheme()
     {
         Palette = new Palette()
         {
@@ -49,7 +49,9 @@
 
             Primary = CustomColors.PRIMARY,
             Secondary = CustomColors.SECONDARY,
-            Tertiary = CustomColors.TERTIARY
+            Tertiary = CustomColors.TERTIARY,
+
+            Surface = CustomColors.PURE_WHITE
         }
     };
 
