@@ -1,0 +1,52 @@
+﻿@namespace DailyPmsSecuredClient.Components
+@using ClientServices.Interfaces
+@using DailyPmsShared
+@inject ISchoolService SchoolService
+
+@if (schoolSummaries == null)
+{
+    <MudProgressCircular Class="mt-8" Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudGrid Class="mt-8">
+         @foreach(var school in schoolSummaries)
+         {
+            <MudItem sm="12" md="4" lg="3" >
+                <MudCard Style="background-color: rgba(255, 255, 255, 0.5);">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h5">@school.Name</MudText>
+                            <MudText Typo="Typo.subtitle1">@school.Moniker</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" />
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudText Typo="Typo.body2">@school.Street</MudText>
+                        <MudText Typo="Typo.body2">@school.PostalCode</MudText>
+                        <MudText Typo="Typo.body2">@school.City</MudText>
+                        <MudText Class="mt-4">@school.Phone</MudText>
+                        <MudText>@school.Email</MudText>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary">Détails</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        }
+     </MudGrid>
+}
+
+@code {
+     [Parameter]
+    public Func<Task<IEnumerable<School>>> FetchData { get; set; }
+
+    private IEnumerable<School> schoolSummaries = new List<School>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        schoolSummaries = await FetchData.Invoke();
+    }
+}

@@ -5,11 +5,11 @@
 
 @if (schoolSummaries == null)
 {
-    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    <MudProgressCircular Class="mt-8" Color="Color.Primary" Indeterminate="true" />
 }
 else
 {
-    <MudTable Items="@schoolSummaries" Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-2">
+    <MudTable Items="@schoolSummaries" RowsPerPage=5 Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-8">
         <HeaderContent>
             <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<School, object>(x=>x.Name)">Nom</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Street)">Adresse</MudTableSortLabel></MudTh>
@@ -27,20 +27,21 @@ else
             <MudTd DataLabel="Email">@context.Email</MudTd>
         </RowTemplate>
         <PagerContent>
-                <MudTablePager PageSizeOptions="new int[]{5, 10}" />
+                <MudTablePager PageSizeOptions="new int[]{5, 10}"/>
             </PagerContent>
     </MudTable>
 
 }
 
 @code {
-    
+    [Parameter]
+    public Func<Task<IEnumerable<School>>> FetchData { get; set; }
+
     private IEnumerable<School> schoolSummaries = new List<School>();
 
     protected override async Task OnInitializedAsync()
     {
-        schoolSummaries = await SchoolService.GetSchoolSummariesAsync();
-        Console.WriteLine("<HTTP request -- GET -- requesting list of Schools from MongoDb Atlas>");
+        schoolSummaries = await FetchData.Invoke();
     }
 
 }

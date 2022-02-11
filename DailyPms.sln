@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.809.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPmsAPI", "DailyPmsAPI\DailyPmsAPI.csproj", "{A8E29B71-3882-4E05-9362-D7F91F18653D}"
 EndProject
@@ -9,12 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPmsClient", "DailyPmsC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPmsShared", "DailyPmsShared\DailyPmsShared.csproj", "{EE810928-91C6-44FC-8806-B22705B57D9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyPmsSecuredClient", "DailyPmsSecuredClient\DailyPmsSecuredClient.csproj", "{D6F035F0-61C4-429F-9D37-2CE774342A95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyPmsSecuredClient", "DailyPmsSecuredClient\DailyPmsSecuredClient.csproj", "{D6F035F0-61C4-429F-9D37-2CE774342A95}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EE810928-91C6-44FC-8806-B22705B57D9A} = {EE810928-91C6-44FC-8806-B22705B57D9A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientServices", "ClientServices\ClientServices.csproj", "{41EF7997-09E3-404B-8793-EF3F197F4365}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientServices", "ClientServices\ClientServices.csproj", "{41EF7997-09E3-404B-8793-EF3F197F4365}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
