@@ -1,0 +1,78 @@
+﻿@namespace DailyPmsSecuredClient.Components
+@using ClientServices.Interfaces
+@using DailyPmsShared
+
+@if (studentSummaries == null)
+{
+    <MudProgressCircular Class="mt-8" Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudTable Items="@studentSummaries" RowsPerPage=10 Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-2"
+              Filter="new Func<Student,bool>(FilterFunc)">
+        <ToolBarContent>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchValue" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="d-flex justify-end mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.LastName)">Nom</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Student, object>(x=>x.FirstName)">Prénom</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.BirthDate)">Naissance</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.Street)">Adresse</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.PostalCode)">Code postal</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.City)">Ville</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.Phone)">Téléphone</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="LastName">@context.LastName</MudTd>
+            <MudTd DataLabel="FirstName">@context.FirstName</MudTd>
+            <MudTd DataLabel="BirthDate">@context.BirthDate</MudTd>
+            <MudTd DataLabel="Street">@context.Street</MudTd>
+            <MudTd DataLabel="PostalCode">@context.PostalCode</MudTd>
+            <MudTd DataLabel="City">@context.City</MudTd>
+            <MudTd DataLabel="Phone">@context.Phone</MudTd>
+            <MudTd DataLabel="Email">@context.Email</MudTd>
+        </RowTemplate>
+        <PagerContent>
+                <MudTablePager PageSizeOptions="new int[]{10, 20}"/>
+            </PagerContent>
+    </MudTable>
+
+}
+
+@code {
+    [Parameter]
+    public Func<Task<IEnumerable<Student>>> FetchData { get; set; }
+
+    IEnumerable<Student> studentSummaries = new List<Student>();
+    string searchValue = "";
+
+    bool FilterFunc(Student student) => Filter(student, searchValue);
+
+    bool Filter(Student student, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (student.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (student.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (student.Street.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (student.City.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (student.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{student.Phone} {student.PostalCode} {student.BirthDate}".Contains(searchString))
+            return true;
+
+        return false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        studentSummaries = await FetchData.Invoke();
+    }
+
+}

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClientServices.Interfaces;
+﻿using ClientServices.Interfaces;
 using DailyPmsShared;
 using System.Net.Http.Json;
 
@@ -20,7 +15,15 @@ namespace ClientServices
 
         public async Task<IEnumerable<Student>> GetStudentsAsync()
         {
-            var response = await client.GetAsync("/api/students");
+            var response = await client.GetAsync("/api/Students");
+
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<Student>>();
+            return result;
+        }
+
+        public async Task<IEnumerable<Student>> GetStudentsBySchoolAsync(string schoolId)
+        {
+            var response = await client.GetAsync($"/api/Students/BySchool/{schoolId}");
 
             var result = await response.Content.ReadFromJsonAsync<IEnumerable<Student>>();
             return result;

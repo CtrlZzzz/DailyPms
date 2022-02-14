@@ -1,0 +1,62 @@
+﻿@page "/students"
+@using DailyPmsSecuredClient.Components
+@inject IStudentService StudentService
+
+
+<style>
+    body {
+        background-color: @CustomColors.TERTIARY;
+        background-image: url(Images/bg_02.png);
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+
+<MudPaper Elevation="0" Class=" py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 255px; height: 60px; background-image: linear-gradient(90deg, #89F3C6, #CCF8EA);">
+    <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.AccountBalance"  Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center"/>
+    <MudText  Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Etudiants</MudText>
+</MudPaper>
+
+<MudTooltip Text="Affichage en table" Placement="Placement.Bottom">
+    <MudFab 
+            IconColor="Color.Secondary" Icon="@Icons.Material.Rounded.TableRows" IconSize="Size.Small"
+            Color="Color.Tertiary"
+            DisableElevation="true" Size="Size.Small" Class="d-inline-flex mt-12 mx-4" 
+            OnClick="@(() => SwitchDisplayMode())"
+            Disabled="@displayTable" />
+</MudTooltip>
+<MudTooltip Text="Affichage en cartes" Placement="Placement.Bottom">
+    <MudFab Style="margin: auto;"
+            IconColor="Color.Secondary" Icon="@Icons.Material.Rounded.GridView" IconSize="Size.Small"
+            Color="Color.Tertiary"
+            DisableElevation="true" Size="Size.Small" Class="d-inline-flex mt-12" 
+            OnClick="@(() => SwitchDisplayMode())"
+            Disabled="@displayCards"/>
+</MudTooltip>
+
+@if (displayCards)
+{
+    //<SchoolSummariesCards FetchData="GetStudentsAsync"/>
+}
+else
+{
+    <StudentSummariesList FetchData="GetStudentsAsync"/>
+}
+
+
+@code {
+    bool displayCards = false;
+    bool displayTable = true;
+
+    void SwitchDisplayMode()
+    {
+        displayTable = displayCards;
+        displayCards = !displayCards;
+    }
+
+    async Task<IEnumerable<Student>> GetStudentsAsync()
+    {
+        Console.WriteLine("<HTTP request -- GET -- requesting list of Schools from MongoDb Atlas>");
+        return await StudentService.GetStudentsAsync();
+    }
+}
