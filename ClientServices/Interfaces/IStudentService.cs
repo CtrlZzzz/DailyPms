@@ -7,5 +7,7 @@ namespace ClientServices.Interfaces
         Task<IEnumerable<Student>> GetStudentsAsync();
 
         Task<IEnumerable<Student>> GetStudentsBySchoolAsync(string schoolId);
+
+        Task<Student> GetStudentById(string studentId);
     }
 }

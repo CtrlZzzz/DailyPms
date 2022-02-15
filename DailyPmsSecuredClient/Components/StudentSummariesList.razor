@@ -1,6 +1,5 @@
 ﻿@namespace DailyPmsSecuredClient.Components
-@using ClientServices.Interfaces
-@using DailyPmsShared
+@inject NavigationManager Navigation
 
 @if (studentSummaries == null)
 {
@@ -8,8 +7,10 @@
 }
 else
 {
-    <MudTable Items="@studentSummaries" RowsPerPage=10 Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-2"
-              Filter="new Func<Student,bool>(FilterFunc)">
+    <MudTable @ref="mudTable" Items="@studentSummaries" T="Student"
+              RowsPerPage=10 Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-2"
+              Filter="new Func<Student,bool>(FilterFunc)"
+              OnRowClick="@OnClickHandler">
         <ToolBarContent>
             <MudSpacer />
             <MudTextField @bind-Value="searchValue" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="d-flex justify-end mt-0"></MudTextField>
@@ -35,8 +36,8 @@ else
             <MudTd DataLabel="Email">@context.Email</MudTd>
         </RowTemplate>
         <PagerContent>
-                <MudTablePager PageSizeOptions="new int[]{10, 20}"/>
-            </PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{10, 20}" />
+        </PagerContent>
     </MudTable>
 
 }
@@ -47,6 +48,10 @@ else
 
     IEnumerable<Student> studentSummaries = new List<Student>();
     string searchValue = "";
+
+    MudTable<Student> mudTable;
+
+    Student currentStudent;
 
     bool FilterFunc(Student student) => Filter(student, searchValue);
 
@@ -75,4 +80,9 @@ else
         studentSummaries = await FetchData.Invoke();
     }
 
+    void OnClickHandler(TableRowClickEventArgs<Student> selectedStudent)
+    {
+        currentStudent = selectedStudent.Item;
+        Navigation.NavigateTo($"studentDetail/{selectedStudent.Item.StudentID}");
+    }
 }

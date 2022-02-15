@@ -1,6 +1,4 @@
 ﻿@namespace DailyPmsSecuredClient.Components
-@using ClientServices.Interfaces
-@using DailyPmsShared
 @inject ISchoolService SchoolService
 
 @if (schoolSummaries == null)
@@ -27,8 +25,8 @@ else
             <MudTd DataLabel="Email">@context.Email</MudTd>
         </RowTemplate>
         <PagerContent>
-                <MudTablePager PageSizeOptions="new int[]{5, 10}"/>
-            </PagerContent>
+            <MudTablePager PageSizeOptions="new int[]{5, 10}" />
+        </PagerContent>
     </MudTable>
 
 }
@@ -37,7 +35,7 @@ else
     [Parameter]
     public Func<Task<IEnumerable<School>>> FetchData { get; set; }
 
-    private IEnumerable<School> schoolSummaries = new List<School>();
+    IEnumerable<School> schoolSummaries = new List<School>();
 
     protected override async Task OnInitializedAsync()
     {

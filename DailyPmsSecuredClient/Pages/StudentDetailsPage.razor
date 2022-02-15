@@ -1,0 +1,37 @@
+﻿@page "/studentDetail/{StudentId}"
+@inject IStudentService StudentService
+
+<style>
+    body {
+        background-color: @CustomColors.TERTIARY;
+        background-image: url(Images/bg_05.png);
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+</style>
+
+<p>The passed ID parammeter = @StudentId</p>
+
+@if (currentStudent != null)
+{
+    <p>First name = @currentStudent.FirstName</p>
+}
+else
+{
+    <MudProgressCircular Class="mt-8" Color="Color.Primary" Indeterminate="true" />
+}
+
+
+
+@code {
+    [Parameter]
+    public string StudentId { get; set; }
+
+    Student currentStudent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        currentStudent = await StudentService.GetStudentById(StudentId);
+    }
+}
+

@@ -10,9 +10,9 @@
 else
 {
     <MudGrid Class="mt-8">
-         @foreach(var school in schoolSummaries)
-         {
-            <MudItem sm="12" md="4" lg="3" >
+        @foreach (var school in schoolSummaries)
+        {
+            <MudItem sm="12" md="4" lg="3">
                 <MudCard Style="background-color: rgba(255, 255, 255, 0.5);">
                     <MudCardHeader>
                         <CardHeaderContent>
@@ -36,14 +36,14 @@ else
                 </MudCard>
             </MudItem>
         }
-     </MudGrid>
+    </MudGrid>
 }
 
 @code {
-     [Parameter]
+    [Parameter]
     public Func<Task<IEnumerable<School>>> FetchData { get; set; }
 
-    private IEnumerable<School> schoolSummaries = new List<School>();
+    IEnumerable<School> schoolSummaries = new List<School>();
 
     protected override async Task OnInitializedAsync()
     {
