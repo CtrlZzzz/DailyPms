@@ -10,11 +10,53 @@
     }
 </style>
 
-<p>The passed ID parammeter = @StudentId</p>
+@*<p>The passed ID parammeter = @StudentId</p>*@
 
 @if (currentStudent != null)
 {
-    <p>First name = @currentStudent.FirstName</p>
+    <MudPaper Elevation="0" Class=" py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 255px; height: 60px; background-image: linear-gradient(90deg, #89F3C6, #CCF8EA);">
+        <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.AccountBalance" Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center" />
+        <MudText Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Détail</MudText>
+    </MudPaper>
+
+    <MudGrid Justify="Justify.FlexStart" Class="mt-8">
+        <MudItem>
+            <MudList>
+                <MudListItem Avatar="@Icons.Material.Filled.PermIdentity">
+                    <MudText Typo="Typo.caption">Nom, prénom :</MudText>
+                    <MudText Typo="Typo.h6">@currentStudent.LastName @currentStudent.FirstName</MudText>
+                </MudListItem>
+                <MudListItem Avatar="@Icons.Material.Filled.CalendarToday">
+                    <MudText Typo="Typo.caption">Date de naissance :</MudText>
+                    <MudText>@currentStudent.BirthDate</MudText>
+                </MudListItem>
+                <MudListItem Avatar="@Icons.Material.Filled.Home">
+                    <MudText Typo="Typo.caption">Adresse :</MudText>
+                    <MudText>@currentStudent.Street</MudText>
+                    <MudText>@currentStudent.PostalCode @currentStudent.City</MudText>
+                </MudListItem>
+                <MudListItem Avatar="@Icons.Material.Filled.Phone">
+                    <MudText Typo="Typo.caption">Téléphone de contact :</MudText>
+                    <MudText>@currentStudent.Phone</MudText>
+                </MudListItem>
+                <MudListItem Avatar="@Icons.Material.Filled.Email">
+                    <MudText Typo="Typo.caption">Email de contact :</MudText>
+                    <MudText>@currentStudent.Email</MudText>
+                </MudListItem>
+                <MudListItem Avatar="@Icons.Material.Filled.ChildFriendly">
+                    <MudText Typo="Typo.caption">Parents :</MudText>
+                    <MudText>@currentStudent.Email</MudText>
+                    @if (currentStudent.Parent1 != null)
+                    {
+
+                    }
+                </MudListItem>
+            </MudList>
+        </MudItem>
+        <MudItem>
+            <MudAvatar Style="height:200px; width:200px; font-size:2rem; margin: auto;" Image="Images/avatar06.png" />
+        </MudItem>
+    </MudGrid>
 }
 else
 {
