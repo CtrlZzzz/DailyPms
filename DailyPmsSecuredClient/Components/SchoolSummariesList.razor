@@ -1,5 +1,6 @@
 ﻿@namespace DailyPmsSecuredClient.Components
 @inject ISchoolService SchoolService
+@inject NavigationManager Navigation
 
 @if (schoolSummaries == null)
 {
@@ -7,7 +8,9 @@
 }
 else
 {
-    <MudTable Items="@schoolSummaries" RowsPerPage=5 Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-8">
+    <MudTable Items="@schoolSummaries" T="School"
+              RowsPerPage=5 Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-8"
+              OnRowClick="@OnClickTableHandler">
         <HeaderContent>
             <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<School, object>(x=>x.Name)">Nom</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Street)">Adresse</MudTableSortLabel></MudTh>
@@ -42,5 +45,9 @@ else
         schoolSummaries = await FetchData.Invoke();
     }
 
+    void OnClickTableHandler(TableRowClickEventArgs<School> selectedSchool)
+    {
+        Navigation.NavigateTo($"schoolDetail/{selectedSchool.Item.SchoolID}");
+    }
 }
 

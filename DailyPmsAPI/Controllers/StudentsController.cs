@@ -47,7 +47,7 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("BySchool/{schoolId:length(24)}")]
         public async Task<ActionResult<IEnumerable<Student>>> GetAllStudentsBySchoolAsync(string schoolId)
         {
-            var school = schoolRepository.GetSchoolByIdAsync(schoolId);
+            var school =  await schoolRepository.GetSchoolByIdAsync(schoolId);
             if (school == null)
             {
                 return NotFound($"Could not find the school with id = {schoolId}");

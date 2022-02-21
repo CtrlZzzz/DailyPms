@@ -7,7 +7,7 @@
 }
 else
 {
-    <MudTable @ref="mudTable" Items="@studentSummaries" T="Student"
+    <MudTable Items="@studentSummaries" T="Student"
               RowsPerPage=10 Hover="true" SortLabel="Sort By" Style="background-color: rgba(255, 255, 255, 0);" Elevation="0" Striped="true" Class="mt-2"
               Filter="new Func<Student,bool>(FilterFunc)"
               OnRowClick="@OnClickHandler">
@@ -49,7 +49,7 @@ else
     IEnumerable<Student> studentSummaries = new List<Student>();
     string searchValue = "";
 
-    MudTable<Student> mudTable;
+    //MudTable<Student> mudTable;
 
     Student currentStudent;
 
@@ -82,7 +82,7 @@ else
 
     void OnClickHandler(TableRowClickEventArgs<Student> selectedStudent)
     {
-        currentStudent = selectedStudent.Item;
+        //currentStudent = selectedStudent.Item;
         Navigation.NavigateTo($"studentDetail/{selectedStudent.Item.StudentID}");
     }
 }

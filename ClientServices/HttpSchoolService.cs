@@ -20,6 +20,13 @@ namespace ClientServices
             var result = await response.Content.ReadFromJsonAsync<IEnumerable<School>>();
             return result;
         }
+        public async Task<School> GetSchoolByIdAsync(string schoolId)
+        {
+            var response = await client.GetAsync($"/api/Schools/{schoolId}");
+
+            var result = await response.Content.ReadFromJsonAsync<School>();
+            return result;
+        }
     }
 }
 

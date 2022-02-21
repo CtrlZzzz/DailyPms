@@ -2,6 +2,7 @@
 @using ClientServices.Interfaces
 @using DailyPmsShared
 @inject ISchoolService SchoolService
+@inject NavigationManager Navigation
 
 @if (schoolSummaries == null)
 {
@@ -31,7 +32,7 @@ else
                         <MudText>@school.Email</MudText>
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary">Détails</MudButton>
+                        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@((s) => OnClick(school))">Détails</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -48,5 +49,10 @@ else
     protected override async Task OnInitializedAsync()
     {
         schoolSummaries = await FetchData.Invoke();
+    }
+
+    void OnClick(School selectedSchool)
+    {
+        Navigation.NavigateTo($"schoolDetail/{selectedSchool.SchoolID}");
     }
 }

@@ -1,60 +1,70 @@
 ﻿@page "/studentDetail/{StudentId}"
 @inject IStudentService StudentService
+@inject ISchoolService SchoolService
 
 <style>
     body {
         background-color: @CustomColors.TERTIARY;
-        background-image: url(Images/bg_05.png);
+        background-image: url(Images/bg_06.png);
         padding-left: 20px;
         padding-right: 20px;
     }
 </style>
-
-@*<p>The passed ID parammeter = @StudentId</p>*@
+    
+<MudPaper Elevation="0" Class=" py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 255px; height: 60px; background-image: linear-gradient(90deg, #C3D1FA, #E4DBF9);">
+    <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.School" Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center" />
+    <MudText Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Détail</MudText>
+</MudPaper>
 
 @if (currentStudent != null)
 {
-    <MudPaper Elevation="0" Class=" py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 255px; height: 60px; background-image: linear-gradient(90deg, #89F3C6, #CCF8EA);">
-        <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.AccountBalance" Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center" />
-        <MudText Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Détail</MudText>
-    </MudPaper>
-
     <MudGrid Justify="Justify.FlexStart" Class="mt-8">
         <MudItem>
             <MudList>
-                <MudListItem Avatar="@Icons.Material.Filled.PermIdentity">
-                    <MudText Typo="Typo.caption">Nom, prénom :</MudText>
-                    <MudText Typo="Typo.h6">@currentStudent.LastName @currentStudent.FirstName</MudText>
+                <MudListItem Icon="@Icons.Material.Filled.PermIdentity" IconSize="Size.Large" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Prénom, nom :</MudText>
+                    <MudText Typo="Typo.h5" Color="@Color.Primary">@currentStudent.FirstName @currentStudent.LastName</MudText>
                 </MudListItem>
-                <MudListItem Avatar="@Icons.Material.Filled.CalendarToday">
-                    <MudText Typo="Typo.caption">Date de naissance :</MudText>
-                    <MudText>@currentStudent.BirthDate</MudText>
+                <MudListItem Icon="@Icons.Material.Filled.CalendarToday" IconColor="Color.Primary" Class="mt-12" >
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Date de naissance :</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.BirthDate</MudText>
                 </MudListItem>
-                <MudListItem Avatar="@Icons.Material.Filled.Home">
-                    <MudText Typo="Typo.caption">Adresse :</MudText>
-                    <MudText>@currentStudent.Street</MudText>
-                    <MudText>@currentStudent.PostalCode @currentStudent.City</MudText>
+                <MudListItem Icon="@Icons.Material.Filled.Home" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Adresse :</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.Street</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.PostalCode @currentStudent.City</MudText>
                 </MudListItem>
-                <MudListItem Avatar="@Icons.Material.Filled.Phone">
-                    <MudText Typo="Typo.caption">Téléphone de contact :</MudText>
-                    <MudText>@currentStudent.Phone</MudText>
+                <MudListItem Icon="@Icons.Material.Filled.Phone" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Téléphone de contact :</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.Phone</MudText>
                 </MudListItem>
-                <MudListItem Avatar="@Icons.Material.Filled.Email">
-                    <MudText Typo="Typo.caption">Email de contact :</MudText>
-                    <MudText>@currentStudent.Email</MudText>
+                <MudListItem Icon="@Icons.Material.Filled.Email" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Email de contact :</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.Email</MudText>
                 </MudListItem>
-                <MudListItem Avatar="@Icons.Material.Filled.ChildFriendly">
-                    <MudText Typo="Typo.caption">Parents :</MudText>
-                    <MudText>@currentStudent.Email</MudText>
+                <MudListItem Icon="@Icons.Material.Filled.ChildFriendly" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Parents :</MudText>
                     @if (currentStudent.Parent1 != null)
                     {
-
+                        <MudText Color="@Color.Primary">@currentStudent.Parent1</MudText>
                     }
+                    @if (currentStudent.Parent2 != null)
+                    {
+                        <MudText Color="@Color.Primary">@currentStudent.Parent2</MudText>
+                    }
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.AccountBalance" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Ecole :</MudText>
+                    <MudText Color="@Color.Primary">@schoolName</MudText>
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.EditCalendar" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Date d'inscription :</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.RegistrationDate</MudText>
                 </MudListItem>
             </MudList>
         </MudItem>
         <MudItem>
-            <MudAvatar Style="height:200px; width:200px; font-size:2rem; margin: auto;" Image="Images/avatar06.png" />
+            <MudAvatar Style="height:200px; width:200px; font-size:2rem; margin: auto;" Image="Images/avatar06.png" Class="mt-8" />
         </MudItem>
     </MudGrid>
 }
@@ -70,10 +80,19 @@ else
     public string StudentId { get; set; }
 
     Student currentStudent;
+    string schoolName = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         currentStudent = await StudentService.GetStudentById(StudentId);
+        schoolName = await GetSchoolName();
+    }
+
+    async Task<string> GetSchoolName()
+    {
+        var school = await SchoolService.GetSchoolByIdAsync(currentStudent.SchoolID);
+
+        return school.Name;
     }
 }
 
