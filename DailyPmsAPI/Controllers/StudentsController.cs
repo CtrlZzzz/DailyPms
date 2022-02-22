@@ -115,6 +115,7 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("ByName/{name}", Name = "GetStudentByNameAsync")]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudentByNameAsync(string name)
         {
+            // review: no partial search ? the user must give the exact name ?
             var students = await studentRepository.GetStudentsByNameAsync(name);
             if (students == null)
             {
@@ -134,6 +135,7 @@ namespace DailyPmsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateStudentAsync(Student newStudent)
         {
+            // review : not validating input ...            
             var alreadyExistingStudents = await studentRepository.GetStudentsByNameAsync(newStudent.LastName);
             foreach (var student in alreadyExistingStudents)
             {

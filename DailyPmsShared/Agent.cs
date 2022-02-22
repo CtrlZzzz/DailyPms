@@ -18,6 +18,7 @@ namespace DailyPmsShared
 
         public string Email { get; set; }
 
+        // review: Why flat DTOs ?
         public List<string> SchoolIDs { get; set; }
 
         public List<string> PlanningIDs { get; set; }

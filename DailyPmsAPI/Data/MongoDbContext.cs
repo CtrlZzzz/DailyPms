@@ -14,6 +14,7 @@ namespace DailyPmsAPI.Data
         }
 
 
+        // review: Please use constants for hardcoded strings
         public IMongoCollection<School> Schools { get { return pmsDb.GetCollection<School>("Schools"); } }
         public IMongoCollection<Classe> Classes { get { return pmsDb.GetCollection<Classe>("Classes"); } }
         public IMongoCollection<Student> Students { get { return pmsDb.GetCollection<Student>("Students"); } }

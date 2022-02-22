@@ -75,6 +75,7 @@ namespace DailyPmsAPI.Controllers
                 return BadRequest($"A PmsFile from the student with id = {newPmsFile.StudentID} already exists in the Database");
             }
 
+            // review: no validation ?
             await pmsFileRepository.CreatePmsFileAsync(newPmsFile);
 
             return CreatedAtRoute(nameof(GetPmsFileByStudentIdAsync), new { studentId = newPmsFile.StudentID }, newPmsFile);
@@ -99,6 +100,7 @@ namespace DailyPmsAPI.Controllers
                 return NotFound($"Could not find PmsFile with id = {id}");
             }
 
+            // review: no validation ?
             await pmsFileRepository.UpDatePmsFileAsync(id, updatedPmsFile);
 
             return NoContent();

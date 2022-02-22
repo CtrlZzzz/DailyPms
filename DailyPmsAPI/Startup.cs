@@ -138,6 +138,8 @@ namespace DailyPmsAPI
 
         void RegisterMongoDbClassMaps()
         {
+            // review: this seems rather cumbersome, isn't it possible to automap everything, maybe in a declarative manner ?
+
             BsonClassMap.RegisterClassMap<School>(cm =>
             {
                 cm.AutoMap();

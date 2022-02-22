@@ -18,6 +18,7 @@ namespace DailyPmsAPI.Data
 
         public async Task<IEnumerable<PmsCenter>> GetAllCentersAsync()
         {
+            // // review: isn't there a FindAll method ? (or similar) .. this will generate a query with an unnecessary filter
             return await dbContext.PmsCenters.Find(center => true).ToListAsync();
         }
 

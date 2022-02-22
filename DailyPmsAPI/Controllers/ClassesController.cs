@@ -100,6 +100,7 @@ namespace DailyPmsAPI.Controllers
                 return BadRequest($"A Classe with the name '{newClasse.Name}' already exists for this school in the Database");
             }
 
+            // review: no validation ?
             await classeRepository.CreateClasseAsync(newClasse);
 
             return CreatedAtRoute(nameof(GetClasseByNameAsync), new { name = newClasse.Name, schoolId = newClasse.SchoolID }, newClasse);
@@ -124,6 +125,7 @@ namespace DailyPmsAPI.Controllers
                 return NotFound($"Could not find classe with id = {id}");
             }
 
+            // review: no validation ?
             await classeRepository.UpdateClasseByIdAsync(id, updatedClasse);
 
             return NoContent();
@@ -147,6 +149,7 @@ namespace DailyPmsAPI.Controllers
                 return NotFound($"Could not find classe with id = {id}");
             }
 
+            // review: what if that class is referenced by other data in the database ?
             await classeRepository.DeleteClasseByIdAsync(id);
 
             return NoContent();

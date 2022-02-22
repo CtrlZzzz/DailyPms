@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DailyPmsAPI
 {
+    // review: no integration test for the API ??
     public class Program
     {
         public static void Main(string[] args)

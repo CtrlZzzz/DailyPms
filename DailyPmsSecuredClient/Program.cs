@@ -40,6 +40,7 @@ namespace DailyPmsSecuredClient
 
                 //  AdB2C Login in the same page instead of a pop up window
                 options.ProviderOptions.LoginMode = "redirect";
+                // review: what does the "appRole" do ?
                 //  Roles
                 options.UserOptions.RoleClaim = "appRole";
             });

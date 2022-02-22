@@ -20,6 +20,7 @@ namespace DailyPmsClient.Services
         public async Task<IEnumerable<Student>> GetAllStudentsAsync()
         {
             var response = await httpClient.GetStreamAsync("api/Students");
+            // review: do we let any error bubble up to the viewmodels ?
             return await JsonSerializer.DeserializeAsync<IEnumerable<Student>>(response, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true});
         }
 
@@ -31,6 +32,7 @@ namespace DailyPmsClient.Services
 
         public Task CreateStudentAsync(Student newStudent)
         {
+            // review: no validation ?
             throw new NotImplementedException();
         }
 

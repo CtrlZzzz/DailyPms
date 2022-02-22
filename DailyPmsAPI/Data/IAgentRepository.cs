@@ -4,6 +4,8 @@ using DailyPmsShared;
 
 namespace DailyPmsAPI.Data
 {
+    // review: All the repository interfaces are very repetitive code.
+    // Is it possible to write some base interface with generic signature for all repositories ?
     public interface IAgentRepository
     {
         Task<IEnumerable<Agent>> GetAllAgentByCenterAsync(string centerId);

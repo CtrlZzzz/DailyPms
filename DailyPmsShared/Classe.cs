@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 
+// review: this database model is very naive .. there is no time-based periods ?
 namespace DailyPmsShared
 {
+    // review: mixing French/English terms in model
     public class Classe
     {
         public string ClasseID { get; set; }
