@@ -1,0 +1,75 @@
+﻿@namespace DailyPmsSecuredClient.Components
+@using ClientServices.Interfaces
+@using DailyPmsShared
+@inject ISchoolService SchoolService
+
+
+<EditForm Model="@SchoolToEdit" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid Spacing="5">
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Name" HelperText="Minimum 2 caratères" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.AccountBalance" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.Name" For="@(() => SchoolToEdit.Name)" Immediate="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Surnom" HelperText="Maximum 10 caractères" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Compress" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.Moniker" For="@(() => SchoolToEdit.Moniker)" Immediate="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Rue" HelperText="Nom de la rue suivi du numéro du bâtiment" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Home" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.Street" For="@(() => SchoolToEdit.Street)" Immediate="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Code postal" HelperText="Code posta de votre commune" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Numbers" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.PostalCode" For="@(() => SchoolToEdit.PostalCode)" Immediate="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Ville" HelperText="Le nom de votre commune" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.LocationCity" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.City" For="@(() => SchoolToEdit.City)" Immediate="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Numéro de téléphone" HelperText="Avec préfix régional" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Phone" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.Phone" For="@(() => SchoolToEdit.Phone)" Immediate="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Adresse email" HelperText="xxxx@xxxx.xxxx" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Mail" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.Email" For="@(() => SchoolToEdit.Email)" Immediate="true" />
+        </MudItem>
+        <MudItem xs="12">
+            <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
+                          Label="Direction" HelperText="Le nom dela/du directrice/eur" Clearable="true"
+                          Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Grade" AdornmentColor="@Color.Primary"
+                          @bind-Value="@SchoolToEdit.DirectorName" For="@(() => SchoolToEdit.DirectorName)" Immediate="true" />
+        </MudItem>
+    </MudGrid>
+
+</EditForm>
+
+
+
+
+
+@code {
+    [Parameter]
+    public School SchoolToEdit { get; set; }
+
+    private void OnValidSubmit(EditContext context)
+    {
+
+    }
+}
+

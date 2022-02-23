@@ -13,8 +13,8 @@
 </style>
 
 <MudPaper Elevation="0" Class=" py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 255px; height: 60px; background-image: linear-gradient(90deg, #F8CECE, #FBF0EF);">
-    <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.AccountBalance"  Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center"/>
-    <MudText  Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Détail</MudText>
+    <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.AccountBalance" Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center" />
+    <MudText Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Détail</MudText>
 </MudPaper>
 
 @if (currentSchool != null)
@@ -25,7 +25,7 @@
                 <MudListItem Icon="@Icons.Material.Filled.AccountBalance" IconSize="Size.Large" IconColor="Color.Primary">
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Nom :</MudText>
                     <MudText Typo="Typo.h5" Color="@Color.Primary">@currentSchool.Name</MudText>
-                     <MudText Color="@Color.Primary">(@currentSchool.Moniker)</MudText>
+                    <MudText Color="@Color.Primary">(@currentSchool.Moniker)</MudText>
                 </MudListItem>
                 <MudListItem Icon="@Icons.Material.Filled.Home" IconColor="Color.Primary">
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Adresse :</MudText>
@@ -36,27 +36,29 @@
         </MudItem>
         <MudItem>
             <MudList>
-               <MudListItem Icon="@Icons.Material.Filled.Grade" IconColor="Color.Primary">
+                <MudListItem Icon="@Icons.Material.Filled.Grade" IconColor="Color.Primary">
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Direction :</MudText>
                     <MudText Color="@Color.Primary">@currentSchool.DirectorName</MudText>
                 </MudListItem>
                 <MudListItem Icon="@Icons.Material.Filled.Phone" IconColor="Color.Primary">
-                        <MudText Typo="Typo.caption" Color="@Color.Secondary">Téléphone de contact :</MudText>
-                        <MudText Color="@Color.Primary">@currentSchool.Phone</MudText>
-                    </MudListItem>
-                    <MudListItem Icon="@Icons.Material.Filled.Email" IconColor="Color.Primary">
-                        <MudText Typo="Typo.caption" Color="@Color.Secondary">Email de contact :</MudText>
-                        <MudText Color="@Color.Primary">@currentSchool.Email</MudText>
-                    </MudListItem>
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Téléphone de contact :</MudText>
+                    <MudText Color="@Color.Primary">@currentSchool.Phone</MudText>
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.Email" IconColor="Color.Primary">
+                    <MudText Typo="Typo.caption" Color="@Color.Secondary">Email de contact :</MudText>
+                    <MudText Color="@Color.Primary">@currentSchool.Email</MudText>
+                </MudListItem>
             </MudList>
         </MudItem>
     </MudGrid>
-    
+
     <MudPaper Elevation="0" Class=" mt-16 mb-2 py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 500px; height: 60px; background-image: linear-gradient(90deg, #F8CECE, #FBF0EF);">
-        <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.School"  Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center"/>
-        <MudText  Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Etudiants de cette école</MudText>
+        <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.School" Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center" />
+        <MudText Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Etudiants de cette école</MudText>
     </MudPaper>
-    <StudentSummariesList FetchData="GetSchoolStudentsAsync"/>
+    <div class="mx-4">
+        <StudentSummariesList FetchData="GetSchoolStudentsAsync" />
+    </div>
 }
 
 @code {
