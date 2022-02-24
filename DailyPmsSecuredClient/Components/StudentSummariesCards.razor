@@ -1,0 +1,55 @@
+﻿@namespace DailyPmsSecuredClient.Components
+@using ClientServices.Interfaces
+@using DailyPmsShared
+@inject IStudentService StudentService
+@inject NavigationManager Navigation
+
+@if (studentSummaries == null)
+{
+    <MudProgressCircular Class="mt-8" Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudGrid Class="mt-8">
+        @foreach (var student in studentSummaries)
+        {
+            <MudItem xs="12" sm="6" md="4" lg="3">
+                <MudCard Style="background-color: rgba(255, 255, 255, 0.5);">
+                    <MudCardHeader>
+                        <CardHeaderAvatar>
+                            <MudAvatar Style="height:70px; width:70px">
+                                <MudIcon Size="Size.Large" Icon="@Icons.Material.Filled.Face" />
+                            </MudAvatar>
+                        </CardHeaderAvatar>
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.h6"> @student.FirstName @student.LastName</MudText>
+                            <MudText Typo="Typo.body2">FooFooFOo</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+@code {
+    [Parameter]
+    public Func<Task<IEnumerable<Student>>> FetchStudentData { get; set; }
+
+    IEnumerable<Student> studentSummaries = new List<Student>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        studentSummaries = await FetchStudentData.Invoke();
+    }
+
+    void OnDetailClick(Student selectedStudent)
+    {
+        Navigation.NavigateTo($"studentDetail/{selectedStudent.StudentID}");
+    }
+    void OnEditClick(Student selectedStudent)
+    {
+
+    }
+}
+

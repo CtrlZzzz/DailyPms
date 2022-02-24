@@ -82,7 +82,6 @@ else
 
     void OnClickHandler(TableRowClickEventArgs<Student> selectedStudent)
     {
-        //currentStudent = selectedStudent.Item;
         Navigation.NavigateTo($"studentDetail/{selectedStudent.Item.StudentID}");
     }
 }
