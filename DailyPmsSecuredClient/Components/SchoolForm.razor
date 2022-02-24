@@ -2,6 +2,7 @@
 @using ClientServices.Interfaces
 @using DailyPmsShared
 @inject ISchoolService SchoolService
+@inject NavigationManager Navigation
 
 
 <EditForm Model="@SchoolToEdit" OnValidSubmit="OnValidSubmit">
@@ -15,19 +16,19 @@
         </MudItem>
         <MudItem xs="12">
             <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
-                          Label="Surnom" HelperText="Maximum 10 caractères" Clearable="true"
+                          Label="Surnom" HelperText="Maximum 20 caractères" Clearable="true"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Compress" AdornmentColor="@Color.Primary"
                           @bind-Value="@SchoolToEdit.Moniker" For="@(() => SchoolToEdit.Moniker)" Immediate="true" />
         </MudItem>
         <MudItem xs="12">
             <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
-                          Label="Rue" HelperText="Nom de la rue suivi du numéro du bâtiment" Clearable="true"
+                          Label="Rue" HelperText="Le nom de la rue suivi du numéro du bâtiment" Clearable="true"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Home" AdornmentColor="@Color.Primary"
                           @bind-Value="@SchoolToEdit.Street" For="@(() => SchoolToEdit.Street)" Immediate="true" />
         </MudItem>
         <MudItem xs="12">
             <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
-                          Label="Code postal" HelperText="Code posta de votre commune" Clearable="true"
+                          Label="Code postal" HelperText="Le code postal de votre commune" Clearable="true"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Numbers" AdornmentColor="@Color.Primary"
                           @bind-Value="@SchoolToEdit.PostalCode" For="@(() => SchoolToEdit.PostalCode)" Immediate="true" />
         </MudItem>
@@ -51,13 +52,26 @@
         </MudItem>
         <MudItem xs="12">
             <MudTextField Variant="Variant.Outlined" Margin="Margin.Dense"
-                          Label="Direction" HelperText="Le nom dela/du directrice/eur" Clearable="true"
+                          Label="Direction" HelperText="Le nom de la directrice/ du directeur de l'école'" Clearable="true"
                           Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Grade" AdornmentColor="@Color.Primary"
                           @bind-Value="@SchoolToEdit.DirectorName" For="@(() => SchoolToEdit.DirectorName)" Immediate="true" />
         </MudItem>
-    </MudGrid>
 
+        <MudItem>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Outlined" Class="d-inline-flex"
+                       Color="Color.Primary" EndIcon="@Icons.Material.Filled.Edit"
+                       Disabled="@(!context.Validate() || !context.IsModified())">Enregister</MudButton>
+        </MudItem>
+        <MudItem>
+            <MudButton Variant="Variant.Outlined" Class="d-inline-flex"
+                       Color="Color.Error" EndIcon="@Icons.Material.Filled.Cancel"
+                       OnClick="CancelEdition">Annuler</MudButton>
+        </MudItem>
+
+    </MudGrid>
 </EditForm>
+
+
 
 
 
@@ -67,9 +81,17 @@
     [Parameter]
     public School SchoolToEdit { get; set; }
 
-    private void OnValidSubmit(EditContext context)
+    async Task OnValidSubmit(EditContext context)
     {
+        SchoolService.EditSchoolByIdAsync(SchoolToEdit.SchoolID, SchoolToEdit);
+        Navigation.NavigateTo("schools");
+        //StateHasChanged();
+    }
 
+
+    void CancelEdition()
+    {
+        Navigation.NavigateTo("schools");
     }
 }
 

@@ -18,6 +18,7 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.City)">Ville</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Phone)">Téléphone</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<School, object>(x=>x.Email)">Email</MudTableSortLabel></MudTh>
+            <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">@context.Name</MudTd>
@@ -26,6 +27,7 @@ else
             <MudTd DataLabel="City">@context.City</MudTd>
             <MudTd DataLabel="Phone">@context.Phone</MudTd>
             <MudTd DataLabel="Email">@context.Email</MudTd>
+            <MudTd><MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OnEditclick(context.SchoolID))"></MudIconButton></MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[]{5, 10}" />
@@ -48,6 +50,10 @@ else
     void OnClickTableHandler(TableRowClickEventArgs<School> selectedSchool)
     {
         Navigation.NavigateTo($"schoolDetail/{selectedSchool.Item.SchoolID}");
+    }
+    void OnEditclick(string schoolId)
+    {
+        Navigation.NavigateTo($"editSchool/{schoolId}");
     }
 }
 
