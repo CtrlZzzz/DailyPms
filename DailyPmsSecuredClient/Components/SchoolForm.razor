@@ -83,7 +83,7 @@
 
     async Task OnValidSubmit(EditContext context)
     {
-        SchoolService.EditSchoolByIdAsync(SchoolToEdit.SchoolID, SchoolToEdit);
+        await SchoolService.EditSchoolByIdAsync(SchoolToEdit._id, SchoolToEdit);
         Navigation.NavigateTo("schools");
         //StateHasChanged();
     }
