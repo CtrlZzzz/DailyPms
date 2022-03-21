@@ -49,7 +49,7 @@ else
 
     void OnClickTableHandler(TableRowClickEventArgs<School> selectedSchool)
     {
-        Navigation.NavigateTo($"schoolDetail/{selectedSchool.Item.SchoolID}");
+        Navigation.NavigateTo($"schoolDetail/{selectedSchool.Item._id}");
     }
     void OnEditclick(string schoolId)
     {

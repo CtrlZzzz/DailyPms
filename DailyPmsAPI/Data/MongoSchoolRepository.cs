@@ -23,7 +23,7 @@ namespace DailyPmsAPI.Data
 
         public async Task<School> GetSchoolByIdAsync(string id)
         {
-            return await dbContext.Schools.Find(school => school.SchoolID == id).FirstOrDefaultAsync();
+            return await dbContext.Schools.Find(school => school._id == id).FirstOrDefaultAsync();
         }
 
         public async Task<School> GetSchoolByNameAsync(string name)
@@ -33,7 +33,7 @@ namespace DailyPmsAPI.Data
 
         public async Task UpdateSchoolByIdAsync(string id, School updatedSchool)
         {
-            await dbContext.Schools.ReplaceOneAsync(school => school.SchoolID == id, updatedSchool);
+            await dbContext.Schools.ReplaceOneAsync(school => school._id == id, updatedSchool);
         }
 
         public async Task CreateSchoolAsync(School newSchool)
@@ -48,7 +48,7 @@ namespace DailyPmsAPI.Data
 
         public async Task DeleteSchoolByIdAsync(string id)
         {
-            await dbContext.Schools.DeleteOneAsync(school => school.SchoolID == id);
+            await dbContext.Schools.DeleteOneAsync(school => school._id == id);
         }
     }
 }

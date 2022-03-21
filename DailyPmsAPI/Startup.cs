@@ -141,8 +141,8 @@ namespace DailyPmsAPI
             BsonClassMap.RegisterClassMap<School>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdMember(s => s.SchoolID).SetIdGenerator(StringObjectIdGenerator.Instance)
-                                               .SetSerializer(new StringSerializer(BsonType.ObjectId));
+                //cm.MapIdMember(s => s._id).SetIdGenerator(StringObjectIdGenerator.Instance)
+                //                               .SetSerializer(new StringSerializer(BsonType.ObjectId));
                 cm.MapMember(s => s.PmsCenterID).SetSerializer(new StringSerializer(BsonType.ObjectId));
                 cm.MapMember(s => s.ClasseIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
                 cm.MapMember(s => s.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));

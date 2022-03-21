@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DailyPmsShared
 {
-    public class School
+    public class School : MongoEntity
     {
-        public string SchoolID { get; set; }
+        //public string SchoolID { get; set; }
 
         [Required(ErrorMessage = "Veuillez compléter ce champ")]
         [StringLength(100, ErrorMessage = "Le nom doit comporter au moins 2 caractères !", MinimumLength = 2)]
