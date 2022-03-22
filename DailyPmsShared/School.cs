@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace DailyPmsShared
 {
@@ -35,10 +38,13 @@ namespace DailyPmsShared
         [Required(ErrorMessage = "Veuillez compléter ce champ")]
         public string DirectorName { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public string PmsCenterID { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public List<string> ClasseIDs { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public List<string> StudentIDs { get; set; }
     }
 }

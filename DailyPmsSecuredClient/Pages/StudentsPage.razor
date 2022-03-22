@@ -55,7 +55,7 @@ else
 
     async Task<IEnumerable<Student>> GetStudentsAsync()
     {
-        Console.WriteLine("<HTTP request -- GET -- requesting list of Students from MongoDb Atlas>");
+        //Console.WriteLine("<HTTP request -- GET -- requesting list of Students from MongoDb Atlas>");
         return await StudentService.GetStudentsAsync();
     }
 }

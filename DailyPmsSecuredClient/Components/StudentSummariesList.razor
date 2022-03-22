@@ -49,8 +49,6 @@ else
     IEnumerable<Student> studentSummaries = new List<Student>();
     string searchValue = "";
 
-    //MudTable<Student> mudTable;
-
     Student currentStudent;
 
     bool FilterFunc(Student student) => Filter(student, searchValue);
@@ -82,6 +80,6 @@ else
 
     void OnClickHandler(TableRowClickEventArgs<Student> selectedStudent)
     {
-        Navigation.NavigateTo($"studentDetail/{selectedStudent.Item.StudentID}");
+        Navigation.NavigateTo($"studentDetail/{selectedStudent.Item._id}");
     }
 }

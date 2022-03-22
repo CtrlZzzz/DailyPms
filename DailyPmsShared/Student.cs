@@ -1,10 +1,12 @@
 ﻿using System;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DailyPmsShared
 {
-    public class Student
+    public class Student : MongoEntity
     {
-        public string StudentID { get; set; }
+        //public string StudentID { get; set; }
 
         public string FirstName { get; set; }
 
@@ -28,10 +30,13 @@ namespace DailyPmsShared
 
         public DateTime RegistrationDate { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public string SchoolID { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public string ClasseID { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public string PmsFileID { get; set; }
     }
 }
