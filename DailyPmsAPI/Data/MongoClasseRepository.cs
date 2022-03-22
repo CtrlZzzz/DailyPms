@@ -23,7 +23,7 @@ namespace DailyPmsAPI.Data
 
         public async Task<Classe> GetClasseByIdAsync(string id)
         {
-            return await dbContext.Classes.Find(classe => classe.ClasseID == id).FirstOrDefaultAsync();
+            return await dbContext.Classes.Find(classe => classe._id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Classe> GetClasseByNameAsync(string name, string schoolId)
@@ -48,12 +48,12 @@ namespace DailyPmsAPI.Data
                 throw new ArgumentNullException(nameof(updatedClasse));
             }
 
-            await dbContext.Classes.ReplaceOneAsync(classe => classe.ClasseID == id, updatedClasse);
+            await dbContext.Classes.ReplaceOneAsync(classe => classe._id == id, updatedClasse);
         }
 
         public async Task DeleteClasseByIdAsync(string id)
         {
-            await dbContext.Classes.DeleteOneAsync(classe => classe.ClasseID == id);
+            await dbContext.Classes.DeleteOneAsync(classe => classe._id == id);
         }
     }
 }

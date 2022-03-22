@@ -31,7 +31,7 @@ namespace DailyPmsAPI
         {
             Configuration = configuration;
 
-            RegisterMongoDbClassMaps();
+            //RegisterMongoDbClassMaps();
         }
 
         public IConfiguration Configuration { get; }
@@ -136,64 +136,64 @@ namespace DailyPmsAPI
             });
         }
 
-        void RegisterMongoDbClassMaps()
-        {
-            //BsonClassMap.RegisterClassMap<School>(cm =>
-            //{
-            //    cm.AutoMap();
-            //    cm.MapIdMember(s => s._id).SetIdGenerator(StringObjectIdGenerator.Instance)
-            //                              .SetSerializer(new StringSerializer(BsonType.ObjectId));
-            //    cm.MapMember(s => s.PmsCenterID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-            //    cm.MapMember(s => s.ClasseIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-            //    cm.MapMember(s => s.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-            //});
-            BsonClassMap.RegisterClassMap<Classe>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(c => c.ClasseID).SetIdGenerator(StringObjectIdGenerator.Instance)
-                                               .SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(c => c.SchoolID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(c => c.PmsIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-                cm.MapMember(c => c.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-            });
-            //BsonClassMap.RegisterClassMap<Student>(cm =>
-            //{
-            //    cm.AutoMap();
-            //    cm.MapIdMember(s => s._id).SetIdGenerator(StringObjectIdGenerator.Instance)
-            //                              .SetSerializer(new StringSerializer(BsonType.ObjectId));
-            //    //cm.MapMember(s => s.BirthDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
-            //    //cm.MapMember(s => s.RegistrationDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
-            //    cm.MapMember(s => s.SchoolID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-            //    cm.MapMember(s => s.ClasseID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-            //    cm.MapMember(s => s.PmsFileID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-            //});
-            BsonClassMap.RegisterClassMap<PmsFile>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(p => p.PmsFileID).SetIdGenerator(StringObjectIdGenerator.Instance)
-                                                .SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(p => p.StudentID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(p => p.ActivityIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-            });
-            BsonClassMap.RegisterClassMap<PmsCenter>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(c => c.CenterID).SetIdGenerator(StringObjectIdGenerator.Instance)
-                                               .SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(c => c.DirectorID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(c => c.PmsIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-                cm.MapMember(c => c.SchoolIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-            });
-            BsonClassMap.RegisterClassMap<Agent>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(a => a.AgentId).SetIdGenerator(StringObjectIdGenerator.Instance)
-                                              .SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(a => a.CenterID).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapMember(a => a.SchoolIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-                cm.MapMember(a => a.PlanningIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-                cm.MapMember(a => a.DailyIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
-            });
-        }
+        //void RegisterMongoDbClassMaps()
+        //{
+        //    BsonClassMap.RegisterClassMap<School>(cm =>
+        //    {
+        //        cm.AutoMap();
+        //        cm.MapIdMember(s => s._id).SetIdGenerator(StringObjectIdGenerator.Instance)
+        //                                  .SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(s => s.PmsCenterID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(s => s.ClasseIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //        cm.MapMember(s => s.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //    });
+        //    BsonClassMap.RegisterClassMap<Classe>(cm =>
+        //    {
+        //        cm.AutoMap();
+        //        cm.MapIdMember(c => c._id).SetIdGenerator(StringObjectIdGenerator.Instance)
+        //                                       .SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(c => c.SchoolID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(c => c.PmsIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //        cm.MapMember(c => c.StudentIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //    });
+        //    BsonClassMap.RegisterClassMap<Student>(cm =>
+        //    {
+        //        cm.AutoMap();
+        //        cm.MapIdMember(s => s._id).SetIdGenerator(StringObjectIdGenerator.Instance)
+        //                                  .SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        //cm.MapMember(s => s.BirthDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+        //        //cm.MapMember(s => s.RegistrationDate).SetSerializer(new DateTimeSerializer(dateOnly: true));
+        //        cm.MapMember(s => s.SchoolID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(s => s.ClasseID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(s => s.PmsFileID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //    });
+        //    BsonClassMap.RegisterClassMap<PmsFile>(cm =>
+        //    {
+        //        cm.AutoMap();
+        //        cm.MapIdMember(p => p._id).SetIdGenerator(StringObjectIdGenerator.Instance)
+        //                                        .SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(p => p.StudentID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(p => p.ActivityIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //    });
+        //    BsonClassMap.RegisterClassMap<PmsCenter>(cm =>
+        //    {
+        //        cm.AutoMap();
+        //        cm.MapIdMember(c => c._id).SetIdGenerator(StringObjectIdGenerator.Instance)
+        //                                       .SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(c => c.DirectorID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(c => c.PmsIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //        cm.MapMember(c => c.SchoolIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //    });
+        //    BsonClassMap.RegisterClassMap<Agent>(cm =>
+        //    {
+        //        cm.AutoMap();
+        //        cm.MapIdMember(a => a._id).SetIdGenerator(StringObjectIdGenerator.Instance)
+        //                                      .SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(a => a.CenterID).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        //        cm.MapMember(a => a.SchoolIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //        cm.MapMember(a => a.PlanningIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //        cm.MapMember(a => a.DailyIDs).SetSerializer(new EnumerableInterfaceImplementerSerializer<List<string>, string>(new StringSerializer(BsonType.ObjectId)));
+        //    });
+        //}
     }
 }

@@ -17,7 +17,7 @@ namespace DailyPmsAPI.Data
 
         public async Task<PmsFile> GetPmsFileByIdAsync(string id)
         {
-            return await dbContext.PmsFiles.Find(file => file.PmsFileID == id).FirstOrDefaultAsync();
+            return await dbContext.PmsFiles.Find(file => file._id == id).FirstOrDefaultAsync();
         }
 
         public async Task<PmsFile> GetPmsFileByStudentIdAsync(string studentId)
@@ -42,12 +42,12 @@ namespace DailyPmsAPI.Data
                 throw new ArgumentNullException(nameof(updatedPmsFile));
             }
 
-            await dbContext.PmsFiles.ReplaceOneAsync(file => file.PmsFileID == id, updatedPmsFile);
+            await dbContext.PmsFiles.ReplaceOneAsync(file => file._id == id, updatedPmsFile);
         }
 
         public async Task DeletePmsFileAsync(string id)
         {
-            await dbContext.PmsFiles.DeleteOneAsync(file => file.PmsFileID == id);
+            await dbContext.PmsFiles.DeleteOneAsync(file => file._id == id);
         }
     }
 }

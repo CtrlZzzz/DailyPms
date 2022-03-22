@@ -19,7 +19,7 @@ namespace ClientServices
             var response = await client.GetAsync("/api/Students");
 
             var result = await response.Content.ReadFromJsonAsync<IEnumerable<Student>>();
-            return result;
+            return result!;
         }
 
         public async Task<IEnumerable<Student>> GetStudentsBySchoolAsync(string schoolId)
@@ -27,7 +27,7 @@ namespace ClientServices
             var response = await client.GetAsync($"/api/Students/BySchool/{schoolId}");
 
             var result = await response.Content.ReadFromJsonAsync<IEnumerable<Student>>();
-            return result;
+            return result!;
         }
 
         public async Task<Student> GetStudentById(string studentId)
@@ -35,7 +35,7 @@ namespace ClientServices
             var response = await client.GetAsync($"/api/Students/{studentId}");
 
             var result = await response.Content.ReadFromJsonAsync<Student>();
-            return result;
+            return result!;
         }
 
     }

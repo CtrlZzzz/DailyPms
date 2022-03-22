@@ -23,7 +23,7 @@ namespace DailyPmsAPI.Data
 
         public async Task<PmsCenter> GetCenterByIdAsync(string id)
         {
-            return await dbContext.PmsCenters.Find(center => center.CenterID == id).FirstOrDefaultAsync();
+            return await dbContext.PmsCenters.Find(center => center._id == id).FirstOrDefaultAsync();
         }
 
         public async Task<PmsCenter> GetCenterByNameAsync(string name)
@@ -33,7 +33,7 @@ namespace DailyPmsAPI.Data
 
         public async Task UpdateCenterByIdAsync(string id, PmsCenter updatedCenter)
         {
-            await dbContext.PmsCenters.ReplaceOneAsync(center => center.CenterID == id, updatedCenter);
+            await dbContext.PmsCenters.ReplaceOneAsync(center => center._id == id, updatedCenter);
         }
 
         public async Task CreateCenterAsync(PmsCenter newCenter)
@@ -48,7 +48,7 @@ namespace DailyPmsAPI.Data
 
         public async Task DeleteCenterByIdAsync(string id)
         {
-            await dbContext.PmsCenters.DeleteOneAsync(center => center.CenterID == id);
+            await dbContext.PmsCenters.DeleteOneAsync(center => center._id == id);
         }
     }
 }

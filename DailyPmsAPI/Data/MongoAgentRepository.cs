@@ -22,7 +22,7 @@ namespace DailyPmsAPI.Data
 
         public async Task<Agent> GetAgentByIdAsync(string id)
         {
-            return await dbContext.Agents.Find(agent => agent.AgentId == id).FirstOrDefaultAsync();
+            return await dbContext.Agents.Find(agent => agent._id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Agent> GetAgentByNameAsync(string name, string centerId)
@@ -47,12 +47,12 @@ namespace DailyPmsAPI.Data
                 throw new ArgumentNullException(nameof(updatedAgent));
             }
 
-            await dbContext.Agents.ReplaceOneAsync(agent => agent.AgentId == id, updatedAgent);
+            await dbContext.Agents.ReplaceOneAsync(agent => agent._id == id, updatedAgent);
         }
 
         public async Task DeleteAgentAsync(string id)
         {
-            await dbContext.Agents.DeleteOneAsync(agent => agent.AgentId == id);
+            await dbContext.Agents.DeleteOneAsync(agent => agent._id == id);
         }
     }
 }
