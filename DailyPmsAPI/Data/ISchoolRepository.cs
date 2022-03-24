@@ -16,6 +16,6 @@ namespace DailyPmsAPI.Data
 
         Task CreateSchoolAsync(School newSchool);
 
-        Task DeleteSchoolByIdAsync(string id);
+        Task<bool> DeleteSchoolByIdAsync(string id);
     }
 }

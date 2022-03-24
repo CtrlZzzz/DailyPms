@@ -5,20 +5,23 @@ namespace DailyPmsAPI.Data
 {
     public class MongoDbContext : IDbContext
     {
-        readonly IMongoDatabase pmsDb;
-
+        //readonly IMongoDatabase pmsDb;
+        //readonly IMongoClient dbClient;
 
         public MongoDbContext(IMongoClient dbClient)
         {
-            pmsDb = dbClient.GetDatabase("PmsDb");
+            //this.dbClient = dbClient;
+            PmsDb = dbClient.GetDatabase("PmsDb");
         }
 
+        public IMongoDatabase PmsDb { get; }
+        //public IMongoDatabase PmsDb { get => dbClient.GetDatabase("PmsDb"); }
 
-        public IMongoCollection<School> Schools { get { return pmsDb.GetCollection<School>("Schools"); } }
-        public IMongoCollection<Classe> Classes { get { return pmsDb.GetCollection<Classe>("Classes"); } }
-        public IMongoCollection<Student> Students { get { return pmsDb.GetCollection<Student>("Students"); } }
-        public IMongoCollection<PmsFile> PmsFiles { get { return pmsDb.GetCollection<PmsFile>("PmsFiles"); } }
-        public IMongoCollection<PmsCenter> PmsCenters { get { return pmsDb.GetCollection<PmsCenter>("PmsCenters"); } }
-        public IMongoCollection<Agent> Agents { get { return pmsDb.GetCollection<Agent>("Agents"); } }
+        public IMongoCollection<School> Schools { get { return PmsDb.GetCollection<School>("Schools"); } }
+        public IMongoCollection<Classe> Classes { get { return PmsDb.GetCollection<Classe>("Classes"); } }
+        public IMongoCollection<Student> Students { get { return PmsDb.GetCollection<Student>("Students"); } }
+        public IMongoCollection<PmsFile> PmsFiles { get { return PmsDb.GetCollection<PmsFile>("PmsFiles"); } }
+        public IMongoCollection<PmsCenter> PmsCenters { get { return PmsDb.GetCollection<PmsCenter>("PmsCenters"); } }
+        public IMongoCollection<Agent> Agents { get { return PmsDb.GetCollection<Agent>("Agents"); } }
     }
 }
