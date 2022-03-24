@@ -9,8 +9,10 @@ namespace DailyPmsAPI.Repositories
     {
         public MongoRepository(IMongoDatabase db, string collectionName)
         {
-            if (db == null) throw new ArgumentNullException(nameof(db));
-            if (string.IsNullOrEmpty(collectionName)) throw new ArgumentNullException(nameof(collectionName));
+            if (db == null)
+                throw new ArgumentNullException(nameof(db));
+            if (string.IsNullOrEmpty(collectionName))
+                throw new ArgumentNullException(nameof(collectionName));
 
             Collection = db.GetCollection<T>(collectionName);
         }
@@ -18,19 +20,13 @@ namespace DailyPmsAPI.Repositories
         protected IMongoCollection<T> Collection { get; set; }
 
 
-        public Task<T> CreateAsync(T newItem)
+        public virtual async Task<T> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
-        }
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentNullException(nameof(id));
 
-        public Task<bool> DeleteAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<T> GetByIdAsync(string id)
-        {
-            throw new NotImplementedException();
+            var result = await Collection.FindAsync(i => i._id == id);
+            return await result.SingleOrDefaultAsync();
         }
 
         public Task<T> GetByNameAsync(string name)
@@ -38,7 +34,17 @@ namespace DailyPmsAPI.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<T> CreateAsync(T newItem)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<T> UpdateAsync(string id, T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteAsync(string id)
         {
             throw new NotImplementedException();
         }
