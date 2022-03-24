@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
@@ -44,12 +45,12 @@ namespace DailyPmsAPI
                 var connectionString = s.GetRequiredService<IConfiguration>()["ConnectionString"];
                 return new MongoClient(connectionString);
             });
-            services.AddSingleton<IDbContext, MongoDbContext>();
-            services.AddSingleton<ISchoolRepository, MongoSchoolRepository>();
-            services.AddSingleton<IClasseRepository, MongoClasseRepository>();
-            services.AddSingleton<IStudentRepository, MongoStudentRepository>();
-            services.AddSingleton<IPmsCenterRepository, MongoPmsCenterRepository>();
-            services.AddSingleton<IAgentRepository, MongoAgentRepository>();
+            services.AddTransient<IDbContext, MongoDbContext>();
+            services.AddTransient<ISchoolRepository, MongoSchoolRepository>();
+            services.AddTransient<IClasseRepository, MongoClasseRepository>();
+            services.AddTransient<IStudentRepository, MongoStudentRepository>();
+            services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
+            services.AddTransient<IAgentRepository, MongoAgentRepository>();
 
             services.AddControllers();
 
