@@ -1,4 +1,5 @@
 using DailyPmsAPI.Data;
+using DailyPmsAPI.Repositories;
 using DailyPmsShared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,12 +46,21 @@ namespace DailyPmsAPI
                 var connectionString = s.GetRequiredService<IConfiguration>()["ConnectionString"];
                 return new MongoClient(connectionString);
             });
+
+            //*TEMP - TO REMOVE :
             services.AddTransient<IDbContext, MongoDbContext>();
             services.AddTransient<ISchoolRepository, MongoSchoolRepository>();
             services.AddTransient<IClasseRepository, MongoClasseRepository>();
             services.AddTransient<IStudentRepository, MongoStudentRepository>();
             services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
             services.AddTransient<IAgentRepository, MongoAgentRepository>();
+            //*/
+
+            //Db + Repositories
+            services.AddTransient<IDatabase, MongoDatabase>();
+            services.AddTransient<SchoolRepository>();
+            services.AddTransient<StudentRepository>();
+            services.AddTransient<AgentRepository>();
 
             services.AddControllers();
 

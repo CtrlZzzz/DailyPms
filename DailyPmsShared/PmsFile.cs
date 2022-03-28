@@ -8,6 +8,7 @@ namespace DailyPmsShared
     {
         //public string PmsFileID { get; set; }
 
+        [BsonRepresentation(BsonType.ObjectId)]
         public string StudentID { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]

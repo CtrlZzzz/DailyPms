@@ -4,27 +4,23 @@ using DailyPmsShared;
 
 namespace DailyPmsAPI.Repositories
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T> where T : class, IEntity
     {
         Task<T> GetByIdAsync(string id);
+        Task<IEnumerable<T>> GetAllAsync();
         Task<T> CreateAsync(T newItem);
         Task<T> UpdateAsync(string id, T item);
         Task<bool> DeleteAsync(string id);
     }
 
-    public interface IGetByNameRepository<T> : IRepository<T> where T : IEntity
+    public interface IGetByName<T> where T : class, IEntity
     {
-        Task<T> GetByNameAsync(string name);
+        Task<IEnumerable<T>> GetByNameAsync(string name);
     }
 
-    public interface IGetAllRepository<T> : IGetByNameRepository<T> where T : IEntity
+    public interface IGetAllFromId<T> where T : class, IEntity
     {
-        Task<IEnumerable<T>> GetAllAsync();
-    }
-
-    public interface IGetAllByIdRepository<T> : IGetByNameRepository<T> where T : IEntity
-    {
-        Task<IEnumerable<T>> GetAllByIdAsync(string id);
+        Task<IEnumerable<T>> GetAllFromIdAsync(string id);
     }
 }
 

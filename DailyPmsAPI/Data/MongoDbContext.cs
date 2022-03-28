@@ -14,7 +14,7 @@ namespace DailyPmsAPI.Data
             PmsDb = dbClient.GetDatabase("PmsDb");
         }
 
-        public IMongoDatabase PmsDb { get; }
+        public IMongoDatabase PmsDb { get; set; }
         //public IMongoDatabase PmsDb { get => dbClient.GetDatabase("PmsDb"); }
 
         public IMongoCollection<School> Schools { get { return PmsDb.GetCollection<School>("Schools"); } }

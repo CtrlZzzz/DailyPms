@@ -1,20 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using DailyPmsAPI.Data;
 using DailyPmsShared;
 using MongoDB.Driver;
 
 namespace DailyPmsAPI.Repositories
 {
-    public class MongoRepository<T> : IGetByNameRepository<T> where T : IEntity
+    public abstract class MongoRepository<T> : IRepository<T> where T : class, IEntity
     {
-        public MongoRepository(IMongoDatabase db, string collectionName)
+        public MongoRepository(IDatabase db, string collectionName)
         {
             if (db == null)
                 throw new ArgumentNullException(nameof(db));
             if (string.IsNullOrEmpty(collectionName))
                 throw new ArgumentNullException(nameof(collectionName));
 
-            Collection = db.GetCollection<T>(collectionName);
+            Collection = db.PmsDb.GetCollection<T>(collectionName);
         }
 
         protected IMongoCollection<T> Collection { get; set; }
@@ -28,26 +30,43 @@ namespace DailyPmsAPI.Repositories
             var result = await Collection.FindAsync(i => i._id == id);
             return await result.SingleOrDefaultAsync();
         }
-
-        public Task<T> GetByNameAsync(string name)
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var result = await Collection.FindAsync(i => true);
+            return await result.ToListAsync();
         }
 
-        public Task<T> CreateAsync(T newItem)
+        public virtual async Task<T> CreateAsync(T newItem)
         {
-            throw new NotImplementedException();
+            if (newItem == null)
+            {
+                throw new ArgumentNullException(nameof(newItem));
+            }
+
+            await Collection.InsertOneAsync(newItem);
+            return newItem;
         }
 
-        public Task<T> UpdateAsync(string id, T item)
+        public virtual async Task<T> UpdateAsync(string id, T item)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(id)) 
+                throw new ArgumentNullException(nameof(id));
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            var result = await Collection.ReplaceOneAsync(i => i._id == id, item);
+            return (result.IsAcknowledged && result.ModifiedCount > 0) ? item : null;
         }
 
-        public Task<bool> DeleteAsync(string id)
+        public virtual async Task<bool> DeleteAsync(string id)
         {
-            throw new NotImplementedException();
+            if(string.IsNullOrEmpty(id)) 
+                throw new ArgumentNullException(nameof(id));
+            
+            var result = await Collection.DeleteOneAsync(i => i._id == id);
+            return result.IsAcknowledged && result.DeletedCount > 0;
         }
+
     }
 }
 
