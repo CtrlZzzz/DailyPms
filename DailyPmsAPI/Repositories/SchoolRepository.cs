@@ -15,7 +15,7 @@ namespace DailyPmsAPI.Repositories
         public async Task<IEnumerable<School>> GetByNameAsync(string name)
         {
             if (name == null) 
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             //var filter = Builders<School>.Filter.Where(s => s.Name.ToLower().Contains(name) || s.Moniker.ToLower().Contains(name));
             var result = await Collection.FindAsync(s => s.Name.ToLower().Contains(name.ToLower()) || s.Moniker.ToLower().Contains(name.ToLower()));

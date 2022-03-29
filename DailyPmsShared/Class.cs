@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace DailyPmsShared
 {
-    public class Classe : MongoEntity
+    public class Class : MongoEntity
     {
         //public string ClasseID { get; set; }
 

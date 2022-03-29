@@ -16,22 +16,22 @@ namespace DailyPmsAPI.Data
         }
 
 
-        public async Task<IEnumerable<Classe>> GetAllClassesBySchoolAsync(string schoolId)
+        public async Task<IEnumerable<Class>> GetAllClassesBySchoolAsync(string schoolId)
         {
             return await dbContext.Classes.Find(Classe => Classe.SchoolID == schoolId).ToListAsync();
         }
 
-        public async Task<Classe> GetClasseByIdAsync(string id)
+        public async Task<Class> GetClasseByIdAsync(string id)
         {
             return await dbContext.Classes.Find(classe => classe._id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Classe> GetClasseByNameAsync(string name, string schoolId)
+        public async Task<Class> GetClasseByNameAsync(string name, string schoolId)
         {
             return await dbContext.Classes.Find(classe => classe.Name == name && classe.SchoolID == schoolId).FirstOrDefaultAsync();
         }
 
-        public async Task CreateClasseAsync(Classe newClasse)
+        public async Task CreateClasseAsync(Class newClasse)
         {
             if (newClasse == null)
             {
@@ -41,7 +41,7 @@ namespace DailyPmsAPI.Data
             await dbContext.Classes.InsertOneAsync(newClasse);
         }
 
-        public async Task UpdateClasseByIdAsync(string id, Classe updatedClasse)
+        public async Task UpdateClasseByIdAsync(string id, Class updatedClasse)
         {
             if (updatedClasse == null)
             {

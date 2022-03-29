@@ -61,6 +61,9 @@ namespace DailyPmsAPI
             services.AddTransient<SchoolRepository>();
             services.AddTransient<StudentRepository>();
             services.AddTransient<AgentRepository>();
+            services.AddTransient<ClassRepository>();
+            services.AddTransient<PmsCenterRepository>();
+            services.AddTransient<PmsFileRepository>();
 
             services.AddControllers();
 

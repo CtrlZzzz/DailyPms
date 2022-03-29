@@ -6,15 +6,15 @@ namespace DailyPmsAPI.Data
 {
     public interface IClasseRepository
     {
-        Task<IEnumerable<Classe>> GetAllClassesBySchoolAsync(string schoolId);
+        Task<IEnumerable<Class>> GetAllClassesBySchoolAsync(string schoolId);
 
-        Task<Classe> GetClasseByIdAsync(string id);
+        Task<Class> GetClasseByIdAsync(string id);
 
-        Task<Classe> GetClasseByNameAsync(string name, string schoolId);
+        Task<Class> GetClasseByNameAsync(string name, string schoolId);
 
-        Task CreateClasseAsync(Classe newClasse);
+        Task CreateClasseAsync(Class newClasse);
 
-        Task UpdateClasseByIdAsync(string id, Classe updatedClasse);
+        Task UpdateClasseByIdAsync(string id, Class updatedClasse);
 
         Task DeleteClasseByIdAsync(string id);
     }

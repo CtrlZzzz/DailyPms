@@ -7,15 +7,24 @@ using System.Threading.Tasks;
 
 namespace DailyPmsAPI.Repositories
 {
-    public class AgentRepository : MongoRepository<Agent>, IGetByName<Agent>
+    public class AgentRepository : MongoRepository<Agent>, IGetByName<Agent>,   IGetAllFromId<Agent>
     {
         public AgentRepository(IDatabase db, string collectionName) 
             : base(db, "Agents") {}
 
+        public async Task<IEnumerable<Agent>> GetAllFromIdAsync(string id)
+        {
+            if(id == null)
+                throw new ArgumentNullException(nameof(id));
+
+            var result = await Collection.FindAsync(a => a.CenterID == id);
+            return await result.ToListAsync();
+        }
+
         public async Task<IEnumerable<Agent>> GetByNameAsync(string name)
         {
             if (name == null) 
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             var result = await Collection.FindAsync(a => a.LastName.ToLower().Contains(name.ToLower()));
             return await result.ToListAsync();
