@@ -58,12 +58,20 @@ namespace DailyPmsAPI
 
             //Db + Repositories
             services.AddTransient<IDatabase, MongoDatabase>();
-            services.AddTransient<SchoolRepository>();
-            services.AddTransient<StudentRepository>();
-            services.AddTransient<AgentRepository>();
-            services.AddTransient<ClassRepository>();
-            services.AddTransient<PmsCenterRepository>();
-            services.AddTransient<PmsFileRepository>();
+            services.AddTransient<IRepository<School>, SchoolRepository>();
+            //services.AddTransient<IRepository<Student>, StudentRepository>();
+            //services.AddTransient<IRepository<Agent>, AgentRepository>();
+            //services.AddTransient<IRepository<Class>, ClassRepository>();
+            //services.AddTransient<IRepository<PmsCenter>, PmsCenterRepository>();
+            //services.AddTransient<IRepository<PmsFile>, PmsFileRepository>();
+
+            //services.AddTransient<SchoolRepository>(); // serviceCollection.AddTransient(typeof(IThing<>), typeof(GenericThing<>));?
+
+            //services.AddTransient<StudentRepository>();
+            //services.AddTransient<AgentRepository>();
+            //services.AddTransient<ClassRepository>();
+            //services.AddTransient<PmsCenterRepository>();
+            //services.AddTransient<PmsFileRepository>();
 
             services.AddControllers();
 

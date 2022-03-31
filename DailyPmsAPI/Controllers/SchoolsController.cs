@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using DailyPmsAPI.Data;
+using DailyPmsAPI.Repositories;
 using DailyPmsShared;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPmsAPI.Controllers
@@ -11,9 +10,10 @@ namespace DailyPmsAPI.Controllers
     [ApiController]
     public class SchoolsController : ControllerBase
     {
-        readonly ISchoolRepository schoolRepository;
+        //readonly ISchoolRepository schoolRepository;
+        readonly SchoolRepository schoolRepository;
 
-        public SchoolsController(ISchoolRepository schoolRepo)
+        public SchoolsController(SchoolRepository schoolRepo)
         {
             schoolRepository = schoolRepo;
         }
@@ -28,7 +28,8 @@ namespace DailyPmsAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<School>>> GetALlSchoolsAsync()
         {
-            var schools = await schoolRepository.GetAllSchoolsAsync();
+            //var schools = await schoolRepository.GetAllSchoolsAsync();
+            var schools = await schoolRepository.GetAllAsync();
 
             return Ok(schools);
         }
@@ -43,7 +44,8 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("{id:length(24)}", Name = "GetSchoolById")]
         public async Task<ActionResult<School>> GetSchoolByIdAsync(string id)
         {
-            var school = await schoolRepository.GetSchoolByIdAsync(id);
+            //var school = await schoolRepository.GetSchoolByIdAsync(id);
+            var school = await schoolRepository.GetByIdAsync(id);
             if (school == null)
             {
                 return NotFound($"Could not find School with id = {id}");
@@ -60,15 +62,15 @@ namespace DailyPmsAPI.Controllers
         /// <response code="200">The school with the specified Name or Moniker is returned</response>
         /// <response code="404">The school with the specified Name or Moniker does not exist in the Database</response>
         [HttpGet("ByName/{name}", Name = "GetSchoolByNameAsync")]
-        public async Task<ActionResult<School>> GetSchoolByNameAsync(string name)
+        public async Task<ActionResult<IEnumerable<School>>> GetSchoolByNameAsync(string name)
         {
-            var school = await schoolRepository.GetSchoolByNameAsync(name);
-            if (school == null)
+            var schools = await schoolRepository.GetByNameAsync(name);
+            if (schools == null)
             {
-                return NotFound($"Could not find School with id = {name}");
+                return NotFound($"Could not find Schools with Name or Moniker containing {name}");
             }
 
-            return Ok(school);
+            return Ok(schools);
         }
 
         /// <summary>
@@ -84,13 +86,13 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> UpdateSchoolByIdAsync(string id, School updatedSchool)
         {
-            var original = await schoolRepository.GetSchoolByIdAsync(id);
+            var original = await schoolRepository.GetByIdAsync(id);
             if (original == null)
             {
                 return NotFound($"Could not find School with id = {id}");
             }
 
-            await schoolRepository.UpdateSchoolByIdAsync(id, updatedSchool);
+            await schoolRepository.UpdateAsync(id, updatedSchool);
 
             return NoContent();
         }
@@ -107,13 +109,13 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateSchoolAsync(School newSchool)
         {
-            var alreadyExistingSchool = await schoolRepository.GetSchoolByNameAsync(newSchool.Name);
-            if (alreadyExistingSchool != null)
-            {
-                return BadRequest($"A School with the name '{newSchool.Name}' already exists in the Database");
-            }
+            //var alreadyExistingSchool = await schoolRepository.GetSchoolByNameAsync(newSchool.Name);
+            //if (alreadyExistingSchool != null)
+            //{
+            //    return BadRequest($"A School with the name '{newSchool.Name}' already exists in the Database");
+            //}
 
-            await schoolRepository.CreateSchoolAsync(newSchool);
+            await schoolRepository.CreateAsync(newSchool);
 
             return CreatedAtRoute(nameof(GetSchoolByNameAsync), new { name = newSchool.Name }, newSchool);
         }
@@ -130,13 +132,13 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> DeleteSchoolByIdAsync(string id)
         {
-            var school = await schoolRepository.GetSchoolByIdAsync(id);
+            var school = await schoolRepository.GetByIdAsync(id);
             if (school == null)
             {
                 return NotFound($"Could not find school with id = {id}");
             }
 
-            await schoolRepository.DeleteSchoolByIdAsync(id);
+            await schoolRepository.DeleteAsync(id);
 
             return NoContent();
         }

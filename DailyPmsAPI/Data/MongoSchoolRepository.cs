@@ -28,7 +28,7 @@ namespace DailyPmsAPI.Data
 
         public async Task<School> GetSchoolByNameAsync(string name)
         {
-            var result = await dbContext.Schools.Find(school => school.Name.ToLower().Contains(name) || school.Moniker.ToLower().Contains(name)).ToListAsync();
+            //var result = await dbContext.Schools.Find(school => school.Name.ToLower().Contains(name) || school.Moniker.ToLower().Contains(name)).ToListAsync();
             return await dbContext.Schools.Find(school => school.Name == name || school.Moniker == name).FirstOrDefaultAsync();
         }
 

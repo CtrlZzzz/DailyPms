@@ -9,12 +9,12 @@ namespace DailyPmsAPI.Repositories
 {
     public class SchoolRepository : MongoRepository<School>, IGetByName<School>
     {
-        public SchoolRepository(IDatabase db, string collectionName) 
-            : base(db, "Schools") {}
+        public SchoolRepository(IDatabase db)
+            : base(db, "Schools") { }
 
         public async Task<IEnumerable<School>> GetByNameAsync(string name)
         {
-            if (name == null) 
+            if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
             //var filter = Builders<School>.Filter.Where(s => s.Name.ToLower().Contains(name) || s.Moniker.ToLower().Contains(name));

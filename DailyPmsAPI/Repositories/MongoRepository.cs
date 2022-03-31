@@ -30,6 +30,7 @@ namespace DailyPmsAPI.Repositories
             var result = await Collection.FindAsync(i => i._id == id);
             return await result.SingleOrDefaultAsync();
         }
+
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             var result = await Collection.FindAsync(i => true);
@@ -49,7 +50,7 @@ namespace DailyPmsAPI.Repositories
 
         public virtual async Task<T> UpdateAsync(string id, T item)
         {
-            if (string.IsNullOrEmpty(id)) 
+            if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -60,9 +61,9 @@ namespace DailyPmsAPI.Repositories
 
         public virtual async Task<bool> DeleteAsync(string id)
         {
-            if(string.IsNullOrEmpty(id)) 
+            if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException(nameof(id));
-            
+
             var result = await Collection.DeleteOneAsync(i => i._id == id);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
