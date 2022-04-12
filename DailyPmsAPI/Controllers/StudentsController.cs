@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DailyPmsAPI.Data;
+using DailyPmsAPI.Repositories;
 using DailyPmsShared;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyPmsAPI.Controllers
@@ -12,15 +11,15 @@ namespace DailyPmsAPI.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        readonly ISchoolRepository schoolRepository;
-        readonly IStudentRepository studentRepository;
-        readonly IClasseRepository classeRepository;
+        readonly SchoolRepository schoolRepository;
+        readonly StudentRepository studentRepository;
+        //readonly IClasseRepository classeRepository;
 
-        public StudentsController(ISchoolRepository schoolRepo, IStudentRepository studentRepo, IClasseRepository classeRepo)
+        public StudentsController(IRepository<School> schoolRepo, IRepository<Student> studentRepo)
         {
-            schoolRepository = schoolRepo;
-            studentRepository = studentRepo;
-            classeRepository = classeRepo;
+            schoolRepository = (SchoolRepository)schoolRepo;
+            studentRepository = (StudentRepository)studentRepo;
+            //classeRepository = classeRepo;
         }
 
 
@@ -32,7 +31,7 @@ namespace DailyPmsAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetAllStudentsAsync()
         {
-            var students = await studentRepository.GetAllStudentsAsync();
+            var students = await studentRepository.GetAllAsync();
 
             return Ok(students);
         }
@@ -47,17 +46,18 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("BySchool/{schoolId:length(24)}")]
         public async Task<ActionResult<IEnumerable<Student>>> GetAllStudentsBySchoolAsync(string schoolId)
         {
-            var school =  await schoolRepository.GetSchoolByIdAsync(schoolId);
+            var school =  await schoolRepository.GetByIdAsync(schoolId);
             if (school == null)
             {
                 return NotFound($"Could not find the school with id = {schoolId}");
             }
 
-            var students = await studentRepository.GetAllStudentsBySchoolAsync(schoolId);
+            var students = await studentRepository.GetAllFromIdAsync(schoolId);
 
             return Ok(students);
         }
 
+        /*
         /// <summary>
         /// Get a list of students from one classe
         /// </summary>
@@ -67,7 +67,7 @@ namespace DailyPmsAPI.Controllers
         /// <response code="200">A list of students is returned</response>
         /// <response code="404">The school or the classe from which you want to get the students does not exist in the Database</response>
         [HttpGet("ByClasse/{classeId:length(24)}/{schoolId:length(24)}")]
-        public async Task<ActionResult<IEnumerable<Student>>> GetAllStudentsByClasseAsync([FromQuery]string classeId, [FromQuery]string schoolId)
+        public async Task<ActionResult<IEnumerable<Student>>> GetAllStudentsByClasseAsync([FromQuery] string classeId, [FromQuery] string schoolId)
         {
             var school = await schoolRepository.GetSchoolByIdAsync(schoolId);
             if (school == null)
@@ -85,6 +85,7 @@ namespace DailyPmsAPI.Controllers
 
             return Ok(students);
         }
+        */
 
         /// <summary>
         /// Get a student by its ID
@@ -96,7 +97,7 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("{id:length(24)}", Name = "GetStudentByIdAsync")]
         public async Task<ActionResult<Student>> GetStudentByIdAsync(string id)
         {
-            var student = await studentRepository.GetStudentByIdAsync(id);
+            var student = await studentRepository.GetByIdAsync(id);
             if (student == null)
             {
                 return NotFound($"Could not find student with id = {id} in the Database");
@@ -115,10 +116,10 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("ByName/{name}", Name = "GetStudentByNameAsync")]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudentByNameAsync(string name)
         {
-            var students = await studentRepository.GetStudentsByNameAsync(name);
+            var students = await studentRepository.GetByNameAsync(name);
             if (students == null)
             {
-                return NotFound($"Could not find student with name = {name} in the Database");
+                return NotFound($"Could not find student with name containing {name} in the Database");
             }
 
             return Ok(students);
@@ -134,16 +135,16 @@ namespace DailyPmsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateStudentAsync(Student newStudent)
         {
-            var alreadyExistingStudents = await studentRepository.GetStudentsByNameAsync(newStudent.LastName);
+            var alreadyExistingStudents = await studentRepository.GetByNameAsync(newStudent.LastName);
             foreach (var student in alreadyExistingStudents)
             {
                 if (DateTime.Equals(student.BirthDate, newStudent.BirthDate) && student.FirstName == newStudent.FirstName)
                 {
-                    return BadRequest($"A Student named {newStudent.FirstName} {newStudent.LastName} born {newStudent.BirthDate} already exists in the Database");
+                    return BadRequest($"A Student named {newStudent.FirstName} {newStudent.LastName} and born {newStudent.BirthDate} already exists in the Database");
                 }
             }
 
-            await studentRepository.CreateStudentAsync(newStudent);
+            await studentRepository.CreateAsync(newStudent);
 
             return Ok(newStudent);
         }
@@ -161,13 +162,13 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> UpdateStudentByIdAsync(string id, Student updatedStudent)
         {
-            var original = await studentRepository.GetStudentByIdAsync(id);
+            var original = await studentRepository.GetByIdAsync(id);
             if (original == null)
             {
                 return NotFound($"Could not find student with id = {id}");
             }
 
-            await studentRepository.UpdateStudentByIdAsync(id, updatedStudent);
+            await studentRepository.UpdateAsync(id, updatedStudent);
 
             return NoContent();
         }
@@ -184,13 +185,13 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> DeleteStudentByIdAsync(string id)
         {
-            var student = await studentRepository.GetStudentByIdAsync(id);
+            var student = await studentRepository.GetByIdAsync(id);
             if (student == null)
             {
                 return NotFound($"Could not found student with id = {id}");
             }
 
-            await studentRepository.DeleteStudentByIdAsync(id);
+            await studentRepository.DeleteAsync(id);
 
             return NoContent();
         }

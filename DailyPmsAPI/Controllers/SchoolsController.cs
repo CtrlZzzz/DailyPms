@@ -13,9 +13,9 @@ namespace DailyPmsAPI.Controllers
         //readonly ISchoolRepository schoolRepository;
         readonly SchoolRepository schoolRepository;
 
-        public SchoolsController(SchoolRepository schoolRepo)
+        public SchoolsController(IRepository<School> schoolRepo)
         {
-            schoolRepository = schoolRepo;
+            schoolRepository = (SchoolRepository)schoolRepo;
         }
 
 
@@ -55,7 +55,7 @@ namespace DailyPmsAPI.Controllers
         }
 
         /// <summary>
-        /// Get a school by its Name or Moniker
+        /// Get a list of schools by Name or Moniker
         /// </summary>
         /// <param name="name">The Name or Moniker from the school to get</param>
         /// <returns></returns>

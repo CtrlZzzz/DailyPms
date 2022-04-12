@@ -49,9 +49,9 @@ namespace DailyPmsAPI
 
             //*TEMP - TO REMOVE :
             services.AddTransient<IDbContext, MongoDbContext>();
-            services.AddTransient<ISchoolRepository, MongoSchoolRepository>();
+            //services.AddTransient<ISchoolRepository, MongoSchoolRepository>();
+            //services.AddTransient<IStudentRepository, MongoStudentRepository>();
             services.AddTransient<IClasseRepository, MongoClasseRepository>();
-            services.AddTransient<IStudentRepository, MongoStudentRepository>();
             services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
             services.AddTransient<IAgentRepository, MongoAgentRepository>();
             //*/
@@ -59,19 +59,11 @@ namespace DailyPmsAPI
             //Db + Repositories
             services.AddTransient<IDatabase, MongoDatabase>();
             services.AddTransient<IRepository<School>, SchoolRepository>();
-            //services.AddTransient<IRepository<Student>, StudentRepository>();
+            services.AddTransient<IRepository<Student>, StudentRepository>();
             //services.AddTransient<IRepository<Agent>, AgentRepository>();
             //services.AddTransient<IRepository<Class>, ClassRepository>();
             //services.AddTransient<IRepository<PmsCenter>, PmsCenterRepository>();
             //services.AddTransient<IRepository<PmsFile>, PmsFileRepository>();
-
-            //services.AddTransient<SchoolRepository>(); // serviceCollection.AddTransient(typeof(IThing<>), typeof(GenericThing<>));?
-
-            //services.AddTransient<StudentRepository>();
-            //services.AddTransient<AgentRepository>();
-            //services.AddTransient<ClassRepository>();
-            //services.AddTransient<PmsCenterRepository>();
-            //services.AddTransient<PmsFileRepository>();
 
             services.AddControllers();
 

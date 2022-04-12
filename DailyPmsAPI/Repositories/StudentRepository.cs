@@ -9,7 +9,7 @@ namespace DailyPmsAPI.Repositories
 {
     public class StudentRepository : MongoRepository<Student>, IGetByName<Student>, IGetAllFromId<Student>
     {
-        public StudentRepository(IDatabase db, string collectionName) 
+        public StudentRepository(IDatabase db) 
             : base(db, "Students") {}
 
         public async Task<IEnumerable<Student>> GetAllFromIdAsync(string id)
