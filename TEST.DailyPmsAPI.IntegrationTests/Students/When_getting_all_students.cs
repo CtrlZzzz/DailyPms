@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using DailyPmsAPI;
 using DailyPmsShared;
@@ -25,6 +25,9 @@ public class When_getting_all_students : IClassFixture<WebApplicationFactory<Sta
         //Arrange
         //Act
         var response = await httpClient.GetAsync("/api/Students");
+        response.EnsureSuccessStatusCode();
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     [Fact]
@@ -33,8 +36,8 @@ public class When_getting_all_students : IClassFixture<WebApplicationFactory<Sta
         //Arrange
         //Act
         var response = await httpClient.GetAsync("/api/Students");
-        //Assert
         response.EnsureSuccessStatusCode();
+        //Assert
         var result = await response.Content.ReadFromJsonAsync<List<Student>>();
         Assert.Equal(240, result?.Count);
     }
