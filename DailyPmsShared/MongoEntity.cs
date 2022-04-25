@@ -6,6 +6,7 @@ namespace DailyPmsShared
 {
     public class MongoEntity : IEntity
     {
+        [MongoDB.Bson.Serialization.Attributes.BsonElement("_id")]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
         public string _id { get; set; }

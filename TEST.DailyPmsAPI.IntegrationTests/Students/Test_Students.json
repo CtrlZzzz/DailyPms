@@ -1,0 +1,83 @@
+[
+    {
+        "_id": {
+            "$oid": "300000000000000000000014"
+        },
+        "FirstName": "Stan",
+        "LastName": "Grégoire",
+        "BirthDate": "2011-04-18T08:16:37+0000",
+        "Street": "avenue Lemmens 56",
+        "PostalCode": {
+            "$numberInt": "6858"
+        },
+        "City": "Turnhout",
+        "Phone": "0990646326",
+        "Email": "niels81@hotmail.com",
+        "Parent1": "Martin Léonard",
+        "Parent2": "Jarne Petit",
+        "RegistrationDate": "2001-08-07T20:15:43+0000",
+        "SchoolID": {
+            "$oid": "100000000000000000000001"
+        },
+        "ClasseID": {
+            "$oid": "200000000000000000000002"
+        },
+        "PmsFileID": {
+            "$oid": "300000000000000000000014"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "300000000000000000000033"
+        },
+        "FirstName": "Charlotte",
+        "LastName": "Grégoire",
+        "BirthDate": "2021-03-29T09:01:18+0000",
+        "Street": "rue Leclercq 46",
+        "PostalCode": {
+            "$numberInt": "8583"
+        },
+        "City": "Lokeren",
+        "Phone": "051 734037",
+        "Email": "goethals.febe@elamrani.com",
+        "Parent1": "Noé Goffin",
+        "Parent2": "Amy Schmitz",
+        "RegistrationDate": "1984-10-29T01:51:23+0000",
+        "SchoolID": {
+            "$oid": "100000000000000000000002"
+        },
+        "ClasseID": {
+            "$oid": "200000000000000000000004"
+        },
+        "PmsFileID": {
+            "$oid": "300000000000000000000033"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "300000000000000000000028"
+        },
+        "FirstName": "Fleur",
+        "LastName": "Thiry",
+        "BirthDate": "2017-04-04T06:33:49+0000",
+        "Street": "rue Delhaye 2",
+        "PostalCode": {
+            "$numberInt": "7776"
+        },
+        "City": "Antoing",
+        "Phone": "0429 03 00 82",
+        "Email": "adam.yasmine@dierckx.be",
+        "Parent1": "Nore Bertrand",
+        "Parent2": "Rune Collin",
+        "RegistrationDate": "1970-08-22T12:32:37+0000",
+        "SchoolID": {
+            "$oid": "100000000000000000000001"
+        },
+        "ClasseID": {
+            "$oid": "200000000000000000000003"
+        },
+        "PmsFileID": {
+            "$oid": "300000000000000000000028"
+        }
+    }
+]
