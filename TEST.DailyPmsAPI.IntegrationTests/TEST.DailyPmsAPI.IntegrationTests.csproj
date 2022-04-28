@@ -30,10 +30,14 @@
     <None Remove="Microsoft.AspNetCore.Mvc.Testing" />
     <None Remove="Students\" />
     <None Remove="Students\Test_Students.json" />
+    <None Remove="Schools\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Students\Test_Students.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Schools\" />
   </ItemGroup>
 </Project>
