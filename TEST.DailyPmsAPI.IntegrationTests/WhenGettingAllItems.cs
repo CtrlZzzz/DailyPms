@@ -13,13 +13,12 @@ namespace TEST.DailyPmsAPI.IntegrationTests
 {
     public abstract class WhenGettingAllItems<T> : IClassFixture<WebApplicationFactory<Startup>>, ITestWhenGettingAll<T> where T : class, IEntity
     {
+        protected readonly HttpClient testingClient;
 
         public WhenGettingAllItems(WebApplicationFactory<Startup> factory)
         {
-            TestingClient = factory.CreateClient();
+            testingClient = factory.CreateClient();
         }
-
-        public HttpClient TestingClient { get; }
 
         public virtual IList<T> BuildTestItems()
         {
@@ -39,7 +38,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests
         {
             //Arrange
             //Act
-            var response = await TestingClient.GetAsync("/api/" + typeof(T).Name + "s");
+            var response = await testingClient.GetAsync("/api/" + typeof(T).Name + "s");
             response.EnsureSuccessStatusCode();
             //Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);

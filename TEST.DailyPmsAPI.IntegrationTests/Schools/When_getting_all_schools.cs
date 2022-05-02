@@ -20,7 +20,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Schools
         {
             // Arrange
             //Act
-            var response = await TestingClient.GetAsync("/api/Schools");
+            var response = await testingClient.GetAsync("/api/Schools");
             response.EnsureSuccessStatusCode();
             //Assert
             var result = await response.Content.ReadFromJsonAsync<List<Student>>();
@@ -32,7 +32,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Schools
             //Arrange
             var TestSchools = BuildTestItems();
             //Act
-            var response = await TestingClient.GetAsync("/api/Schools");
+            var response = await testingClient.GetAsync("/api/Schools");
             response.EnsureSuccessStatusCode();
             //Assert
             var apiResult = await response.Content.ReadFromJsonAsync<List<School>>();
