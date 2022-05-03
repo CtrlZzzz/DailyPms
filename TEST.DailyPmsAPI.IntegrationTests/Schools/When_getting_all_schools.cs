@@ -20,7 +20,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Schools
         {
             // Arrange
             //Act
-            var response = await testingClient.GetAsync("/api/Schools");
+            var response = await testingClient.GetAsync(apiPath);
             response.EnsureSuccessStatusCode();
             //Assert
             var result = await response.Content.ReadFromJsonAsync<List<Student>>();
@@ -32,25 +32,25 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Schools
             //Arrange
             var TestSchools = BuildTestItems();
             //Act
-            var response = await testingClient.GetAsync("/api/Schools");
+            var response = await testingClient.GetAsync(apiPath);
             response.EnsureSuccessStatusCode();
             //Assert
             var apiResult = await response.Content.ReadFromJsonAsync<List<School>>();
             foreach (var test in TestSchools!)
             {
-                var currentApiStudent = apiResult?.FirstOrDefault(s => s._id == test._id);
-                Assert.NotNull(currentApiStudent);
-                Assert.Equal(test.Name, currentApiStudent?.Name);
-                Assert.Equal(test.Moniker, currentApiStudent?.Moniker);
-                Assert.Equal(test.Street, currentApiStudent?.Street);
-                Assert.Equal(test.PostalCode, currentApiStudent?.PostalCode);
-                Assert.Equal(test.City, currentApiStudent?.City);
-                Assert.Equal(test.Phone, currentApiStudent?.Phone);
-                Assert.Equal(test.Email, currentApiStudent?.Email);
-                Assert.Equal(test.DirectorName, currentApiStudent?.DirectorName);
-                Assert.Equal(test.PmsCenterID, currentApiStudent?.PmsCenterID);
-                Assert.Equal(test.ClasseIDs, currentApiStudent?.ClasseIDs);
-                Assert.Equal(test.StudentIDs, currentApiStudent?.StudentIDs);
+                var currentApiSchool = apiResult?.FirstOrDefault(s => s._id == test._id);
+                Assert.NotNull(currentApiSchool);
+                Assert.Equal(test.Name, currentApiSchool?.Name);
+                Assert.Equal(test.Moniker, currentApiSchool?.Moniker);
+                Assert.Equal(test.Street, currentApiSchool?.Street);
+                Assert.Equal(test.PostalCode, currentApiSchool?.PostalCode);
+                Assert.Equal(test.City, currentApiSchool?.City);
+                Assert.Equal(test.Phone, currentApiSchool?.Phone);
+                Assert.Equal(test.Email, currentApiSchool?.Email);
+                Assert.Equal(test.DirectorName, currentApiSchool?.DirectorName);
+                Assert.Equal(test.PmsCenterID, currentApiSchool?.PmsCenterID);
+                Assert.Equal(test.ClasseIDs, currentApiSchool?.ClasseIDs);
+                Assert.Equal(test.StudentIDs, currentApiSchool?.StudentIDs);
             }
         }
     }

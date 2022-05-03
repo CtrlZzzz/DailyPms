@@ -14,15 +14,17 @@ namespace TEST.DailyPmsAPI.IntegrationTests
     public abstract class WhenGettingAllItems<T> : IClassFixture<WebApplicationFactory<Startup>>, ITestWhenGettingAll<T> where T : class, IEntity
     {
         protected readonly HttpClient testingClient;
+        protected readonly string apiPath;
 
         public WhenGettingAllItems(WebApplicationFactory<Startup> factory)
         {
             testingClient = factory.CreateClient();
+            apiPath = "/api/" + typeof(T).Name + "s";
         }
 
         public virtual IList<T> BuildTestItems()
         {
-            //TO DO : add prop to use for the path to api call ex : TestingClient.GetAsync("/api/Schools");
+
 
             var typeName = typeof(T).Name;
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), typeName + "s/Test_" + typeName + "s.json");
@@ -38,7 +40,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests
         {
             //Arrange
             //Act
-            var response = await testingClient.GetAsync("/api/" + typeof(T).Name + "s");
+            var response = await testingClient.GetAsync(apiPath);
             response.EnsureSuccessStatusCode();
             //Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
