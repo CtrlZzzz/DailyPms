@@ -31,9 +31,13 @@
     <None Remove="Students\" />
     <None Remove="Students\Test_Students.json" />
     <None Remove="Schools\" />
+    <None Remove="Schools\Test_Schools.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Students\Test_Students.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Schools\Test_Schools.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
