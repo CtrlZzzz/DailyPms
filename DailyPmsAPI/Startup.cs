@@ -1,4 +1,5 @@
-﻿using DailyPmsAPI.Data;
+﻿using Azure.Storage.Blobs;
+using DailyPmsAPI.Data;
 using DailyPmsAPI.Repositories;
 using DailyPmsAPI.Sql;
 using DailyPmsShared;
@@ -44,6 +45,14 @@ namespace DailyPmsAPI
                 var connectionStringSql = Configuration.GetConnectionString("SqlConnection");
                 options.UseSqlServer(connectionStringSql);
             });
+
+            //   BlobStorage
+            services.AddSingleton(x =>
+            {
+                var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
+                return new BlobServiceClient(blobStorageConnectionString);
+            });
+            services.AddSingleton<IBlobService, BlobService>();
 
             //*TEMP - TO REMOVE :
             services.AddTransient<IDbContext, MongoDbContext>();
