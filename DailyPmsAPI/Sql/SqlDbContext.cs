@@ -1,6 +1,5 @@
-using DailyPmsShared;
+﻿using DailyPmsShared;
 using Microsoft.EntityFrameworkCore;
-using DailyPmsApi.Model;
 
 namespace DailyPmsAPI.Sql
 {
@@ -12,8 +11,6 @@ namespace DailyPmsAPI.Sql
         }
 
         public DbSet<StudentPicture> StudentPictures { get; set; }
-
-        public DbSet<DailyPmsApi.Model.StudentPictureTest> StudentPictureTest { get; set; }
     }
 }
 
