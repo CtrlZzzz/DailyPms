@@ -1,9 +1,11 @@
 ﻿using DailyPmsAPI.Data;
 using DailyPmsAPI.Repositories;
+using DailyPmsAPI.Sql;
 using DailyPmsShared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,8 +34,15 @@ namespace DailyPmsAPI
             //  MongoDB
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
-                var connectionString = s.GetRequiredService<IConfiguration>()["ConnectionString"];
+                var connectionString = Configuration.GetConnectionString("MongoConnection");
                 return new MongoClient(connectionString);
+            });
+
+            //  SQL
+            services.AddDbContext<SqlDbContext>(options =>
+            {
+                var connectionStringSql = Configuration.GetConnectionString("SqlConnection");
+                options.UseSqlServer(connectionStringSql);
             });
 
             //*TEMP - TO REMOVE :
