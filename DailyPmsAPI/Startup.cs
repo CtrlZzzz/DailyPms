@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using DailyPmsAPI.BlobStorage;
 using DailyPmsAPI.Data;
 using DailyPmsAPI.Repositories;
 using DailyPmsAPI.Sql;
