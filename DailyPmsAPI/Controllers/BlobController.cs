@@ -1,5 +1,4 @@
-﻿using DailyPmsAPI.BlobStorage;
-using Microsoft.AspNetCore.Http;
+﻿using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -9,19 +8,28 @@ namespace DailyPmsAPI.Controllers
     [ApiController]
     public class BlobController : ControllerBase
     {
-        readonly IBlobService blobService;
+        const string BlobContainerName = "studentpictures";
 
-        public BlobController(IBlobService blobService)
+        readonly BlobServiceClient blobServiceClient;
+
+        public BlobController(BlobServiceClient blobServiceClient)
         {
-            this.blobService = blobService;
+            this.blobServiceClient = blobServiceClient;
         }
 
         [HttpGet("{blobName}")]
-        public async Task<ActionResult> GetBlob(string blobName)
+        public async Task<ActionResult> GetBlobAsync(string blobName)
         {
-            var blob = await blobService.GetBlobAsync(blobName);
+            var containerClient = blobServiceClient.GetBlobContainerClient(BlobContainerName);
+            var blobClient = containerClient.GetBlobClient(blobName);
+            var stream = await blobClient.OpenReadAsync();
+            var contentType = (await blobClient.GetPropertiesAsync()).Value.ContentType;
 
-            return File(blob, blob.GetType().Name);
+            return File(stream, contentType);
+
+            //  or return image directly (to try in mudblazor)
+            //Image blobImage = Image.FromStream(stream);
+            //return blobImage;
         }
     }
 }

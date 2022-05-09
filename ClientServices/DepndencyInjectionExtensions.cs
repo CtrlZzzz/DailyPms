@@ -1,5 +1,4 @@
-﻿using System;
-using ClientServices.Interfaces;
+﻿using ClientServices.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServices
@@ -9,7 +8,8 @@ namespace ClientServices
         public static IServiceCollection AddHttpClientServices(this IServiceCollection services)
         {
             return services.AddScoped<ISchoolService, HttpSchoolService>()
-                           .AddScoped<IStudentService, HttpStudentService>();
+                           .AddScoped<IStudentService, HttpStudentService>()
+                           .AddScoped<IAvatarService, HttpAvatarService>();
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using ClientServices.Interfaces;
 using DailyPmsShared;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 
 namespace ClientServices
 {
@@ -32,9 +30,6 @@ namespace ClientServices
 
         public async Task EditSchoolByIdAsync(string id, School editedSchool)
         {
-            //var serializedSchool = JsonSerializer.Serialize(editedSchool);
-            //var requestContent = new StringContent(serializedSchool, Encoding.UTF8, "application/json");
-            //var response = await client.PutAsync($"/api/Schools/{id}", requestContent);
             await client.PutAsJsonAsync($"/api/Schools/{id}", editedSchool);
         }
     }

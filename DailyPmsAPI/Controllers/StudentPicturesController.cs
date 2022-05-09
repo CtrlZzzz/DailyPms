@@ -29,9 +29,10 @@ namespace DailyPmsAPI.Controllers
 
         // GET: api/Pictures/5
         [HttpGet("{id}", Name = "GetPicture")]
-        public async Task<ActionResult<StudentPicture>> GetPictureByIdAsync(string id)
+        public async Task<ActionResult<StudentPicture>> GetPictureByStudentIdAsync(string id)
         {
-            var studentPicture = await dbContext.StudentPictures.FindAsync(id);
+            //var studentPicture = await dbContext.StudentPictures.FindAsync(id);
+            var studentPicture = await dbContext.StudentPictures.SingleOrDefaultAsync(p => p.StudentId == id);
 
             if (studentPicture == null)
             {
@@ -43,9 +44,9 @@ namespace DailyPmsAPI.Controllers
 
         // PUT: api/Pictures/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePictureByIdAsync(string id, StudentPicture updatedPicture)
+        public async Task<IActionResult> UpdatePictureByIdAsync(int id, StudentPicture updatedPicture)
         {
-            if (id != updatedPicture._id)
+            if (id != updatedPicture.Id)
             {
                 return BadRequest();
             }
@@ -82,7 +83,7 @@ namespace DailyPmsAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (StudentPictureExists(newStudentPicture._id))
+                if (StudentPictureExists(newStudentPicture.Id))
                 {
                     return Conflict();
                 }
@@ -92,12 +93,12 @@ namespace DailyPmsAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetPicture", new { id = newStudentPicture._id }, newStudentPicture);
+            return CreatedAtAction("GetPicture", new { id = newStudentPicture.Id }, newStudentPicture);
         }
 
         // DELETE: api/Pictures/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePictureAsync(string id)
+        public async Task<IActionResult> DeletePictureAsync(int id)
         {
             var studentPicture = await dbContext.StudentPictures.FindAsync(id);
             if (studentPicture == null)
@@ -111,9 +112,9 @@ namespace DailyPmsAPI.Controllers
             return NoContent();
         }
 
-        private bool StudentPictureExists(string id)
+        private bool StudentPictureExists(int id)
         {
-            return dbContext.StudentPictures.Any(e => e._id == id);
+            return dbContext.StudentPictures.Any(e => e.Id == id);
         }
     }
 }

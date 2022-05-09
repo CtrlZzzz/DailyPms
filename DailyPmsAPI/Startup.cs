@@ -1,5 +1,4 @@
 ﻿using Azure.Storage.Blobs;
-using DailyPmsAPI.BlobStorage;
 using DailyPmsAPI.Data;
 using DailyPmsAPI.Repositories;
 using DailyPmsAPI.Sql;
@@ -48,7 +47,6 @@ namespace DailyPmsAPI
                 var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
                 return new BlobServiceClient(blobStorageConnectionString);
             });
-            services.AddSingleton<IBlobService, BlobService>();
 
             //  TO DO => Old repo - non generic, to replace with generic one
             services.AddTransient<IDbContext, MongoDbContext>();

@@ -2,11 +2,12 @@
 
 namespace DailyPmsShared
 {
-    public class StudentPicture : IEntity
+    public class StudentPicture 
     {
         [Key]
-        public string _id { get; set; }
-        public string Url { get; set; }
+        public int Id { get; set; }
+        public string StudentId { get; set; }
+        public string BlobName { get; set; }
     }
 }
 
