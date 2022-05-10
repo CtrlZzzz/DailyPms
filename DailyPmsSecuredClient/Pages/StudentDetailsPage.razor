@@ -65,7 +65,7 @@
             </MudList>
         </MudItem>
         <MudItem>
-            <MudAvatar Style="height:200px; width:200px; font-size:2rem; margin: auto;" Image="@avatarUri" Class="mt-8" />
+            <MudAvatar Style="height:200px; width:200px; font-size:2rem; margin: auto;" Image=@avatarUri Class="mt-8" />
         </MudItem>
     </MudGrid>
 }
@@ -100,13 +100,13 @@ else
 
     async Task<string> GetAvatarUriAsync()
     {
-        var imageUri = await AvatarService.GetImageUri(StudentId);
-        if (imageUri == null)
+        var uriString = await AvatarService.GetImageUri(StudentId);
+        if (uriString == null)
         {
             return "Images/avatar06.png";
         }
 
-        return imageUri.ToString();
+        return uriString;
     }
 }
 

@@ -33,7 +33,7 @@ namespace ClientServices
             }
         }
 
-        public async Task<Uri?> GetImageUri(string studentId)
+        public async Task<string?> GetImageUri(string studentId)
         {
             var pictureResponse = await client.GetAsync($"/api/Pictures/{studentId}");
             if (pictureResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -43,9 +43,9 @@ namespace ClientServices
 
             var studentPictureContent = await pictureResponse.Content.ReadFromJsonAsync<StudentPicture>();
             var uriResponse = await client.GetAsync($"/api/blob/Uri/{studentPictureContent?.BlobName}");
-            var uri = await uriResponse.Content.ReadAsStringAsync();
+            var uri = await uriResponse.Content.ReadFromJsonAsync<string>();
 
-            return new Uri(uri);
+            return uri;
         }
     }
 }
