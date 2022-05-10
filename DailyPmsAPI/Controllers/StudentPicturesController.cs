@@ -28,11 +28,11 @@ namespace DailyPmsAPI.Controllers
         }
 
         // GET: api/Pictures/5
-        [HttpGet("{id}", Name = "GetPicture")]
-        public async Task<ActionResult<StudentPicture>> GetPictureByStudentIdAsync(string id)
+        [HttpGet("{studentId}", Name = "GetPicture")]
+        public async Task<ActionResult<StudentPicture>> GetPictureByStudentIdAsync(string studentId)
         {
             //var studentPicture = await dbContext.StudentPictures.FindAsync(id);
-            var studentPicture = await dbContext.StudentPictures.SingleOrDefaultAsync(p => p.StudentId == id);
+            var studentPicture = await dbContext.StudentPictures.SingleOrDefaultAsync(p => p.StudentId == studentId);
 
             if (studentPicture == null)
             {

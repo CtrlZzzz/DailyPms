@@ -2,6 +2,7 @@
 {
     public interface IAvatarService
     {
-        Task<Stream> GetStudentImageAsync(string studentId);
+        Task<Stream?> GetImageStreamAsync(string studentId);
+        Task<Uri?> GetImageUri(string studentId);
     }
 }

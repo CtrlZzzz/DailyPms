@@ -1,6 +1,7 @@
 ﻿@page "/studentDetail/{StudentId}"
 @inject IStudentService StudentService
 @inject ISchoolService SchoolService
+@inject IAvatarService AvatarService
 
 <style>
     body {
@@ -10,7 +11,7 @@
         padding-right: 20px;
     }
 </style>
-    
+
 <MudPaper Elevation="0" Class=" py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 255px; height: 60px; background-image: linear-gradient(90deg, #C3D1FA, #E4DBF9);">
     <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.School" Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center" />
     <MudText Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Détail</MudText>
@@ -25,7 +26,7 @@
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Prénom, nom :</MudText>
                     <MudText Typo="Typo.h5" Color="@Color.Primary">@currentStudent.FirstName @currentStudent.LastName</MudText>
                 </MudListItem>
-                <MudListItem Icon="@Icons.Material.Filled.CalendarToday" IconColor="Color.Primary" Class="mt-12" >
+                <MudListItem Icon="@Icons.Material.Filled.CalendarToday" IconColor="Color.Primary" Class="mt-12">
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Date de naissance :</MudText>
                     <MudText Color="@Color.Primary">@currentStudent.BirthDate</MudText>
                 </MudListItem>
@@ -64,7 +65,7 @@
             </MudList>
         </MudItem>
         <MudItem>
-            <MudAvatar Style="height:200px; width:200px; font-size:2rem; margin: auto;" Image="Images/avatar06.png" Class="mt-8" />
+            <MudAvatar Style="height:200px; width:200px; font-size:2rem; margin: auto;" Image="@avatarUri" Class="mt-8" />
         </MudItem>
     </MudGrid>
 }
@@ -81,18 +82,31 @@ else
 
     Student currentStudent;
     string schoolName = string.Empty;
+    string avatarUri = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         currentStudent = await StudentService.GetStudentById(StudentId);
-        schoolName = await GetSchoolName();
+        schoolName = await GetSchoolNameAsync();
+        avatarUri = await GetAvatarUriAsync();
     }
 
-    async Task<string> GetSchoolName()
+    async Task<string> GetSchoolNameAsync()
     {
         var school = await SchoolService.GetSchoolByIdAsync(currentStudent.SchoolID);
 
         return school.Name;
+    }
+
+    async Task<string> GetAvatarUriAsync()
+    {
+        var imageUri = await AvatarService.GetImageUri(StudentId);
+        if (imageUri == null)
+        {
+            return "Images/avatar06.png";
+        }
+
+        return imageUri.ToString();
     }
 }
 
