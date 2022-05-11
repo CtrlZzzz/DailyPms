@@ -48,7 +48,7 @@ namespace DailyPmsAPI
                 return new BlobServiceClient(blobStorageConnectionString);
             });
 
-            //  TO DO => Old repo - non generic, to replace with generic one
+            //   TO DO => Old repo - non generic, to replace with generic one
             services.AddTransient<IDbContext, MongoDbContext>();
             services.AddTransient<IClasseRepository, MongoClasseRepository>();
             services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
@@ -96,13 +96,13 @@ namespace DailyPmsAPI
                 c.IncludeXmlComments(xmlFilePath);
             });
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Admin", policy => policy.RequireClaim("extension_Roles", "Admin"));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("Admin", policy => policy.RequireClaim("extension_Roles", "Admin"));
+            //});
 
             services.AddRazorPages();
         }
