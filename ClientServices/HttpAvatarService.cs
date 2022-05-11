@@ -43,9 +43,9 @@ namespace ClientServices
 
             var studentPictureContent = await pictureResponse.Content.ReadFromJsonAsync<StudentPicture>();
             var uriResponse = await client.GetAsync($"/api/blob/Uri/{studentPictureContent?.BlobName}");
-            var uri = await uriResponse.Content.ReadFromJsonAsync<string>();
+            var uriString = await uriResponse.Content.ReadFromJsonAsync<string>();
 
-            return uri;
+            return uriString;
         }
     }
 }
