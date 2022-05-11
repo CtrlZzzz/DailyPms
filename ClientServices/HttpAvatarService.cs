@@ -20,7 +20,6 @@ namespace ClientServices
             var pictureResponse = await client.GetAsync($"/api/Pictures/{studentId}");
             if (pictureResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                //blobResponse = await client.GetAsync($"/api/blob/avatar_default.png");
                 return null;
             }
             else
@@ -33,7 +32,7 @@ namespace ClientServices
             }
         }
 
-        public async Task<string?> GetImageUri(string studentId)
+        public async Task<string?> GetImageUriAsync(string studentId)
         {
             var pictureResponse = await client.GetAsync($"/api/Pictures/{studentId}");
             if (pictureResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
