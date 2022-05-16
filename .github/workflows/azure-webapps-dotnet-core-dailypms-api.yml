@@ -1,9 +1,9 @@
-name: Build and deploy ASP.Net Core app to an Azure Web App
+name: Build and deploy ASP.Net Core Daily Pms API to an Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name    # set this to the name of your Azure Web App
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '5'                 # set this to the .NET Core version to use
+  AZURE_WEBAPP_NAME: DailyPmsApi    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_PACKAGE_PATH: './DailyPmsAPI'      # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '6'                 # set this to the .NET Core version to use
 
 on:
   push:
@@ -61,5 +61,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.DAILY_PMS_API_PUBLISH_PROFIL }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
