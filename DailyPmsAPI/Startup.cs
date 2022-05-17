@@ -1,4 +1,6 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Storage.Blobs;
 using DailyPmsAPI.Data;
 using DailyPmsAPI.Repositories;
 using DailyPmsAPI.Sql;
@@ -32,19 +34,22 @@ namespace DailyPmsAPI
         {
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
-                var connectionString = Configuration.GetConnectionString("MongoConnection");
+                //var connectionString = Configuration.GetConnectionString("MongoConnection");
+                var connectionString = GetVaultSecret("MongoDbConnectionString");
                 return new MongoClient(connectionString);
             });
 
             services.AddDbContext<SqlDbContext>(options =>
             {
-                var connectionStringSql = Configuration.GetConnectionString("SqlConnection");
+                //var connectionStringSql = Configuration.GetConnectionString("SqlConnection");
+                var connectionStringSql = GetVaultSecret("AzureSqlDbConnectionString");
                 options.UseSqlServer(connectionStringSql);
             });
 
             services.AddSingleton(x =>
             {
-                var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
+                //var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
+                var blobStorageConnectionString = GetVaultSecret("BlobStorageConnectionString");
                 return new BlobServiceClient(blobStorageConnectionString);
             });
 
@@ -58,7 +63,7 @@ namespace DailyPmsAPI
             services.AddTransient<IDatabase, MongoDatabase>();
             services.AddTransient<IRepository<School>, SchoolRepository>();
             services.AddTransient<IRepository<Student>, StudentRepository>();
-            
+
 
             services.AddControllers();
 
@@ -74,7 +79,7 @@ namespace DailyPmsAPI
                     });
             });
 
-            services.AddSwaggerGen(c => 
+            services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -138,6 +143,14 @@ namespace DailyPmsAPI
                 endpoints.MapRazorPages();
                 endpoints.MapFallbackToFile("index.html");
             });
+        }
+
+        string GetVaultSecret(string secretName)
+        {
+            var client = new SecretClient(new Uri("https://keyvaultname.vault.azure.net"), new DefaultAzureCredential());
+            var secret = client.GetSecret(secretName).Value;
+
+            return secret.Value;
         }
     }
 }
