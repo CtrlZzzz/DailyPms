@@ -34,8 +34,8 @@ namespace DailyPmsAPI
         {
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
-                //var connectionString = Configuration.GetConnectionString("MongoConnection");
-                var connectionString = GetVaultSecret("MongoDbConnectionString");
+                var connectionString = Configuration.GetConnectionString("MongoConnection");
+                //var connectionString = GetVaultSecret("MongoDbConnectionString");
                 return new MongoClient(connectionString);
             });
 
