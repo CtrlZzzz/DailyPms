@@ -147,7 +147,7 @@ namespace DailyPmsAPI
 
         string GetVaultSecret(string secretName)
         {
-            var client = new SecretClient(new Uri("https://keyvaultname.vault.azure.net"), new DefaultAzureCredential());
+            var client = new SecretClient(new Uri("https://dailypmsvault.vault.azure.net/"), new DefaultAzureCredential());
             var secret = client.GetSecret(secretName).Value;
 
             return secret.Value;
