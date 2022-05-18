@@ -34,22 +34,22 @@ namespace DailyPmsAPI
         {
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
-                var connectionString = Configuration.GetConnectionString("MongoConnection");
-                //var connectionString = GetVaultSecret("MongoDbConnectionString");
+                //var connectionString = Configuration.GetConnectionString("MongoConnection");
+                var connectionString = GetVaultSecret("MongoDbConnectionString");
                 return new MongoClient(connectionString);
             });
 
             services.AddDbContext<SqlDbContext>(options =>
             {
-                var connectionStringSql = Configuration.GetConnectionString("SqlConnection");
-                //var connectionStringSql = GetVaultSecret("AzureSqlDbConnectionString");
+                //var connectionStringSql = Configuration.GetConnectionString("SqlConnection");
+                var connectionStringSql = GetVaultSecret("AzureSqlDbConnectionString");
                 options.UseSqlServer(connectionStringSql);
             });
 
             services.AddSingleton(x =>
             {
-                var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
-                //var blobStorageConnectionString = GetVaultSecret("BlobStorageConnectionString");
+                //var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
+                var blobStorageConnectionString = GetVaultSecret("BlobStorageConnectionString");
                 return new BlobServiceClient(blobStorageConnectionString);
             });
 
