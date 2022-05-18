@@ -17,7 +17,7 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using System;
 using System.IO;
-
+using System.Threading.Tasks;
 
 namespace DailyPmsAPI
 {
@@ -34,8 +34,8 @@ namespace DailyPmsAPI
         {
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
-                var connectionString = Configuration.GetConnectionString("MongoConnection");
-                //var connectionString = GetVaultSecret("MongoDbConnectionString");
+                //var connectionString = Configuration.GetConnectionString("MongoConnection");
+                var connectionString = GetVaultSecret("MongoDbConnectionString");
                 return new MongoClient(connectionString);
             });
 
@@ -147,7 +147,7 @@ namespace DailyPmsAPI
 
         string GetVaultSecret(string secretName)
         {
-            var client = new SecretClient(new Uri("https://dailypmsvault.vault.azure.net/"), new DefaultAzureCredential());
+            var client = new SecretClient(new Uri("https://dailypmsvault.vault.azure.net/"), new ManagedIdentityCredential());
             var secret = client.GetSecret(secretName).Value;
 
             return secret.Value;
