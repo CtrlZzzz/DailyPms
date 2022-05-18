@@ -9,6 +9,10 @@
 	  <DocumentationFile>bin\Release\net5.0\DailyPmsAPI.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+	  <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\net5.0\DailyPmsAPI.xml</DocumentationFile>
