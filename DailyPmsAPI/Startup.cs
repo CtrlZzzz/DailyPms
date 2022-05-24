@@ -101,6 +101,7 @@ namespace DailyPmsAPI
                 c.IncludeXmlComments(xmlFilePath);
             });
 
+            //Disabled for now :
             //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
 
