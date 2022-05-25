@@ -9,7 +9,7 @@ using Xunit;
 
 namespace TEST.DailyPmsAPI.IntegrationTests
 {
-    public class IntegrationTestFixture<T> : IDisposable, IClassFixture<WebApplicationFactory<StartupTest>> where T : class, IEntity
+    public abstract class IntegrationTestFixture<T> : IDisposable, IClassFixture<WebApplicationFactory<StartupTest>> where T : class, IEntity
     {
         const string DBNAME = "PmsDbTest";
 
@@ -19,7 +19,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests
 
         protected IntegrationTestFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration)
         {
-            testingClient = factory.CreateClient();
+            testingClient = factory.CreateClient() ?? throw new NullReferenceException(nameof(testingClient));
             this.configuration = configuration;
 
             ConfigureMongo();
@@ -30,20 +30,22 @@ namespace TEST.DailyPmsAPI.IntegrationTests
         public IMongoCollection<T>? MongoCollection { get; private set; }
 
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            testingClient.Dispose();
-            MongoDb?.DropCollection(CollectionName);
+            GC.SuppressFinalize(this);
+
+            testingClient?.Dispose();
+            //MongoDb?.DropCollection(CollectionName);
         }
 
-        string GetUserSecret(string secretName)
+        protected virtual string GetUserSecret(string secretName)
         {
             return configuration.GetConnectionString(secretName);
         }
 
-        void ConfigureMongo()
+        protected virtual void ConfigureMongo()
         {
-            var MongoConnectionString = GetUserSecret("MongoConnection");
+            var MongoConnectionString = GetUserSecret("MongoConnection") ?? throw new NullReferenceException("Can not retreive the Mongo connection string from user-secrets !");
             var settings = MongoClientSettings.FromConnectionString(MongoConnectionString);
             settings.ServerApi = new ServerApi(ServerApiVersion.V1);
             var mongoClient = new MongoClient(settings);
