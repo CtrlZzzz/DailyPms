@@ -25,17 +25,21 @@ namespace DailyPmsAPI
     {
         public StartupTest(IConfiguration configuration)
         {
-            Configuration = configuration;
+            //Configuration = configuration;
+            Configuration = new ConfigurationBuilder()
+                .AddUserSecrets<StartupTest>()
+                .Build(); 
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; set; }
 
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
-                var connectionString = Configuration.GetConnectionString("MongoConnection");
+                //var connectionString = Configuration.GetConnectionString("MongoConnection");
+                var connectionString = GetUserSecret("ConnectionStrings:MongoConnection");
                 return new MongoClient(connectionString);
             });
 
@@ -63,7 +67,7 @@ namespace DailyPmsAPI
             services.AddTransient<IRepository<Student>, StudentRepository>();
 
 
-            //services.AddControllers();
+            services.AddControllers();
 
             //services.AddCors(options =>
             //{
@@ -77,32 +81,32 @@ namespace DailyPmsAPI
             //        });
             //});
 
-            //services.AddRazorPages();
+            services.AddRazorPages();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
-            //app.UseHttpsRedirection();
-            //app.UseStaticFiles();
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
-            //app.UseRouting();
+            app.UseRouting();
 
-            //app.UseCors();
+            app.UseCors();
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //    endpoints.MapRazorPages();
-            //    endpoints.MapFallbackToFile("index.html");
-            //});
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("index.html");
+            });
         }
 
         //string GetVaultSecret(string secretName)
@@ -112,6 +116,11 @@ namespace DailyPmsAPI
 
         //    return secret.Value;
         //}
+        string GetUserSecret(string secretName)
+        {
+            var userSecret = Configuration[secretName];
+            return userSecret;
+        }
     }
 }
 

@@ -11,12 +11,12 @@ using Xunit;
 
 namespace TEST.DailyPmsAPI.IntegrationTests
 {
-    public abstract class WhenGettingAllItems<T> : IClassFixture<WebApplicationFactory<Startup>>, ITestWhenGettingAll<T> where T : class, IEntity
+    public abstract class WhenGettingAllItems<T> : IClassFixture<WebApplicationFactory<StartupTest>>, ITestWhenGettingAll<T> where T : class, IEntity
     {
         protected readonly HttpClient testingClient;
         protected readonly string apiPath;
 
-        public WhenGettingAllItems(WebApplicationFactory<Startup> factory)
+        public WhenGettingAllItems(WebApplicationFactory<StartupTest> factory)
         {
             testingClient = factory.CreateClient();
             apiPath = "/api/" + typeof(T).Name + "s";

@@ -9,17 +9,22 @@ using System.Threading.Tasks;
 using DailyPmsAPI;
 using DailyPmsShared;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace TEST.DailyPmsAPI.IntegrationTests;
 
-public class When_getting_all_students : IClassFixture<WebApplicationFactory<Startup>>
+public class When_getting_all_students : IClassFixture<WebApplicationFactory<StartupTest>>
 {
     readonly HttpClient apiClient;
+    private readonly IConfiguration config;
 
-    public When_getting_all_students(WebApplicationFactory<Startup> factory)
+    public When_getting_all_students(WebApplicationFactory<StartupTest> factory)
     {
         apiClient = factory.CreateClient();
+        this.config = new ConfigurationBuilder()
+            .AddUserSecrets<When_getting_all_students>()
+            .Build();
     }
 
 
@@ -37,6 +42,9 @@ public class When_getting_all_students : IClassFixture<WebApplicationFactory<Sta
     [Fact]
     public async Task It_should_return_200_ok_all_students()
     {
+        //test
+        var test = config["ConnectionStrings:MongoConnection"];
+        var test2 = config.GetConnectionString("MongoConnection");
         //Arrange
         //Act
         var response = await apiClient.GetAsync("/api/Students");

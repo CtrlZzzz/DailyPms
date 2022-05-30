@@ -40,6 +40,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests
 
         protected virtual string GetUserSecret(string secretName)
         {
+            //var test = configuration["ConnectionStrings:MongoConnection"];
             return configuration.GetConnectionString(secretName);
         }
 

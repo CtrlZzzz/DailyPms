@@ -11,7 +11,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Schools
 {
     public class When_getting_all_schools : WhenGettingAllItems<School>
     {
-        public When_getting_all_schools(WebApplicationFactory<Startup> factory)
+        public When_getting_all_schools(WebApplicationFactory<StartupTest> factory)
             : base(factory)
         {
         }
