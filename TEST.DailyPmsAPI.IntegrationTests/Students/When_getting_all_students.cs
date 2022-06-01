@@ -17,10 +17,8 @@ public class When_getting_all_students : GetAllResourcesFixture<Student>
     {
         //Arrange
         TestResources = TestItemsBuilder<Student>.BuildTestItems();
-        //MongoCollection?.InsertMany(TestResources);
+        MongoCollection?.InsertMany(TestResources);
     }
-
-    public IList<Student> TestResources { get; set; }
 
 
     [Fact]
@@ -43,7 +41,9 @@ public class When_getting_all_students : GetAllResourcesFixture<Student>
         response.EnsureSuccessStatusCode();
         //Assert
         var result = await response.Content.ReadFromJsonAsync<List<Student>>();
-        Assert.Equal(TestResources.Count, result?.Count);
+        //DeBUG
+        var count = result?.Count;
+        Assert.Equal(TestResources?.Count, result?.Count);
     }
 
     [Fact]

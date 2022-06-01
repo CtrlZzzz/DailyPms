@@ -19,7 +19,8 @@ namespace TEST.DailyPmsAPI.IntegrationTests
         protected IntegrationTestFixture(WebApplicationFactory<StartupTest> factory)
         {
             var testingClientOptions = new WebApplicationFactoryClientOptions();
-            testingClientOptions.BaseAddress = new Uri("https://dailypmsapi.azurewebsites.net");
+            //testingClientOptions.BaseAddress = new Uri("https://dailypmsapi.azurewebsites.net");
+            testingClientOptions.BaseAddress = new Uri("https://localhost:5001/");
             testingClient = factory.CreateClient(testingClientOptions) ?? throw new NullReferenceException(nameof(testingClient));
 
             this.configuration = new ConfigurationBuilder()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests
         }
 
         protected T? TestResource { get; set; }
+        protected IList<T>? TestResources { get; set; }
 
 
 
