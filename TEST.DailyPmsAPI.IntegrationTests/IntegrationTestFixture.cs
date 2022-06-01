@@ -14,13 +14,17 @@ namespace TEST.DailyPmsAPI.IntegrationTests
         const string DBNAME = "PmsDbTest";
 
         protected readonly HttpClient testingClient;
+        protected readonly IConfiguration configuration;
 
-        protected IConfiguration configuration;
-
-        protected IntegrationTestFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration)
+        protected IntegrationTestFixture(WebApplicationFactory<StartupTest> factory)
         {
-            testingClient = factory.CreateClient() ?? throw new NullReferenceException(nameof(testingClient));
-            this.configuration = configuration;
+            var testingClientOptions = new WebApplicationFactoryClientOptions();
+            testingClientOptions.BaseAddress = new Uri("https://dailypmsapi.azurewebsites.net");
+            testingClient = factory.CreateClient(testingClientOptions) ?? throw new NullReferenceException(nameof(testingClient));
+
+            this.configuration = new ConfigurationBuilder()
+                .AddUserSecrets<IntegrationTestFixture<T>>()
+                .Build();
 
             ConfigureMongo();
         }
@@ -35,7 +39,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests
             GC.SuppressFinalize(this);
 
             testingClient?.Dispose();
-            //MongoDb?.DropCollection(CollectionName);
+            MongoDb?.DropCollection(CollectionName);
         }
 
         protected virtual string GetUserSecret(string secretName)

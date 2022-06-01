@@ -5,21 +5,24 @@ using System.Threading.Tasks;
 using DailyPmsAPI;
 using DailyPmsShared;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
 
 namespace TEST.DailyPmsAPI.IntegrationTests
 {
     public abstract class ApiTestFixture<T> : IntegrationTestFixture<T> where T : class, IEntity
     {
-        private readonly string baseUri;
+        //protected const string APIURI = "https://dailypmsapi.azurewebsites.net";
 
-        public ApiTestFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration, string? baseUri = null)
-            : base(factory, configuration)
+        protected readonly string baseUri;
+
+        public ApiTestFixture(WebApplicationFactory<StartupTest> factory, string? baseUri = null)
+            : base(factory)
         {
+            //this.baseUri = baseUri ?? APIURI + "/api/" + CollectionName + "/";
             this.baseUri = baseUri ?? "/api/" + CollectionName + "/";
         }
 
-        protected T? TestRessource { get; set; }
+        protected T? TestResource { get; set; }
+
 
 
         public async Task<HttpResponseMessage> GetAsync(T resource, string? routeUri = null)
@@ -53,26 +56,27 @@ namespace TEST.DailyPmsAPI.IntegrationTests
 
 
 
+
     public abstract class GetResourceFixture<T> : ApiTestFixture<T> where T : class, IEntity
     {
-        protected GetResourceFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration, string? baseUri = null)
-            : base(factory, configuration, baseUri)
+        protected GetResourceFixture(WebApplicationFactory<StartupTest> factory, string? baseUri = null)
+            : base(factory, baseUri)
         {
         }
 
         protected async Task<HttpResponseMessage> Act(string? routeUri = null)
         {
-            if (TestRessource == null) throw new ArgumentNullException(nameof(TestRessource));
+            if (TestResource == null) throw new ArgumentNullException(nameof(TestResource));
 
-            return await GetAsync(TestRessource, routeUri);
+            return await GetAsync(TestResource, routeUri);
         }
     }
 
 
     public abstract class GetAllResourcesFixture<T> : ApiTestFixture<T> where T : class, IEntity
     {
-        protected GetAllResourcesFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration, string? baseUri = null)
-            : base(factory, configuration, baseUri)
+        protected GetAllResourcesFixture(WebApplicationFactory<StartupTest> factory, string? baseUri = null)
+            : base(factory, baseUri)
         {
         }
 
@@ -85,49 +89,49 @@ namespace TEST.DailyPmsAPI.IntegrationTests
 
     public abstract class PostResourceFixture<T> : ApiTestFixture<T> where T : class, IEntity
     {
-        protected PostResourceFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration, string? baseUri = null) 
-            : base(factory, configuration, baseUri)
+        protected PostResourceFixture(WebApplicationFactory<StartupTest> factory, string? baseUri = null)
+            : base(factory, baseUri)
         {
         }
 
         protected async Task<HttpResponseMessage> Act()
         {
-            if (TestRessource == null) throw new ArgumentNullException(nameof(TestRessource));
+            if (TestResource == null) throw new ArgumentNullException(nameof(TestResource));
 
-            return await PostAsync(TestRessource);
+            return await PostAsync(TestResource);
         }
     }
 
 
     public abstract class PutResourceFixture<T> : ApiTestFixture<T> where T : class, IEntity
     {
-        protected PutResourceFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration, string? baseUri = null)
-            : base(factory, configuration, baseUri)
+        protected PutResourceFixture(WebApplicationFactory<StartupTest> factory, string? baseUri = null)
+            : base(factory, baseUri)
         {
         }
 
         protected async Task<HttpResponseMessage> Act(string Id)
         {
-            if (TestRessource == null) throw new ArgumentNullException(nameof(TestRessource));
+            if (TestResource == null) throw new ArgumentNullException(nameof(TestResource));
             if (Id == null) throw new ArgumentNullException(nameof(Id));
-            
-            return await PutAsync(TestRessource, Id);
+
+            return await PutAsync(TestResource, Id);
         }
     }
 
 
     public abstract class DeleteResourceFixture<T> : ApiTestFixture<T> where T : class, IEntity
     {
-        protected DeleteResourceFixture(WebApplicationFactory<StartupTest> factory, IConfiguration configuration, string? baseUri = null)
-            : base(factory, configuration, baseUri)
+        protected DeleteResourceFixture(WebApplicationFactory<StartupTest> factory, string? baseUri = null)
+            : base(factory, baseUri)
         {
         }
 
         protected async Task<HttpResponseMessage> Act()
         {
-            if (TestRessource == null) throw new ArgumentNullException(nameof(TestRessource));
+            if (TestResource == null) throw new ArgumentNullException(nameof(TestResource));
 
-            return await DeleteAsync(TestRessource);
+            return await DeleteAsync(TestResource);
         }
     }
 }
