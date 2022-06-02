@@ -9,6 +9,7 @@ using System.Linq;
 
 namespace TEST.DailyPmsAPI.IntegrationTests.Schools
 {
+    [Collection("Non-parallel test")]
     public class When_getting_all_schools : WhenGettingAllItems<School>
     {
         public When_getting_all_schools(WebApplicationFactory<StartupTest> factory)

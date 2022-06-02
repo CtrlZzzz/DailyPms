@@ -8,13 +8,14 @@ using Xunit;
 
 namespace TEST.DailyPmsAPI.IntegrationTests.Students
 {
+    [Collection("Non-parallel test")]
     public class When_getting_one_student : GetResourceFixture<Student>
     {
         public When_getting_one_student(WebApplicationFactory<StartupTest> factory)
             : base(factory)
         {
             TestResources = TestItemsBuilder<Student>.BuildTestItems();
-            //MongoCollection?.InsertMany(TestResources);
+            MongoCollection?.InsertMany(TestResources);
             TestResource = TestResources[1];
         }
 
@@ -43,8 +44,15 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Students
         {
             var response = await Act();
             response.EnsureSuccessStatusCode();
-
             var apiStudent = await response.Content.ReadFromJsonAsync<Student>();
+            //Convert UTC datetime to Local datetime:
+            var initialDate = apiStudent!.BirthDate;
+            var LocalTimeDate = initialDate.ToLocalTime();
+            apiStudent.BirthDate = LocalTimeDate;
+            initialDate = apiStudent.RegistrationDate;
+            LocalTimeDate = initialDate.ToLocalTime();
+            apiStudent.RegistrationDate = LocalTimeDate;
+
             Assert.Equal(TestResource?.FirstName, apiStudent?.FirstName);
             Assert.Equal(TestResource?.LastName, apiStudent?.LastName);
             Assert.Equal(TestResource?.BirthDate, apiStudent?.BirthDate);
