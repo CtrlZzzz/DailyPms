@@ -25,7 +25,6 @@ public class When_getting_all_students : GetAllResourcesFixture<Student>
     [Fact]
     public async Task It_should_return_200_ok_all_students()
     {
-        //Arrange
         //Act
         var response = await Act();
         response.EnsureSuccessStatusCode();
@@ -36,7 +35,6 @@ public class When_getting_all_students : GetAllResourcesFixture<Student>
     [Fact]
     public async Task It_should_return_all_students_count()
     {
-        //Arrange
         //Act
         var response = await Act();
         response.EnsureSuccessStatusCode();
@@ -48,7 +46,6 @@ public class When_getting_all_students : GetAllResourcesFixture<Student>
     [Fact]
     public async Task It_should_return_the_correct_students()
     {
-        //Arrange
         //Act
         var response = await Act();
         response.EnsureSuccessStatusCode();
@@ -59,14 +56,6 @@ public class When_getting_all_students : GetAllResourcesFixture<Student>
             var currentApiStudent = apiResult?.FirstOrDefault(s => s._id == test._id);
 
             Assert.NotNull(currentApiStudent);
-            //Convert UTC datetime to Local datetime:
-            var initialDate = currentApiStudent!.BirthDate;
-            var LocalTimeDate = initialDate.ToLocalTime();
-            currentApiStudent.BirthDate = LocalTimeDate;
-            initialDate = currentApiStudent.RegistrationDate;
-            LocalTimeDate = initialDate.ToLocalTime();
-            currentApiStudent.RegistrationDate = LocalTimeDate;
-
             Assert.Equal(test.FirstName, currentApiStudent?.FirstName);
             Assert.Equal(test.LastName, currentApiStudent?.LastName);
             Assert.Equal(test.BirthDate, currentApiStudent?.BirthDate);

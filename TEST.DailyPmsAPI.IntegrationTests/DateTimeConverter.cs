@@ -15,15 +15,6 @@ namespace TEST.DailyPmsAPI.IntegrationTests
         {
             writer.WriteStringValue(DateTime.SpecifyKind(value, DateTimeKind.Utc));
         }
-
-        //USE LIKE THIS :
-        //JsonSerializerOptions options = new JsonSerializerOptions();
-
-        //options.Converters.Add(new DateTimeConverter());
-
-        //var response = JsonSerializer.Deserialize<Testclass>(json, options);
-
-        //var responseJson = JsonSerializer.Serialize(response, options);
     }
 }
 

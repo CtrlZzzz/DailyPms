@@ -14,7 +14,9 @@ namespace TEST.DailyPmsAPI.IntegrationTests
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), typeName + "s/Test_" + typeName + "s.json");
 
             var jsonFile = File.ReadAllText(filePath);
-            var itemsFromJson = JsonSerializer.Deserialize<IList<T>>(jsonFile);
+            JsonSerializerOptions options = new();
+            options.Converters.Add(new DateTimeConverter());
+            var itemsFromJson = JsonSerializer.Deserialize<IList<T>>(jsonFile, options);
 
             return itemsFromJson!;
         }
