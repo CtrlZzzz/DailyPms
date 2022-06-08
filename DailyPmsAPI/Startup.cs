@@ -18,6 +18,7 @@ using MongoDB.Driver;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using IGeekFan.AspNetCore.RapiDoc;
 
 namespace DailyPmsAPI
 {
@@ -98,7 +99,7 @@ namespace DailyPmsAPI
                 });
 
                 var xmlFilePath = Path.Combine(AppContext.BaseDirectory, "DailyPmsAPI.xml");
-                c.IncludeXmlComments(xmlFilePath);
+                c.IncludeXmlComments(xmlFilePath, true);
             });
 
             //Disabled for now :
@@ -122,10 +123,23 @@ namespace DailyPmsAPI
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Daily PMS API Documentation v1");
+            //    c.RoutePrefix = string.Empty;
+            //});
+            app.UseRapiDocUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Daily PMS API Documentation v1");
-                c.RoutePrefix = string.Empty;
+                c.RoutePrefix = String.Empty;
+                c.SwaggerEndpoint("/v1/api-docs", "Daily PMS API Documentation v1");
+                c.GenericRapiConfig = new GenericRapiConfig()
+                {
+                    FillRequestFieldsWithExample = true,
+                    Theme = "light",
+                    RenderStyle = "read",
+                    UsePathInNavBar = false,
+                    ShowComponents = true,
+                };
             });
 
             app.UseHttpsRedirection();
@@ -143,6 +157,7 @@ namespace DailyPmsAPI
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
                 endpoints.MapFallbackToFile("index.html");
+                endpoints.MapSwagger("{documentName}/api-docs");
             });
         }
 

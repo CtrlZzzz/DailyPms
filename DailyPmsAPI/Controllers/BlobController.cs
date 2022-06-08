@@ -1,7 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Drawing;
 using System.Threading.Tasks;
 
 namespace DailyPmsAPI.Controllers
@@ -36,7 +35,7 @@ namespace DailyPmsAPI.Controllers
 
             return File(stream, contentType);
 
-            //  or return image json (to try in mudblazor)
+            //  or return image (to try in mudblazor)
             //Image blobImage = Image.FromStream(stream);
             //return blobImage;
         }

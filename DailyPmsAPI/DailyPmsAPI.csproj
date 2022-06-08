@@ -31,6 +31,7 @@
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.3.0" />
     <PackageReference Include="Azure.Identity" Version="1.6.0" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
+    <PackageReference Include="IGeekFan.AspNetCore.RapiDoc" Version="0.0.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DailyPmsShared\DailyPmsShared.csproj">
@@ -49,5 +50,7 @@
     <None Remove="Azure.Security.KeyVault.Secrets" />
     <None Remove="Azure.Identity" />
     <None Remove="Azure.Extensions.AspNetCore.Configuration.Secrets" />
+    <None Remove="AspNetCore.RapiDoc" />
+    <None Remove="IGeekFan.AspNetCore.RapiDoc" />
   </ItemGroup>
 </Project>

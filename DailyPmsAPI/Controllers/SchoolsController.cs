@@ -10,7 +10,6 @@ namespace DailyPmsAPI.Controllers
     [ApiController]
     public class SchoolsController : ControllerBase
     {
-        //readonly ISchoolRepository schoolRepository;
         readonly SchoolRepository schoolRepository;
 
         public SchoolsController(IRepository<School> schoolRepo)
@@ -28,7 +27,6 @@ namespace DailyPmsAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<School>>> GetALlSchoolsAsync()
         {
-            //var schools = await schoolRepository.GetAllSchoolsAsync();
             var schools = await schoolRepository.GetAllAsync();
 
             return Ok(schools);
@@ -37,14 +35,13 @@ namespace DailyPmsAPI.Controllers
         /// <summary>
         /// Get a school by its ID
         /// </summary>
-        /// <param name="id">The ID from the school to get</param>
+        /// <param name="id" example="100000000000000000000004">The ID from the school to get</param>
         /// <returns></returns>
         /// <response code="200">The school with the specified ID is returned</response>
         /// <response code="404">The school with the specified ID does not exist in the Database</response>
         [HttpGet("{id:length(24)}", Name = "GetSchoolById")]
         public async Task<ActionResult<School>> GetSchoolByIdAsync(string id)
         {
-            //var school = await schoolRepository.GetSchoolByIdAsync(id);
             var school = await schoolRepository.GetByIdAsync(id);
             if (school == null)
             {
@@ -57,7 +54,7 @@ namespace DailyPmsAPI.Controllers
         /// <summary>
         /// Get a list of schools by Name or Moniker
         /// </summary>
-        /// <param name="name">The Name or Moniker from the school to get</param>
+        /// <param name="name" example="Nijs">The Name or Moniker from the school to get</param>
         /// <returns></returns>
         /// <response code="200">The school with the specified Name or Moniker is returned</response>
         /// <response code="404">The school with the specified Name or Moniker does not exist in the Database</response>
@@ -76,7 +73,7 @@ namespace DailyPmsAPI.Controllers
         /// <summary>
         /// Update a school
         /// </summary>
-        /// <param name="id">The ID from the school to update</param>
+        /// <param name="id" example="100000000000000000000004">The ID from the school to update</param>
         /// <param name="updatedSchool">The updated school object (passed in the request body)</param>
         /// <returns></returns>
         /// <response code="204">The school with the specified ID is updated - No content is returned</response>
@@ -109,12 +106,6 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateSchoolAsync(School newSchool)
         {
-            //var alreadyExistingSchool = await schoolRepository.GetSchoolByNameAsync(newSchool.Name);
-            //if (alreadyExistingSchool != null)
-            //{
-            //    return BadRequest($"A School with the name '{newSchool.Name}' already exists in the Database");
-            //}
-
             await schoolRepository.CreateAsync(newSchool);
 
             return CreatedAtRoute(nameof(GetSchoolByNameAsync), new { name = newSchool.Name }, newSchool);
