@@ -19,24 +19,24 @@ namespace DailyPmsAPI.Controllers
         }
 
 
-        /// <summary>
-        /// Get a PmsFile by its ID
-        /// </summary>
-        /// <param name="id">The ID from the PmsFile to get</param>
-        /// <returns></returns>
-        /// <response code="200">The PmsFile with the specified ID is returned</response>
-        /// <response code="404">The PmsFile with the specified ID does not exist in the Database</response>
-        [HttpGet("{id:length(24)}", Name = "GetPmsFileByIdAsync")]
-        public async Task<ActionResult<PmsFile>> GetPmsFileByIdAsync(string id)
-        {
-            var pmsFile = await pmsFileRepository.GetPmsFileByIdAsync(id);
-            if (pmsFile == null)
-            {
-                return NotFound($"Could not find PmsFile with id = {id}");
-            }
+        ///// <summary>
+        ///// Get a PmsFile by its ID
+        ///// </summary>
+        ///// <param name="id">The ID from the PmsFile to get</param>
+        ///// <returns></returns>
+        ///// <response code="200">The PmsFile with the specified ID is returned</response>
+        ///// <response code="404">The PmsFile with the specified ID does not exist in the Database</response>
+        //[HttpGet("{id:length(24)}", Name = "GetPmsFileByIdAsync")]
+        //public async Task<ActionResult<PmsFile>> GetPmsFileByIdAsync(string id)
+        //{
+        //    var pmsFile = await pmsFileRepository.GetPmsFileByIdAsync(id);
+        //    if (pmsFile == null)
+        //    {
+        //        return NotFound($"Could not find PmsFile with id = {id}");
+        //    }
 
-            return Ok(pmsFile);
-        }
+        //    return Ok(pmsFile);
+        //}
 
         /// <summary>
         /// Get a PmsFile by a student ID
