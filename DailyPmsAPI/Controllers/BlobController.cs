@@ -19,7 +19,13 @@ namespace DailyPmsAPI.Controllers
             this.blobServiceClient = blobServiceClient;
         }
 
-
+        /// <summary>
+        /// Get a file from the blob storage by its blobname
+        /// </summary>
+        /// <param name="blobName" example="avatar_04.png">The name from the file to get</param>
+        /// <returns></returns>
+        /// <response code="200">The file with the specified blobname is returned</response>
+        /// <response code="404">The file with the specified blobname does not exist in the Database</response>
         [HttpGet("{blobName}")]
         public async Task<ActionResult> GetBlobAsync(string blobName)
         {
@@ -40,6 +46,13 @@ namespace DailyPmsAPI.Controllers
             //return blobImage;
         }
 
+        /// <summary>
+        /// Get an url from a file in the blob storage by its blobname
+        /// </summary>
+        /// <param name="blobName" example="avatar_04.png">The name from the file to get</param>
+        /// <returns></returns>
+        /// <response code="200">The url from the file with the specified blobname is returned</response>
+        /// <response code="404">The file with the specified blobname does not exist in the Database</response>
         [HttpGet("Uri/{blobName}")]
         public ActionResult<Uri> GetBlobUri(string blobName)
         {

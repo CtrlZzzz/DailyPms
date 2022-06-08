@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using IGeekFan.AspNetCore.RapiDoc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DailyPmsAPI
 {
@@ -139,6 +140,9 @@ namespace DailyPmsAPI
                     RenderStyle = "read",
                     UsePathInNavBar = false,
                     ShowComponents = true,
+                    SchemaStyle = "table",
+                    AllowServerSelection = false,
+                    AllowAuthentication = false
                 };
             });
 
