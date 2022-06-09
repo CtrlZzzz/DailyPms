@@ -5,21 +5,17 @@ using DailyPmsAPI.Data;
 using DailyPmsAPI.Repositories;
 using DailyPmsAPI.Sql;
 using DailyPmsShared;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using IGeekFan.AspNetCore.RapiDoc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DailyPmsAPI
 {
@@ -57,14 +53,17 @@ namespace DailyPmsAPI
 
             //   TO DO => Old repo - non generic, to replace with generic one
             services.AddTransient<IDbContext, MongoDbContext>();
-            services.AddTransient<IClasseRepository, MongoClasseRepository>();
-            services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
+            //services.AddTransient<IClasseRepository, MongoClasseRepository>();
+            //services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
             services.AddTransient<IAgentRepository, MongoAgentRepository>();
             //
 
             services.AddTransient<IDatabase, MongoDatabase>();
             services.AddTransient<IRepository<School>, SchoolRepository>();
             services.AddTransient<IRepository<Student>, StudentRepository>();
+            services.AddTransient<IRepository<PmsFile>, PmsFileRepository>();
+            services.AddTransient<IRepository<PmsCenter>, PmsCenterRepository>();
+            services.AddTransient<IRepository<Class>, ClassRepository>();
 
 
             services.AddControllers();

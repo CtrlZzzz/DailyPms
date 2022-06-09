@@ -17,7 +17,6 @@ namespace DailyPmsAPI.Repositories
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            //var filter = Builders<School>.Filter.Where(s => s.Name.ToLower().Contains(name) || s.Moniker.ToLower().Contains(name));
             var result = await Collection.FindAsync(s => s.Name.ToLower().Contains(name.ToLower()) || s.Moniker.ToLower().Contains(name.ToLower()));
             return await result.ToListAsync();
         }
