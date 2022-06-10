@@ -52,10 +52,10 @@ namespace DailyPmsAPI
             });
 
             //   TO DO => Old repo - non generic, to replace with generic one
-            services.AddTransient<IDbContext, MongoDbContext>();
+            //services.AddTransient<IDbContext, MongoDbContext>();
             //services.AddTransient<IClasseRepository, MongoClasseRepository>();
             //services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
-            services.AddTransient<IAgentRepository, MongoAgentRepository>();
+            //services.AddTransient<IAgentRepository, MongoAgentRepository>();
             //
 
             services.AddTransient<IDatabase, MongoDatabase>();
@@ -64,6 +64,7 @@ namespace DailyPmsAPI
             services.AddTransient<IRepository<PmsFile>, PmsFileRepository>();
             services.AddTransient<IRepository<PmsCenter>, PmsCenterRepository>();
             services.AddTransient<IRepository<Class>, ClassRepository>();
+            services.AddTransient<IRepository<Agent>, AgentRepository>();
 
 
             services.AddControllers();

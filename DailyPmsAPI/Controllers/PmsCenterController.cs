@@ -72,7 +72,7 @@ namespace DailyPmsAPI.Controllers
         /// Update a center
         /// </summary>
         /// <param name="id" example="400000000000000000000001">The ID from the center to update</param>
-        /// <param name="updatedSchool">The updated pms center object (passed in the request body)</param>
+        /// <param name="updatedCenter">The updated pms center object (passed in the request body)</param>
         /// <returns></returns>
         /// <response code="204">The center with the specified ID is updated - No content is returned</response>
         /// <response code="404">The center with the specified ID does not exist in the Database</response>
@@ -104,6 +104,16 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreatePmsCenterAsync(PmsCenter newCenter)
         {
+            var alreadyExistingCenters = await centerRepository.GetAllAsync();
+            foreach (var center in alreadyExistingCenters)
+            {
+                if (center.Name == newCenter.Name && center.PostalCode == newCenter.PostalCode)
+                {
+                    return BadRequest($"A pms center named {newCenter.Name} " +
+                        $"in {newCenter.City} (postal code : {newCenter.PostalCode}) already exists in the Database !");
+                }
+            }
+
             await centerRepository.CreateAsync(newCenter);
 
             return CreatedAtRoute(nameof(GetCenterByNameAsync), new { name = newCenter.Name }, newCenter);

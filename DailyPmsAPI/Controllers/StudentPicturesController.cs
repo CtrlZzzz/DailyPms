@@ -71,7 +71,8 @@ namespace DailyPmsAPI.Controllers
         {
             if (id != updatedPicture.Id)
             {
-                return BadRequest();
+                return BadRequest($"The Id from the existing studentPicture ({id}) " +
+                    $"is not the same as the id from the updated studentPicture ({updatedPicture.Id})");
             }
 
             dbContext.Entry(updatedPicture).State = EntityState.Modified;
@@ -117,7 +118,7 @@ namespace DailyPmsAPI.Controllers
             {
                 if (StudentPictureExists(newStudentPicture.Id))
                 {
-                    return Conflict();
+                    return Conflict("A studentPicture with the same id already exists in the Database !");
                 }
                 else
                 {

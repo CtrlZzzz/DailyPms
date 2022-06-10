@@ -80,7 +80,7 @@ namespace DailyPmsAPI.Controllers
         /// </summary>
         /// <param name="name" example="De Groote">The name of the agent(s) to get</param>
         /// <returns></returns>
-        /// <response code="200">The agent(s) with the specified Name is returned</response>
+        /// <response code="200">The agent(s) with the specified Name is/are returned</response>
         /// <response code="404">The agent with the specified Name does not exist in the Database</response>
         [HttpGet("ByName/{name}/{centerId:length(24)}", Name = "GetAgentByNameAsync")]
         public async Task<ActionResult<Agent>> GetAgentByNameAsync(string name)
@@ -92,6 +92,81 @@ namespace DailyPmsAPI.Controllers
             }
 
             return Ok(agent);
+        }
+
+        /// <summary>
+        /// Update an agent
+        /// </summary>
+        /// <param name="agentId" example="500000000000000000000001">The ID from the school to update</param>
+        /// <param name="updatedAgent">The updated agent object (passed in the request body)</param>
+        /// <returns></returns>
+        /// <response code="204">The agent with the specified ID is updated - No content is returned</response>
+        /// <response code="404">The agent with the specified ID does not exist in the Database</response>
+        [HttpPut("{id:length(24)}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult> UpdateAgentByIdAsync(string agentId, Agent updatedAgent)
+{
+            var original = await agentRepository.GetByIdAsync(agentId);
+            if (original == null)
+            {
+                return NotFound($"Could not find agent with id = {agentId}");
+}
+
+            await agentRepository.UpdateAsync(agentId, updatedAgent);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Create a new agent
+        /// </summary>
+        /// <param name="newAgent">The new agent to create (passed in the request body)</param>
+        /// <returns></returns>
+        /// <response code="201">The new agent is created</response>
+        /// <response code="400">An agent with the same name as the new agent's name already exists in the Database</response>
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult> CreateAgentAsync(Agent newAgent)
+        {
+            var alreadyExistingAgents = await agentRepository.GetByNameAsync(newAgent.LastName);
+            foreach (var agent in alreadyExistingAgents)
+            {
+                if (agent.LastName == newAgent.LastName && agent.FirstName == newAgent.FirstName && agent.CenterID == newAgent.CenterID)
+                {
+                    return BadRequest($"An agent with firstname {newAgent.FirstName} " +
+                        $"and lastname {newAgent.LastName} " +
+                        $"already exist in the pms center with id = {newAgent.CenterID} !");
+                }
+            }
+
+            await agentRepository.CreateAsync(newAgent);
+
+            return CreatedAtRoute(nameof(GetAgentByNameAsync), new { name = newAgent.LastName }, newAgent);
+        }
+
+        /// <summary>
+        /// Remove an agent
+        /// </summary>
+        /// <param name="agentId" example="500000000000000000000001">The ID from the agent to remove from the Database</param>
+        /// <returns></returns>
+        /// <response code="204">The agent with the specified ID is removed from the Database - No content is returned</response>
+        /// <response code="404">The agent with the specified ID does not exist in the Database</response>
+        [HttpDelete("{id:length(24)}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult> DeleteAgentByIdAsync(string agentId)
+        {
+            var student = await agentRepository.GetByIdAsync(agentId);
+            if (student == null)
+            {
+                return NotFound($"Could not found agent with id = {agentId}");
+            }
+
+            await agentRepository.DeleteAsync(agentId);
+
+            return NoContent();
         }
     }
 }

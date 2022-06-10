@@ -106,6 +106,16 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateSchoolAsync(School newSchool)
         {
+            var alreadyExistingSchool = await schoolRepository.GetAllAsync();
+            foreach (var school in alreadyExistingSchool)
+            {
+                if (school.Name == newSchool.Name && school.PostalCode == newSchool.PostalCode)
+                {
+                    return BadRequest($"A school named {newSchool.Name} " +
+                        $"already exists in {newSchool.City} (postal code : {newSchool.PostalCode}) !");
+                }
+            }
+
             await schoolRepository.CreateAsync(newSchool);
 
             return CreatedAtRoute(nameof(GetSchoolByNameAsync), new { name = newSchool.Name }, newSchool);

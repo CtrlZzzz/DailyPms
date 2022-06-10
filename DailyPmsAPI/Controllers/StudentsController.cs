@@ -108,7 +108,8 @@ namespace DailyPmsAPI.Controllers
             {
                 if (DateTime.Equals(student.BirthDate, newStudent.BirthDate) && student.FirstName == newStudent.FirstName)
                 {
-                    return BadRequest($"A Student named {newStudent.FirstName} {newStudent.LastName} and born {newStudent.BirthDate} already exists in the Database");
+                    return BadRequest($"A Student named {newStudent.FirstName} {newStudent.LastName} " +
+                        $"and born {newStudent.BirthDate} already exists in the Database");
                 }
             }
 
