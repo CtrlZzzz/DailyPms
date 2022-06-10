@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using DailyPmsAPI;
 using DailyPmsShared;
@@ -12,34 +8,22 @@ using Xunit;
 
 namespace TEST.DailyPmsAPI.IntegrationTests.Students
 {
-    public class When_getting_one_student : IClassFixture<WebApplicationFactory<Startup>>
+    [Collection("Non-parallel test")]
+    public class When_getting_one_student : GetResourceFixture<Student>
     {
-        readonly HttpClient apiClient;
-
-        public When_getting_one_student(WebApplicationFactory<Startup> factory)
+        public When_getting_one_student(WebApplicationFactory<StartupTest> factory)
+            : base(factory)
         {
-            apiClient = factory.CreateClient();
-            testStudent = BuildTestStudent();
-            testStudentId = testStudent._id;
-        }
-
-        Student testStudent;
-        string testStudentId;
-
-        public Student BuildTestStudent()
-        {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Students/Test_Students.json");
-            var jsonFile = File.ReadAllText(filePath);
-
-            var StudentsFromJson = JsonSerializer.Deserialize<List<Student>>(jsonFile);
-            return StudentsFromJson![1];
+            TestResources = TestItemsBuilder<Student>.BuildTestItems();
+            MongoCollection?.InsertMany(TestResources);
+            TestResource = TestResources[1];
         }
 
 
         [Fact]
         public async Task It_should_return_200_ok()
         {
-            var response = await apiClient.GetAsync("/api/students/" + testStudentId);
+            var response = await Act();
             response.EnsureSuccessStatusCode();
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -48,7 +32,7 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Students
         [Fact]
         public async Task It_should_return_one_student()
         {
-            var response = await apiClient.GetAsync("/api/students/" + testStudentId);
+            var response = await Act();
             response.EnsureSuccessStatusCode();
 
             var result = await response.Content.ReadFromJsonAsync<Student>();
@@ -58,24 +42,24 @@ namespace TEST.DailyPmsAPI.IntegrationTests.Students
         [Fact]
         public async Task It_should_return_the_correct_student()
         {
-            var response = await apiClient.GetAsync("/api/students/" + testStudentId);
+            var response = await Act();
             response.EnsureSuccessStatusCode();
-
             var apiStudent = await response.Content.ReadFromJsonAsync<Student>();
-            Assert.Equal(testStudent.FirstName, apiStudent?.FirstName);
-            Assert.Equal(testStudent.LastName, apiStudent?.LastName);
-            Assert.Equal(testStudent.BirthDate, apiStudent?.BirthDate);
-            Assert.Equal(testStudent.Street, apiStudent?.Street);
-            Assert.Equal(testStudent.PostalCode, apiStudent?.PostalCode);
-            Assert.Equal(testStudent.City, apiStudent?.City);
-            Assert.Equal(testStudent.Phone, apiStudent?.Phone);
-            Assert.Equal(testStudent.Email, apiStudent?.Email);
-            Assert.Equal(testStudent.Parent1, apiStudent?.Parent1);
-            Assert.Equal(testStudent.Parent2, apiStudent?.Parent2);
-            Assert.Equal(testStudent.RegistrationDate, apiStudent?.RegistrationDate);
-            Assert.Equal(testStudent.SchoolID, apiStudent?.SchoolID);
-            Assert.Equal(testStudent.ClasseID, apiStudent?.ClasseID);
-            Assert.Equal(testStudent.PmsFileID, apiStudent?.PmsFileID);
+
+            Assert.Equal(TestResource?.FirstName, apiStudent?.FirstName);
+            Assert.Equal(TestResource?.LastName, apiStudent?.LastName);
+            Assert.Equal(TestResource?.BirthDate, apiStudent?.BirthDate);
+            Assert.Equal(TestResource?.Street, apiStudent?.Street);
+            Assert.Equal(TestResource?.PostalCode, apiStudent?.PostalCode);
+            Assert.Equal(TestResource?.City, apiStudent?.City);
+            Assert.Equal(TestResource?.Phone, apiStudent?.Phone);
+            Assert.Equal(TestResource?.Email, apiStudent?.Email);
+            Assert.Equal(TestResource?.Parent1, apiStudent?.Parent1);
+            Assert.Equal(TestResource?.Parent2, apiStudent?.Parent2);
+            Assert.Equal(TestResource?.RegistrationDate, apiStudent?.RegistrationDate);
+            Assert.Equal(TestResource?.SchoolID, apiStudent?.SchoolID);
+            Assert.Equal(TestResource?.ClasseID, apiStudent?.ClasseID);
+            Assert.Equal(TestResource?.PmsFileID, apiStudent?.PmsFileID);
         }
     }
 }

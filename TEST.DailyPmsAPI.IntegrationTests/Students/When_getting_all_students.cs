@@ -1,45 +1,32 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using DailyPmsAPI;
 using DailyPmsShared;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace TEST.DailyPmsAPI.IntegrationTests;
+namespace TEST.DailyPmsAPI.IntegrationTests.Students;
 
-public class When_getting_all_students : IClassFixture<WebApplicationFactory<Startup>>
+[Collection("Non-parallel test")]
+public class When_getting_all_students : GetAllResourcesFixture<Student>
 {
-    readonly HttpClient apiClient;
-
-    public When_getting_all_students(WebApplicationFactory<Startup> factory)
+    public When_getting_all_students(WebApplicationFactory<StartupTest> factory)
+        : base(factory)
     {
-        apiClient = factory.CreateClient();
-    }
-
-
-    public List<Student>? BuildTestStudents()
-    {
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Students/Test_Students.json");
-        var jsonFile = File.ReadAllText(filePath);
-
-        var StudentsFromJson = JsonSerializer.Deserialize<List<Student>>(jsonFile);
-
-        return StudentsFromJson;
+        //Arrange
+        TestResources = TestItemsBuilder<Student>.BuildTestItems();
+        MongoCollection?.InsertMany(TestResources);
     }
 
 
     [Fact]
     public async Task It_should_return_200_ok_all_students()
     {
-        //Arrange
         //Act
-        var response = await apiClient.GetAsync("/api/Students");
+        var response = await Act();
         response.EnsureSuccessStatusCode();
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -48,28 +35,26 @@ public class When_getting_all_students : IClassFixture<WebApplicationFactory<Sta
     [Fact]
     public async Task It_should_return_all_students_count()
     {
-        //Arrange
         //Act
-        var response = await apiClient.GetAsync("/api/Students");
+        var response = await Act();
         response.EnsureSuccessStatusCode();
         //Assert
         var result = await response.Content.ReadFromJsonAsync<List<Student>>();
-        Assert.Equal(240, result?.Count);
+        Assert.Equal(TestResources?.Count, result?.Count);
     }
 
     [Fact]
     public async Task It_should_return_the_correct_students()
     {
-        //Arrange
-        var TestStudents = BuildTestStudents();
         //Act
-        var response = await apiClient.GetAsync("/api/Students");
+        var response = await Act();
         response.EnsureSuccessStatusCode();
         //Assert
         var apiResult = await response.Content.ReadFromJsonAsync<List<Student>>();
-        foreach (var test in TestStudents!)
+        foreach (var test in TestResources!)
         {
             var currentApiStudent = apiResult?.FirstOrDefault(s => s._id == test._id);
+
             Assert.NotNull(currentApiStudent);
             Assert.Equal(test.FirstName, currentApiStudent?.FirstName);
             Assert.Equal(test.LastName, currentApiStudent?.LastName);

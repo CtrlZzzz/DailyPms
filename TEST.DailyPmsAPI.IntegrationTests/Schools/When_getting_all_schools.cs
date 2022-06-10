@@ -6,39 +6,54 @@ using Xunit;
 using System.Net.Http.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace TEST.DailyPmsAPI.IntegrationTests.Schools
 {
-    public class When_getting_all_schools : WhenGettingAllItems<School>
+    [Collection("Non-parallel test")]
+    public class When_getting_all_schools : GetAllResourcesFixture<School>
     {
-        public When_getting_all_schools(WebApplicationFactory<Startup> factory)
+        public When_getting_all_schools(WebApplicationFactory<StartupTest> factory)
             : base(factory)
         {
+            //Arrange
+            TestResources = TestItemsBuilder<School>.BuildTestItems();
+            MongoCollection?.InsertMany(TestResources);
         }
 
-        public override async Task It_should_return_all_items()
+        [Fact]
+        public async Task It_should_return_200_ok_all_schools()
         {
-            // Arrange
             //Act
-            var response = await testingClient.GetAsync(apiPath);
+            var response = await Act();
+            response.EnsureSuccessStatusCode();
+            //Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task It_should_return_all_schools_count()
+        {
+            //Act
+            var response = await Act();
             response.EnsureSuccessStatusCode();
             //Assert
             var result = await response.Content.ReadFromJsonAsync<List<Student>>();
-            Assert.Equal(8, result?.Count);
+            Assert.Equal(TestResources?.Count, result?.Count);
         }
 
-        public override async Task It_should_return_the_correct_items()
+        [Fact]
+        public async Task It_should_return_the_correct_items()
         {
-            //Arrange
-            var TestSchools = BuildTestItems();
             //Act
-            var response = await testingClient.GetAsync(apiPath);
+            var response = await Act();
             response.EnsureSuccessStatusCode();
             //Assert
             var apiResult = await response.Content.ReadFromJsonAsync<List<School>>();
-            foreach (var test in TestSchools!)
+            foreach (var test in TestResources!)
             {
                 var currentApiSchool = apiResult?.FirstOrDefault(s => s._id == test._id);
+
                 Assert.NotNull(currentApiSchool);
                 Assert.Equal(test.Name, currentApiSchool?.Name);
                 Assert.Equal(test.Moniker, currentApiSchool?.Moniker);
