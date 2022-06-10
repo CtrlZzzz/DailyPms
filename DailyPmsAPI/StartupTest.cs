@@ -43,23 +43,19 @@ namespace DailyPmsAPI
             //{
             //    var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
             //    return new BlobServiceClient(blobStorageConnectionString);
-            //});
-
-            //TO DO => Old repo -non generic, to replace with generic one
-            services.AddTransient<IDbContext, MongoDbContext>();
-            services.AddTransient<IClasseRepository, MongoClasseRepository>();
-            services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
-            services.AddTransient<IAgentRepository, MongoAgentRepository>();
-            //
+            //}); 
 
 #if (DEBUG)
             services.AddTransient<IDatabase, MongoTestDatabase>();
 #else
             services.AddTransient<IDatabase, MongoDatabase>();
 #endif
-            //services.AddTransient<IDatabase, MongoDatabase>();
             services.AddTransient<IRepository<School>, SchoolRepository>();
             services.AddTransient<IRepository<Student>, StudentRepository>();
+            services.AddTransient<IRepository<PmsFile>, PmsFileRepository>();
+            services.AddTransient<IRepository<PmsCenter>, PmsCenterRepository>();
+            services.AddTransient<IRepository<Class>, ClassRepository>();
+            services.AddTransient<IRepository<Agent>, AgentRepository>();
 
 
             services.AddControllers();
