@@ -32,31 +32,21 @@ namespace DailyPmsAPI
         {
             services.AddSingleton<IMongoClient, MongoClient>(s =>
             {
-                //var connectionString = Configuration.GetConnectionString("MongoConnection");
                 var connectionString = GetVaultSecret("MongoDbConnectionString");
                 return new MongoClient(connectionString);
             });
 
             services.AddDbContext<SqlDbContext>(options =>
             {
-                //var connectionStringSql = Configuration.GetConnectionString("SqlConnection");
                 var connectionStringSql = GetVaultSecret("AzureSqlDbConnectionString");
                 options.UseSqlServer(connectionStringSql);
             });
 
             services.AddSingleton(x =>
             {
-                //var blobStorageConnectionString = Configuration.GetConnectionString("BlobStorageConnectionString");
                 var blobStorageConnectionString = GetVaultSecret("BlobStorageConnectionString");
                 return new BlobServiceClient(blobStorageConnectionString);
             });
-
-            //   TO DO => Old repo - non generic, to replace with generic one
-            //services.AddTransient<IDbContext, MongoDbContext>();
-            //services.AddTransient<IClasseRepository, MongoClasseRepository>();
-            //services.AddTransient<IPmsCenterRepository, MongoPmsCenterRepository>();
-            //services.AddTransient<IAgentRepository, MongoAgentRepository>();
-            //
 
             services.AddTransient<IDatabase, MongoDatabase>();
             services.AddTransient<IRepository<School>, SchoolRepository>();
@@ -103,15 +93,6 @@ namespace DailyPmsAPI
                 c.IncludeXmlComments(xmlFilePath, true);
             });
 
-            //Disabled for now :
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAdB2C"));
-
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("Admin", policy => policy.RequireClaim("extension_Roles", "Admin"));
-            //});
-
             services.AddRazorPages();
         }
 
@@ -124,11 +105,6 @@ namespace DailyPmsAPI
 
             app.UseSwagger();
 
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Daily PMS API Documentation v1");
-            //    c.RoutePrefix = string.Empty;
-            //});
             app.UseRapiDocUI(c =>
             {
                 c.RoutePrefix = String.Empty;

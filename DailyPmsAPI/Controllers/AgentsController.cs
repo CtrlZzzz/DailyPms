@@ -28,7 +28,7 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="200">A list of pms agents is returned</response>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<School>>> GetALlSchoolsAsync()
+        public async Task<ActionResult<IEnumerable<School>>> GetALlAgentsAsync()
         {
             var schools = await agentRepository.GetAllAsync();
 
@@ -82,7 +82,7 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="200">The agent(s) with the specified Name is/are returned</response>
         /// <response code="404">The agent with the specified Name does not exist in the Database</response>
-        [HttpGet("ByName/{name}/{centerId:length(24)}", Name = "GetAgentByNameAsync")]
+        [HttpGet("ByName/{name}", Name = "GetAgentByNameAsync")]
         public async Task<ActionResult<Agent>> GetAgentByNameAsync(string name)
         {
             var agent = await agentRepository.GetByNameAsync(name);
