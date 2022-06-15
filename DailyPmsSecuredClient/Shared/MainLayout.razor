@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
@@ -40,27 +41,29 @@
         {
             <LoginDisplay />
         }
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => CloseTab())" />
+        @*<MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => CloseTab())" />*@
     </MudAppBar>
 
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="0">
         <MudContainer Class="d-flex flex-column justify-center">
             <AuthorizeView>
                 <Authorized>
-                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-12 mb-2" Image="Images/avatar01.png" />
-                    <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
-                    <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-6" Color="Color.Secondary" Align="Align.Center">Psychologue,</MudText>
-                    <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°2</MudText>
-                    <MudFab Style="background-color: white; margin: auto;"
-                            IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" IconSize="Size.Medium"
-                            DisableElevation="true" Size="Size.Medium" Class="mt-8"
-                            OnClick="@(() => SignOutAsync())" />
-                    <MudPaper Elevation="0" Class="rounded-xl mt-12 pt-8" Outlined="true" Style="height: 315px; width: 175px; background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px; margin: auto;">
+                    <MudPaper Elevation="0" Class="rounded-xl mt-6 pt-8" Outlined="true" Style="height: 315px; width: 175px; background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px; margin: auto;">
                         <NavMenu />
                     </MudPaper>
                     <MudFab Style="background-color: white; margin: auto;"
                             IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Settings" IconSize="Size.Medium"
-                            DisableElevation="true" Size="Size.Medium" Class="mt-12" />
+                            DisableElevation="true" Size="Size.Medium" Class="mt-10" />
+
+                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-10 mb-2" Image="Images/avatar01.png" />
+                    <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-2" Color="Color.Secondary" Align="Align.Center">Psychologue,</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°2</MudText>
+                    <MudFab Style="background-color: white; margin: auto;"
+                            IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" IconSize="Size.Medium"
+                            DisableElevation="true" Size="Size.Medium" Class="mt-2"
+                            OnClick="@(() => SignOutAsync())" />
+
                 </Authorized>
                 <NotAuthorized>
                     <MudAvatar Style="height:150px; width:150px; font-style: normal; font-size:6rem; margin: auto; padding: 0px;
@@ -87,6 +90,9 @@
 {
     bool _drawerOpen = true;
 
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
@@ -101,6 +107,13 @@
     void SignIn()
     {
         Navigation.NavigateTo("authentication/login");
+    }
+
+    async Task GetUserName()
+    {
+        var user = (await authenticationStateTask).User;
+        var totalName = user.Identity.Name;
+        var firstNameOnly = totalName.Substring(totalName.IndexOf(" ") + 1);
     }
 
     async Task CloseTab()
