@@ -9,7 +9,8 @@ namespace ClientServices
         {
             return services.AddScoped<ISchoolService, HttpSchoolService>()
                            .AddScoped<IStudentService, HttpStudentService>()
-                           .AddScoped<IAvatarService, HttpAvatarService>();
+                           .AddScoped<IAvatarService, HttpAvatarService>()
+                           .AddScoped<IAgentService, HttpAgentService>();
         }
     }
 }
