@@ -130,8 +130,11 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateAgentAsync(Agent newAgent)
         {
+            //DEBUG
             newAgent.LastName = newAgent.Surname;
             newAgent.FirstName = newAgent.GivenName;
+
+
             var alreadyExistingAgents = await agentRepository.GetByNameAsync(newAgent.LastName);
             foreach (var agent in alreadyExistingAgents)
             {
