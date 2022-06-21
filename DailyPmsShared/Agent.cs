@@ -29,5 +29,19 @@ namespace DailyPmsShared
 
         [BsonRepresentation(BsonType.ObjectId)]
         public List<string> DailyIDs { get; set; }
+
+
+        //AD B2C claims :
+        public string GivenName { get; set; }
+
+        public string Surname { get; set; }
+
+        public string JobTitle { get; set; }
+
+        public string EmailAddress { get; set; }
+
+        public string PMSCenter { get; set; }
+
+        public string ObjectID { get; set; }
     }
 }
