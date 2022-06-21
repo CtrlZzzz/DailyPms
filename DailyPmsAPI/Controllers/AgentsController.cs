@@ -106,12 +106,12 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<ActionResult> UpdateAgentByIdAsync(string agentId, Agent updatedAgent)
-{
+        {
             var original = await agentRepository.GetByIdAsync(agentId);
             if (original == null)
             {
                 return NotFound($"Could not find agent with id = {agentId}");
-}
+            }
 
             await agentRepository.UpdateAsync(agentId, updatedAgent);
 
@@ -130,6 +130,8 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateAgentAsync(Agent newAgent)
         {
+            newAgent.LastName = newAgent.Surname;
+            newAgent.FirstName = newAgent.GivenName;
             var alreadyExistingAgents = await agentRepository.GetByNameAsync(newAgent.LastName);
             foreach (var agent in alreadyExistingAgents)
             {
