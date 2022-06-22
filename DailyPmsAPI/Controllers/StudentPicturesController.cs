@@ -36,7 +36,7 @@ namespace DailyPmsAPI.Controllers
         /// <summary>
         /// Get a studentPicture by student ID
         /// </summary>
-        /// <param name="id" example="300000000000000000000003">the id from the student from which we want to retrieve the studentpicture</param>
+        /// <param name="studentId" example="300000000000000000000003">the id from the student from which we want to retrieve the studentpicture</param>
         /// <returns></returns>
         /// <response code="200">The studentPicture from the student with the specified ID is returned</response>
         /// <response code="404">The studentPicture from the student with the specified ID does not exist in the Database</response>
