@@ -1,6 +1,7 @@
 ﻿@namespace DailyPmsSecuredClient.Components
 @using ClientServices.Interfaces
 @using DailyPmsShared
+@using Microsoft.AspNetCore.Components.Web
 @inject ISchoolService SchoolService
 @inject NavigationManager Navigation
 
@@ -14,25 +15,23 @@ else
         @foreach (var school in schoolSummaries)
         {
             <MudItem xs="12" sm="6" md="4" lg="3">
-                <MudCard Style="background-color: rgba(255, 255, 255, 0.5);">
+                <MudCard Style="background-color: rgba(255, 255, 255, 0.5); border-radius: 20px;">
                     <MudCardHeader>
                         <CardHeaderContent>
-                            <MudText Typo="Typo.h5">@school.Name</MudText>
+                            <MudText Typo="Typo.h6">@school.Name</MudText>
                             <MudText Typo="Typo.subtitle1">@school.Moniker</MudText>
                         </CardHeaderContent>
                         <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.ListAlt" Color="Color.Default" OnClick="@((s) => OnDetailsClick(school))" />
                             <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" OnClick="@((s) => OnEditClick(school))" />
                         </CardHeaderActions>
                     </MudCardHeader>
+                    <MudCardMedia Image="@imageUri" Height="150" />
                     <MudCardContent>
-                        <MudText Typo="Typo.body2">@school.Street</MudText>
-                        <MudText Typo="Typo.body2">@school.PostalCode</MudText>
-                        <MudText Typo="Typo.body2">@school.City</MudText>
                         <MudText Class="mt-4">@school.Phone</MudText>
                         <MudText>@school.Email</MudText>
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@((s) => OnDetailsClick(school))">Détails</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -45,6 +44,17 @@ else
     public Func<Task<IEnumerable<School>>> FetchData { get; set; }
 
     IEnumerable<School> schoolSummaries = new List<School>();
+    int randomNumber = 0;
+
+    string imageUri
+    {
+        get
+        {
+            randomNumber++;
+            var uri = $"https://picsum.photos/200/200?random={randomNumber}";
+            return uri;
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

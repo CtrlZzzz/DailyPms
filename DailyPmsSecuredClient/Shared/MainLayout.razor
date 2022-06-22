@@ -1,11 +1,14 @@
 ﻿@inherits LayoutComponentBase
 
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Security.Claims
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
 @inject IJSRuntime Js
+@inject IAgentService AgentService
 
 <MudLayout>
     <MudAppBar Elevation="0" Class="d-flex justify-space-between" Dense="true" Fixed="false">
@@ -21,7 +24,7 @@
                         <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Event" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Counter"); })" />
                     </MudTooltip>
                     <MudTooltip Text="Planning" Placement="Placement.Bottom">
-                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.LocationOn" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("FetchData"); })" />
+                        <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.LocationOn" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Counter"); })" />
                     </MudTooltip>
                     <MudTooltip Text="Écoles" Placement="Placement.Bottom">
                         <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.AccountBalance" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Schools"); })" />
@@ -40,27 +43,29 @@
         {
             <LoginDisplay />
         }
-        <MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => CloseTab())" />
+        @*<MudIconButton Icon="@Icons.Material.Filled.Close" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => CloseTab())" />*@
     </MudAppBar>
 
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="0">
         <MudContainer Class="d-flex flex-column justify-center">
             <AuthorizeView>
                 <Authorized>
-                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-12 mb-2" Image="Images/avatar01.png" />
-                    <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
-                    <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-6" Color="Color.Secondary" Align="Align.Center">Psychologue,</MudText>
-                    <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°2</MudText>
-                    <MudFab Style="background-color: white; margin: auto;"
-                            IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" IconSize="Size.Medium"
-                            DisableElevation="true" Size="Size.Medium" Class="mt-8"
-                            OnClick="@(() => SignOutAsync())" />
-                    <MudPaper Elevation="0" Class="rounded-xl mt-12 pt-8" Outlined="true" Style="height: 315px; width: 175px; background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px; margin: auto;">
+                    <MudPaper Elevation="0" Class="rounded-xl mt-6 pt-8" Outlined="true" Style="height: 315px; width: 175px; background: rgba(255, 255, 255, 0.5); border-color: white; border-width: 2px; margin: auto;">
                         <NavMenu />
                     </MudPaper>
                     <MudFab Style="background-color: white; margin: auto;"
                             IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Settings" IconSize="Size.Medium"
-                            DisableElevation="true" Size="Size.Medium" Class="mt-12" />
+                            DisableElevation="true" Size="Size.Medium" Class="mt-10" />
+
+                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-10 mb-2" Image="Images/avatar01.png" />
+                    <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-2" Color="Color.Secondary" Align="Align.Center">@connectedAgent?.Profession</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°99</MudText>
+                    <MudFab Style="background-color: white; margin: auto;"
+                            IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" IconSize="Size.Medium"
+                            DisableElevation="true" Size="Size.Medium" Class="mt-2"
+                            OnClick="@(() => SignOutAsync())" />
+
                 </Authorized>
                 <NotAuthorized>
                     <MudAvatar Style="height:150px; width:150px; font-style: normal; font-size:6rem; margin: auto; padding: 0px;
@@ -86,6 +91,21 @@
 @code
 {
     bool _drawerOpen = true;
+    ClaimsPrincipal user;
+    Agent connectedAgent;
+
+    [CascadingParameter]
+    protected Task<AuthenticationState> authenticationStateTask { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        user = (await authenticationStateTask).User;
+        if (user.Identity.IsAuthenticated)
+        {
+            connectedAgent = await GetDatabaseAgent();
+        }
+    }
 
     void DrawerToggle()
     {
@@ -102,6 +122,52 @@
     {
         Navigation.NavigateTo("authentication/login");
     }
+
+    string GetConnectedUserCompleteName()
+    {
+        var completeName = user.Identity.Name;
+        return completeName;
+    }
+
+    string GetFirstName(string completeName)
+    {
+        return completeName.Substring(0, completeName.IndexOf(" "));
+    }
+
+    string GetLastName(string completeName)
+    {
+        return completeName.Substring(completeName.IndexOf(" ") + 1);
+    }
+
+    async Task<Agent> GetDatabaseAgent()
+    {
+        var agentCompleteName = GetConnectedUserCompleteName();
+
+        var agentFirstName = GetFirstName(agentCompleteName);
+        var agentLastName = GetLastName(agentCompleteName);
+        var agents = await AgentService.GetAgentByNameAsync(agentLastName);
+
+        //DEBUG
+        var email = user.FindFirst(ClaimTypes.Name)?.Value;
+        //var birth = user.FindFirst(ClaimTypes.DateOfBirth)?.Value;
+        var test = user.Identities.First().Claims.ToList();
+        var foo = test?.FirstOrDefault(x => x.Type.Equals("City", StringComparison.OrdinalIgnoreCase))?.Value;
+
+        foreach (var agent in agents)
+        {
+            if (agent.LastName == agentLastName)
+            {
+                return agent;
+            }
+        }
+
+        return agents.FirstOrDefault();
+    }
+
+    @*async Task<string> GetAgentCenterName()
+        {
+
+        }*@
 
     async Task CloseTab()
     {

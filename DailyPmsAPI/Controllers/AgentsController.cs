@@ -140,15 +140,20 @@ namespace DailyPmsAPI.Controllers
             {
                 if (agent.LastName == newAgent.LastName && agent.FirstName == newAgent.FirstName && agent.CenterID == newAgent.CenterID)
                 {
-                    return BadRequest($"An agent with firstname {newAgent.FirstName} " +
+                    //return BadRequest($"An agent with firstname {newAgent.FirstName} " +
+                    //    $"and lastname {newAgent.LastName} " +
+                    //    $"already exist in the pms center with id = {newAgent.CenterID} !");
+
+                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with firstname {newAgent.FirstName} " +
                         $"and lastname {newAgent.LastName} " +
-                        $"already exist in the pms center with id = {newAgent.CenterID} !");
+                        $"already exist in the pms center with id = {newAgent.CenterID} !"));
                 }
             }
 
             await agentRepository.CreateAsync(newAgent);
 
-            return CreatedAtRoute(nameof(GetAgentByNameAsync), new { name = newAgent.LastName }, newAgent);
+            //return CreatedAtRoute(nameof(GetAgentByNameAsync), new { name = newAgent.LastName }, newAgent);
+            return Ok(new ApiUserFlowResponse());
         }
 
         /// <summary>
