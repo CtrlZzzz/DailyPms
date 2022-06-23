@@ -26,13 +26,13 @@ namespace DailyPmsShared
 
         public string Email { get; set; }
 
-        [JsonPropertyName("extension_1223f9ee-5ef7-4019-9eb4-d0d68f8ff236_PmsCenterName")]
+        [JsonPropertyName("extension_c246e9c23ce1493ca1e31d49b433dbf9_PmsCenterName")]
         public string CenterName { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string CenterID { get; set; }
 
-        [JsonPropertyName("User's Object ID")]
+        [JsonPropertyName("object ID")]
         public string UserFlowObjectID { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
