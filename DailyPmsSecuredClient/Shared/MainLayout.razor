@@ -59,7 +59,7 @@
 
                     <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-10 mb-2" Image="Images/avatar01.png" />
                     <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
-                    <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-2" Color="Color.Secondary" Align="Align.Center">@connectedAgent?.Profession</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-2" Color="Color.Secondary" Align="Align.Center">@connectedAgent?.JobTitle</MudText>
                     <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°99</MudText>
                     <MudFab Style="background-color: white; margin: auto;"
                             IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" IconSize="Size.Medium"
@@ -155,7 +155,7 @@
 
         foreach (var agent in agents)
         {
-            if (agent.LastName == agentLastName)
+            if (agent.Surname == agentLastName)
             {
                 return agent;
             }

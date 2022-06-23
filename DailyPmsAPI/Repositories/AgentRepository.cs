@@ -26,7 +26,7 @@ namespace DailyPmsAPI.Repositories
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
-            var result = await Collection.FindAsync(a => a.LastName.ToLower().Contains(name.ToLower()));
+            var result = await Collection.FindAsync(a => a.Surname.ToLower().Contains(name.ToLower()));
             return await result.ToListAsync();
         }
     }

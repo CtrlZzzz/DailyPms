@@ -15,8 +15,6 @@ namespace DailyPmsShared
 
         //public string Profession { get; set; }
 
-        //[BsonRepresentation(BsonType.ObjectId)]
-        //public string CenterID { get; set; }
 
         public string GivenName { get; set; }
 
@@ -30,6 +28,9 @@ namespace DailyPmsShared
 
         [JsonPropertyName("extension_c246e9c2-3ce1-493c-a1e3-1d49b433dbf9_PmsCenterName")]
         public string CenterName { get; set; }
+
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string CenterID { get; set; }
 
         [JsonPropertyName("objectId")]
         public string UserFlowObjectID { get; set; }
