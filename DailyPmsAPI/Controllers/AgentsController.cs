@@ -130,29 +130,20 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateAgentAsync(Agent newAgent)
         {
-            //DEBUG
-            newAgent.LastName = newAgent.Surname;
-            newAgent.FirstName = newAgent.GivenName;
-
-
-            var alreadyExistingAgents = await agentRepository.GetByNameAsync(newAgent.LastName);
+            var alreadyExistingAgents = await agentRepository.GetByNameAsync(newAgent.Surname);
             foreach (var agent in alreadyExistingAgents)
             {
-                if (agent.LastName == newAgent.LastName && agent.FirstName == newAgent.FirstName && agent.CenterID == newAgent.CenterID)
+                if (agent.Surname == newAgent.Surname && agent.GivenName == newAgent.GivenName && agent.CenterName == newAgent.CenterName)
                 {
-                    //return BadRequest($"An agent with firstname {newAgent.FirstName} " +
-                    //    $"and lastname {newAgent.LastName} " +
-                    //    $"already exist in the pms center with id = {newAgent.CenterID} !");
-
-                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with firstname {newAgent.FirstName} " +
-                        $"and lastname {newAgent.LastName} " +
-                        $"already exist in the pms center with id = {newAgent.CenterID} !"));
+                    //TODO check user flow object id instead !
+                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with firstname {newAgent.GivenName} " +
+                        $"and lastname {newAgent.Surname} " +
+                        $"already exist in the {newAgent.CenterName} !"));
                 }
             }
 
             await agentRepository.CreateAsync(newAgent);
 
-            //return CreatedAtRoute(nameof(GetAgentByNameAsync), new { name = newAgent.LastName }, newAgent);
             return Ok(new ApiUserFlowResponse());
         }
 
