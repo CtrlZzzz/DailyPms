@@ -135,7 +135,6 @@ namespace DailyPmsAPI.Controllers
             {
                 if (agent.Surname == newAgent.Surname && agent.GivenName == newAgent.GivenName && agent.CenterName == newAgent.CenterName)
                 {
-                    //TODO check user flow object id instead !
                     return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with firstname {newAgent.GivenName} " +
                         $"and lastname {newAgent.Surname} " +
                         $"already exist in the {newAgent.CenterName} !"));
@@ -144,7 +143,17 @@ namespace DailyPmsAPI.Controllers
 
             await agentRepository.CreateAsync(newAgent);
 
-            return Ok(new ApiUserFlowResponse());
+            //retreive _id from the created agent in the db and send it with ApiUserFlowResponse >>>
+            var selectedAgent = await agentRepository.GetByNameAsync(newAgent.Surname);
+            foreach(var agent in selectedAgent)
+            {
+                if (agent.GivenName == newAgent.GivenName && agent.CenterName == newAgent.CenterName)
+                {
+                    return Ok(new ApiUserFlowResponse(agent._id));
+                }
+            }
+
+            return BadRequest(new ApiUserFlowResponse("ValidationError", "Could not found the new agent in the Database !"));
         }
 
         /// <summary>

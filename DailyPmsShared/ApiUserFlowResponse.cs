@@ -14,6 +14,13 @@ namespace DailyPmsShared
             Action = CONTINUATION;
         }
 
+        public ApiUserFlowResponse(string employeeId)
+        {
+            Version = APIVERSION;
+            Action = CONTINUATION;
+            EmployeeId = employeeId;
+        }
+
         public ApiUserFlowResponse(string action, string userMessage)
         {
             Version = APIVERSION;
@@ -35,6 +42,9 @@ namespace DailyPmsShared
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Status { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string EmployeeId { get; set; }
     }
 }
 
