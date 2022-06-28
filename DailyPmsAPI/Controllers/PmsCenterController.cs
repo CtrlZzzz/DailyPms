@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DailyPmsAPI.Repositories;
 using DailyPmsShared;
@@ -65,7 +66,7 @@ namespace DailyPmsAPI.Controllers
                 return NotFound($"Could not find Pms Center with the name '{name}'");
             }
 
-            return Ok(center);
+            return Ok(center.ToList()[0]);
         }
 
         /// <summary>
@@ -107,7 +108,7 @@ namespace DailyPmsAPI.Controllers
             var alreadyExistingCenters = await centerRepository.GetAllAsync();
             foreach (var center in alreadyExistingCenters)
             {
-                if (center.Name == newCenter.Name && center.PostalCode == newCenter.PostalCode)
+                if (center.Name == newCenter.Name)
                 {
                     return BadRequest($"A pms center named {newCenter.Name} " +
                         $"in {newCenter.City} (postal code : {newCenter.PostalCode}) already exists in the Database !");

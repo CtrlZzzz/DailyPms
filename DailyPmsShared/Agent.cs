@@ -32,9 +32,6 @@ namespace DailyPmsShared
         [BsonRepresentation(BsonType.ObjectId)]
         public string CenterID { get; set; }
 
-        [JsonPropertyName("oid")]
-        public string UserFlowObjectID { get; set; }
-
         [BsonRepresentation(BsonType.ObjectId)]
         public List<string> SchoolIDs { get; set; }
 

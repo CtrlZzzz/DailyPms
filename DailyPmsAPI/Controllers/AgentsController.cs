@@ -2,6 +2,7 @@
 using DailyPmsShared;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DailyPmsAPI.Controllers
@@ -130,30 +131,24 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateAgentAsync(Agent newAgent)
         {
-            var alreadyExistingAgents = await agentRepository.GetByNameAsync(newAgent.Surname);
+            var alreadyExistingAgents = await agentRepository.GetAllAsync();
             foreach (var agent in alreadyExistingAgents)
             {
-                if (agent.Surname == newAgent.Surname && agent.GivenName == newAgent.GivenName && agent.CenterName == newAgent.CenterName)
+                if (agent.Email == newAgent.Email)
                 {
-                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with firstname {newAgent.GivenName} " +
-                        $"and lastname {newAgent.Surname} " +
-                        $"already exist in the {newAgent.CenterName} !"));
+                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with email address '{newAgent.Email}' "
+                        + $"already exist in the database !"));
                 }
             }
 
-            await agentRepository.CreateAsync(newAgent);
+            //Retreive center Id and store it in newAgent before creation
+            var completeAgent = newAgent;
+            var centers = await pmsCenterRepository.GetByNameAsync(newAgent.CenterName);
+            completeAgent.CenterID = centers.ToList()[0]._id;
 
-            //retreive _id from the created agent in the db and send it with ApiUserFlowResponse >>>
-            var selectedAgent = await agentRepository.GetByNameAsync(newAgent.Surname);
-            foreach(var agent in selectedAgent)
-            {
-                if (agent.GivenName == newAgent.GivenName && agent.CenterName == newAgent.CenterName)
-                {
-                    return Ok(new ApiUserFlowResponse(agent._id));
-                }
-            }
+            await agentRepository.CreateAsync(completeAgent);
 
-            return BadRequest(new ApiUserFlowResponse("ValidationError", "Could not found the new agent in the Database !"));
+            return Ok(new ApiUserFlowResponse());
         }
 
         /// <summary>
