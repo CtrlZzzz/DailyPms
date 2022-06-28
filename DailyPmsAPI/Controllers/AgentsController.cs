@@ -131,23 +131,23 @@ namespace DailyPmsAPI.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult> CreateAgentAsync(Agent newAgent)
         {
-            //var alreadyExistingAgents = await agentRepository.GetAllAsync();
-            //foreach (var agent in alreadyExistingAgents)
-            //{
-            //    if (agent.Email == newAgent.Email)
-            //    {
-            //        return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with email address {newAgent.Email} "
-            //            + $"already exist in the database !"));
-            //    }
-            //}
+            var alreadyExistingAgents = await agentRepository.GetAllAsync();
+            foreach (var agent in alreadyExistingAgents)
+            {
+                if (agent.Email == newAgent.Email)
+                {
+                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with email address {newAgent.Email} "
+                        + $"already exist in the database !"));
+                }
+            }
 
-            ////Retreive center Id and store it in newAgent before creation
-            //var completeAgent = newAgent;
-            //var centers = await pmsCenterRepository.GetByNameAsync(newAgent.CenterName);
-            //completeAgent.CenterID = centers.ToList()[0]._id;
+            //Retreive center Id and store it in newAgent before creation
+            var completeAgent = newAgent;
+            var centers = await pmsCenterRepository.GetByNameAsync(newAgent.CenterName);
+            completeAgent.CenterID = centers.ToList()[0]._id;
 
-            //await agentRepository.CreateAsync(completeAgent);
-            await agentRepository.CreateAsync(newAgent);
+            await agentRepository.CreateAsync(completeAgent);
+            //await agentRepository.CreateAsync(newAgent);
 
             return Ok(new ApiUserFlowResponse());
         }
