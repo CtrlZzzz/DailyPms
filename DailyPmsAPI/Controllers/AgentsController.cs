@@ -141,12 +141,13 @@ namespace DailyPmsAPI.Controllers
                 }
             }
 
-            //Retreive center Id and store it in newAgent before creation
-            var completeAgent = newAgent;
-            var centers = await pmsCenterRepository.GetByNameAsync(newAgent.CenterName);
-            completeAgent.CenterID = centers.ToList()[0]._id;
+            ////Retreive center Id and store it in newAgent before creation
+            //var completeAgent = newAgent;
+            //var centers = await pmsCenterRepository.GetByNameAsync(newAgent.CenterName);
+            //completeAgent.CenterID = centers.ToList()[0]._id;
 
-            await agentRepository.CreateAsync(completeAgent);
+            //await agentRepository.CreateAsync(completeAgent);
+            await agentRepository.CreateAsync(newAgent);
 
             return Ok(new ApiUserFlowResponse());
         }
