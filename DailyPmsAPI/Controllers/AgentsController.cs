@@ -29,11 +29,11 @@ namespace DailyPmsAPI.Controllers
         /// <returns></returns>
         /// <response code="200">A list of pms agents is returned</response>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<School>>> GetALlAgentsAsync()
+        public async Task<ActionResult<IEnumerable<Agent>>> GetALlAgentsAsync()
         {
-            var schools = await agentRepository.GetAllAsync();
+            var Agents = await agentRepository.GetAllAsync();
 
-            return Ok(schools);
+            return Ok(Agents);
         }
 
         /// <summary>
