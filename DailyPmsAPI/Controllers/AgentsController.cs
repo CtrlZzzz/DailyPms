@@ -46,7 +46,7 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("ByCenter/{centerId:length(24)}")]
         public async Task<ActionResult<IEnumerable<Agent>>> GetAllAgentsByCenterAsync(string centerId)
         {
-            var center = pmsCenterRepository.GetByIdAsync(centerId);
+            var center = await pmsCenterRepository.GetByIdAsync(centerId);
             if (center == null)
             {
                 return NotFound($"Could not find the center with id = {centerId}");
@@ -86,13 +86,13 @@ namespace DailyPmsAPI.Controllers
         [HttpGet("ByName/{name}", Name = "GetAgentByNameAsync")]
         public async Task<ActionResult<Agent>> GetAgentByNameAsync(string name)
         {
-            var agent = await agentRepository.GetByNameAsync(name);
-            if (agent == null)
+            var agents = await agentRepository.GetByNameAsync(name);
+            if (agents == null)
             {
                 return NotFound($"Could not find agent with name = {name} in the Database");
             }
 
-            return Ok(agent);
+            return Ok(agents);
         }
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace DailyPmsAPI.Controllers
         /// <param name="newAgent">The new agent to create (passed in the request body)</param>
         /// <returns></returns>
         /// <response code="201">The new agent is created</response>
-        /// <response code="400">An agent with the same name as the new agent's name already exists in the Database</response>
+        /// <response code="400">An agent with the same email as the new agent's email already exists in the Database</response>
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -136,7 +136,7 @@ namespace DailyPmsAPI.Controllers
             {
                 if (agent.Email == newAgent.Email)
                 {
-                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with email address '{newAgent.Email}' "
+                    return BadRequest(new ApiUserFlowResponse("ValidationError", $"An agent with email address {newAgent.Email} "
                         + $"already exist in the database !"));
                 }
             }
