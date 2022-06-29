@@ -7,16 +7,6 @@ namespace DailyPmsShared
 {
     public class Agent : MongoEntity
     {
-        //To remove
-        public string AgentId { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
-
-        public string Profession { get; set; }
-        //
-
         public string GivenName { get; set; }
 
         public string Surname { get; set; }

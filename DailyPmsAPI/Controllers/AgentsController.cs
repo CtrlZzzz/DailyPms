@@ -147,7 +147,6 @@ namespace DailyPmsAPI.Controllers
             completeAgent.CenterID = centers.ToList()[0]._id;
 
             await agentRepository.CreateAsync(completeAgent);
-            //await agentRepository.CreateAsync(newAgent);
 
             return Ok(new ApiUserFlowResponse());
         }
