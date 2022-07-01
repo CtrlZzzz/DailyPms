@@ -60,7 +60,7 @@
                     <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-10 mb-2" Image="Images/avatar01.png" />
                     <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
                     <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-2" Color="Color.Secondary" Align="Align.Center">@connectedAgent?.JobTitle</MudText>
-                    <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">Centre PMS n°99</MudText>
+                    <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">@connectedAgent?.CenterName</MudText>
                     <MudFab Style="background-color: white; margin: auto;"
                             IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Cancel" IconSize="Size.Medium"
                             DisableElevation="true" Size="Size.Medium" Class="mt-2"
@@ -100,11 +100,14 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        user = (await authenticationStateTask).User;
-        if (user.Identity.IsAuthenticated)
+        if (connectedAgent == null)
         {
-            connectedAgent = await GetDatabaseAgent();
-        }
+            user = (await authenticationStateTask).User;
+            if (user.Identity.IsAuthenticated)
+            {
+                connectedAgent = await GetDatabaseAgent();
+            }
+        } 
     }
 
     void DrawerToggle()
@@ -123,51 +126,35 @@
         Navigation.NavigateTo("authentication/login");
     }
 
-    string GetConnectedUserCompleteName()
-    {
-        var completeName = user.Identity.Name;
-        return completeName;
-    }
+    //string GetConnectedUserCompleteName()
+    //{
+    //    var completeName = user.Identity.Name;
+    //    return completeName;
+    //}
 
-    string GetFirstName(string completeName)
-    {
-        return completeName.Substring(0, completeName.IndexOf(" "));
-    }
+    //string GetFirstName(string completeName)
+    //{
+    //    return completeName.Substring(0, completeName.IndexOf(" "));
+    //}
 
-    string GetLastName(string completeName)
-    {
-        return completeName.Substring(completeName.IndexOf(" ") + 1);
-    }
+    //string GetLastName(string completeName)
+    //{
+    //    return completeName.Substring(completeName.IndexOf(" ") + 1);
+    //}
 
     async Task<Agent> GetDatabaseAgent()
     {
-        var agentCompleteName = GetConnectedUserCompleteName();
+        var claims = user.Identities.First().Claims.ToList();
+        var agentEmail = claims?.FirstOrDefault(x => x.Type.Equals("Emails", StringComparison.OrdinalIgnoreCase))?.Value;
+        agentEmail = agentEmail.Trim(new Char[] { '[', '"', ']' });
+        var agentFirstName = claims?.FirstOrDefault(x => x.Type.Equals("given_name", StringComparison.OrdinalIgnoreCase))?.Value;
+        var agentLastName = claims?.FirstOrDefault(x => x.Type.Equals("family_name", StringComparison.OrdinalIgnoreCase))?.Value;
 
-        var agentFirstName = GetFirstName(agentCompleteName);
-        var agentLastName = GetLastName(agentCompleteName);
         var agents = await AgentService.GetAgentByNameAsync(agentLastName);
 
-        //DEBUG
-        var email = user.FindFirst(ClaimTypes.Name)?.Value;
-        //var birth = user.FindFirst(ClaimTypes.DateOfBirth)?.Value;
-        var test = user.Identities.First().Claims.ToList();
-        var foo = test?.FirstOrDefault(x => x.Type.Equals("City", StringComparison.OrdinalIgnoreCase))?.Value;
-
-        foreach (var agent in agents)
-        {
-            if (agent.Surname == agentLastName)
-            {
-                return agent;
-            }
-        }
-
-        return agents.FirstOrDefault();
+        var agent = agents.Where(a => a.Email == agentEmail).FirstOrDefault();
+        return agent;
     }
-
-    @*async Task<string> GetAgentCenterName()
-        {
-
-        }*@
 
     async Task CloseTab()
     {
