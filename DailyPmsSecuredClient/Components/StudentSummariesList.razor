@@ -16,8 +16,8 @@ else
             <MudTextField @bind-Value="searchValue" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="d-flex justify-end mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.LastName)">Nom</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Student, object>(x=>x.FirstName)">Prénom</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Student, object>(x=>x.LastName)">Nom</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.FirstName)">Prénom</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.BirthDate)">Naissance</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.Street)">Adresse</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<Student, object>(x=>x.PostalCode)">Code postal</MudTableSortLabel></MudTh>
@@ -28,12 +28,13 @@ else
         <RowTemplate>
             <MudTd DataLabel="LastName">@context.LastName</MudTd>
             <MudTd DataLabel="FirstName">@context.FirstName</MudTd>
-            <MudTd DataLabel="BirthDate">@context.BirthDate</MudTd>
+            <MudTd DataLabel="BirthDate">@context.BirthDate.ToShortDateString()</MudTd>
             <MudTd DataLabel="Street">@context.Street</MudTd>
             <MudTd DataLabel="PostalCode">@context.PostalCode</MudTd>
             <MudTd DataLabel="City">@context.City</MudTd>
             <MudTd DataLabel="Phone">@context.Phone</MudTd>
             <MudTd DataLabel="Email">@context.Email</MudTd>
+            <MudTd><MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OnEditClick(context._id))"></MudIconButton></MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager PageSizeOptions="new int[]{10, 20}" />
@@ -81,5 +82,10 @@ else
     void OnClickHandler(TableRowClickEventArgs<Student> selectedStudent)
     {
         Navigation.NavigateTo($"studentDetail/{selectedStudent.Item._id}");
+    }
+
+    void OnEditClick(string selectedStudentId)
+    {
+
     }
 }

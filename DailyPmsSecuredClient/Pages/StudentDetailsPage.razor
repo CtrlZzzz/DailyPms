@@ -28,7 +28,7 @@
                 </MudListItem>
                 <MudListItem Icon="@Icons.Material.Filled.CalendarToday" IconColor="Color.Primary" Class="mt-12">
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Date de naissance :</MudText>
-                    <MudText Color="@Color.Primary">@currentStudent.BirthDate</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.BirthDate.ToShortDateString()</MudText>
                 </MudListItem>
                 <MudListItem Icon="@Icons.Material.Filled.Home" IconColor="Color.Primary">
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Adresse :</MudText>
@@ -60,7 +60,7 @@
                 </MudListItem>
                 <MudListItem Icon="@Icons.Material.Filled.EditCalendar" IconColor="Color.Primary">
                     <MudText Typo="Typo.caption" Color="@Color.Secondary">Date d'inscription :</MudText>
-                    <MudText Color="@Color.Primary">@currentStudent.RegistrationDate</MudText>
+                    <MudText Color="@Color.Primary">@currentStudent.RegistrationDate.ToShortDateString()</MudText>
                 </MudListItem>
             </MudList>
         </MudItem>
@@ -103,7 +103,7 @@ else
         var uriString = await AvatarService.GetImageUriAsync(StudentId);
         if (uriString == null)
         {
-            return "Images/avatar06.png";
+            return "Images/avatar_default.png";
         }
 
         return uriString;

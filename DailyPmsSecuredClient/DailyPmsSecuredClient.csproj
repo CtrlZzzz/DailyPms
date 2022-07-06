@@ -16,9 +16,6 @@
   <ItemGroup>
     <None Remove="Components\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\Images\portrait01_256px.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DailyPmsShared\DailyPmsShared.csproj">

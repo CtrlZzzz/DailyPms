@@ -1,6 +1,8 @@
-﻿@page "/fetchdata"
+﻿@page "/home"
 @using DailyPmsSecuredClient.Components
+@using System.Threading
 @inject HttpClient Http
+@implements IDisposable
 
 <style>
     body {
@@ -13,59 +15,31 @@
 
 <MudPaper Elevation="0" Class=" py-2 mx-4 rounded-pill d-flex justify-center" Style="width: 255px; height: 60px; background-image: linear-gradient(90deg, #FBD27A, #FCF594);">
     <MudIcon Class="my-1 mr-2" Icon="@Icons.Material.Filled.Home"  Size="Size.Large" Style="color: #FFFFFF;" Align-content="Align.Center"/>
-    <MudText  Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Fetch data</MudText>
+    <MudText  Style="font-size: 30px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">Accueil</MudText>
 </MudPaper>
 
-<p>This component demonstrates fetching data from the server.</p>
+<MudText Style="font-size: 60px; font-weight: lighter; color: #FFFFFF;" Align="Align.Center">@DateTime.Now.ToLongDateString(), @currentTime</MudText>
 
 
 
-@*@if (forecasts == null)
-    {
-        <p><em>Loading...</em></p>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">Primary</MudButton>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var forecast in forecasts)
-                {
-                    <tr>
-                        <td>@forecast.Date.ToShortDateString()</td>
-                        <td>@forecast.TemperatureC</td>
-                        <td>@forecast.TemperatureF</td>
-                        <td>@forecast.Summary</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }*@
 
 @code {
-    @*private WeatherForecast[] forecasts;
+    string currentTime;
+    Timer timer;
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-        //}
+    protected override void OnInitialized()
+    {
+        timer = new Timer(Tick, null, 0, 1000);
+    }
 
-        public class WeatherForecast
-        {
-            public DateTime Date { get; set; }
+    void Tick(object o)
+    {
+        currentTime = DateTime.Now.ToLongTimeString();
+        InvokeAsync(StateHasChanged);
+    }
 
-            public int TemperatureC { get; set; }
-
-            public string Summary { get; set; }
-
-            public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-        }*@
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
 }

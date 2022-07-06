@@ -9,6 +9,7 @@
 @inject SignOutSessionStateManager SignOutManager
 @inject IJSRuntime Js
 @inject IAgentService AgentService
+@inject IAvatarService AvatarService
 
 <MudLayout>
     <MudAppBar Elevation="0" Class="d-flex justify-space-between" Dense="true" Fixed="false">
@@ -20,12 +21,12 @@
                     <MudTooltip Text="Accueil" Placement="Placement.Bottom">
                         <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Home" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Home"); })" />
                     </MudTooltip>
-                    <MudTooltip Text="Journalier" Placement="Placement.Bottom">
+                    @*<MudTooltip Text="Journalier" Placement="Placement.Bottom">
                         <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.Event" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Counter"); })" />
                     </MudTooltip>
                     <MudTooltip Text="Planning" Placement="Placement.Bottom">
                         <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.LocationOn" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Counter"); })" />
-                    </MudTooltip>
+                    </MudTooltip>*@
                     <MudTooltip Text="Écoles" Placement="Placement.Bottom">
                         <MudIconButton Class="ml-1" Icon="@Icons.Material.Filled.AccountBalance" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(() => { Navigation.NavigateTo("Schools"); })" />
                     </MudTooltip>
@@ -55,9 +56,9 @@
                     </MudPaper>
                     <MudFab Style="background-color: white; margin: auto;"
                             IconColor="Color.Secondary" Icon="@Icons.Material.Filled.Settings" IconSize="Size.Medium"
-                            DisableElevation="true" Size="Size.Medium" Class="mt-10" />
+                            DisableElevation="true" Size="Size.Medium" Class="mt-10"  Disabled="true"/>
 
-                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-10 mb-2" Image="Images/avatar01.png" />
+                    <MudAvatar Style="height:150px; width:150px; font-size:2rem; margin: auto;" Class="mt-10 mb-2" Image="@avatarUri" />
                     <MudText Style="font-size: 18px;" Color="Color.Primary" Align="Align.Center">@context.User.Identity.Name</MudText>
                     <MudText Style="font-size: 14px; font-weight: lighter;" Class="mt-2" Color="Color.Secondary" Align="Align.Center">@connectedAgent?.JobTitle</MudText>
                     <MudText Style="font-size: 14px; font-weight: lighter;" Color="Color.Secondary" Align="Align.Center">@connectedAgent?.CenterName</MudText>
@@ -93,6 +94,7 @@
     bool _drawerOpen = true;
     ClaimsPrincipal user;
     Agent connectedAgent;
+    string avatarUri = string.Empty;
 
     [CascadingParameter]
     protected Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -106,6 +108,7 @@
             if (user.Identity.IsAuthenticated)
             {
                 connectedAgent = await GetDatabaseAgent();
+                avatarUri = await GetAvatarUriAsync(connectedAgent._id);
             }
         } 
     }
@@ -126,22 +129,6 @@
         Navigation.NavigateTo("authentication/login");
     }
 
-    //string GetConnectedUserCompleteName()
-    //{
-    //    var completeName = user.Identity.Name;
-    //    return completeName;
-    //}
-
-    //string GetFirstName(string completeName)
-    //{
-    //    return completeName.Substring(0, completeName.IndexOf(" "));
-    //}
-
-    //string GetLastName(string completeName)
-    //{
-    //    return completeName.Substring(completeName.IndexOf(" ") + 1);
-    //}
-
     async Task<Agent> GetDatabaseAgent()
     {
         var claims = user.Identities.First().Claims.ToList();
@@ -159,7 +146,27 @@
     async Task CloseTab()
     {
         await Js.InvokeVoidAsync("close");
-        await Js.InvokeVoidAsync("alert", "You are trying to close this window! But something prevents you to do it...");
         Console.WriteLine("USER MESSAGE -- Trying to close current TAB");
     }
+
+    async Task<string> GetAvatarUriAsync(string agentId)
+    {
+        var uriString = await AvatarService.GetImageUriAsync(agentId);
+        if (uriString == null)
+        {
+            return "Images/avatar_default.png";
+        }
+
+        return uriString;
+    }
+
+    //string GetFirstName(string completeName)
+    //{
+    //    return completeName.Substring(0, completeName.IndexOf(" "));
+    //}
+
+    //string GetLastName(string completeName)
+    //{
+    //    return completeName.Substring(completeName.IndexOf(" ") + 1);
+    //}
 }

@@ -2,6 +2,7 @@
 @using ClientServices.Interfaces
 @using DailyPmsShared
 @inject IStudentService StudentService
+@inject ISchoolService SchoolService
 @inject NavigationManager Navigation
 
 @if (studentSummaries == null)
@@ -23,8 +24,12 @@ else
                         </CardHeaderAvatar>
                         <CardHeaderContent>
                             <MudText Typo="Typo.h6"> @student.FirstName @student.LastName</MudText>
-                            <MudText Typo="Typo.body2">FooFooFOo</MudText>
+                            <MudText Typo="Typo.body2">@student.BirthDate.ToShortDateString()</MudText>
                         </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.ListAlt" Color="Color.Default" OnClick="@((s) => OnDetailsClick(student))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Default" OnClick="@((s) => OnEditClick(student))" />
+                        </CardHeaderActions>
                     </MudCardHeader>
                 </MudCard>
             </MudItem>
@@ -41,9 +46,10 @@ else
     protected override async Task OnInitializedAsync()
     {
         studentSummaries = await FetchStudentData.Invoke();
+        studentSummaries = studentSummaries.OrderBy(s => s.LastName);
     }
 
-    void OnDetailClick(Student selectedStudent)
+    void OnDetailsClick(Student selectedStudent)
     {
         Navigation.NavigateTo($"studentDetail/{selectedStudent._id}");
     }
